@@ -66,3 +66,12 @@ body {
 #a {
   font-size: .74em;
 }
+
+#experience h1, p {
+  text-align: center;
+}
+
+#heading a {
+  /*color: inherit;*/
+  /*font-family: "Computer Modern Serif", serif;*/
+}
