@@ -1,7 +1,7 @@
 body {
-  background-color: rgb(242, 242, 242);
   color: rgb(51, 51, 51);
   font-family: "Computer Modern Serif", serif;
+  padding: 30px;
 }
 
 #page-content {
@@ -12,10 +12,6 @@ body {
 }
 
 
-
-#heading {
-  margin-top: 3cm;
-}
 
 #me {
   text-align: center;
