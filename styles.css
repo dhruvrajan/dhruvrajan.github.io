@@ -80,3 +80,10 @@ body {
 #a {
   font-size: .84em;
 }
+
+.project .date {
+  float: left;
+}
+.project .name {
+  float: right;
+}
