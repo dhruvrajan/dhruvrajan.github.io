@@ -3,6 +3,7 @@ body {
   padding: 30px;
 }
 
+
 #page-content {
   max-width: 800px;
   margin-left: auto;
@@ -22,12 +23,11 @@ body {
 
 #skills pre {
   content: 'center';
-}
-#skills {
   font-size: 1.3em;
   text-align: center;
+}
+#skills {
   font-style: normal;
-  padding: 20px;
 }
 
 #coursework {
