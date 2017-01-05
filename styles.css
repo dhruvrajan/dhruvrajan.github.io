@@ -1,17 +1,14 @@
 body {
-  color: rgb(51, 51, 51);
   font-family: "Computer Modern Serif", serif;
   padding: 30px;
 }
 
 #page-content {
-  border: dotted;
+  /*border: dotted;*/
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
-
-
 
 #me {
   text-align: center;
@@ -24,10 +21,22 @@ body {
   font-style: italic;
 }
 
+#skills pre {
+  content: 'center';
+}
 #skills {
+  font-size: 1.3em;
   text-align: center;
   font-style: normal;
-  margin-top: 150px;
+  padding: 20px;
+}
+
+#coursework {
+
+}
+
+#coursework li {
+  list-style: none;
 }
 
 #experience {
@@ -69,5 +78,5 @@ body {
 }
 
 #a {
-  font-size: .74em;
+  font-size: .84em;
 }
