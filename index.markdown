@@ -15,52 +15,119 @@ I’m happy to work with you to restructure this setlist if helpful, add / remov
 
 ## Setlist #1: Solo Guitar, ~1hr (60 minutes)
 
-- **Don’t Be Shy** (4 minutes)
-- **Sossity, You’re a Woman** (4 minutes)
-- **How Can I Tell You** (4 minutes)
-- **Moonshadow** (3 minutes)
-- **The Wind** (3 minutes)
-- **Skating Away on the Thin Ice of a New Day** (5 minutes)
-- **One Brown Mouse** (4 minutes)
-- **The Cave** (4 minutes)
-- **Summerday Sands** (3 minutes)
-- **Canadee I O** (4 minutes)
-- **Clyde Water** (3 minutes)
-- **Humpback Whale** (3 minutes)
-- **Magpie’s Nest** (to be recorded)
-- **Where Do My Bluebird Fly** (4 minutes)
-- **The Gardener** (4 minutes)
+### Don’t Be Shy - [YouTube](https://youtu.be/dGa3_ZwVxq4) - [SoundCloud](https://soundcloud.com/dhruv-rajan/dont-by-shy-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Cat Stevens
+
+### Sossity, You’re a Woman - [YouTube](https://www.youtube.com/watch?v=RCwpMf03KH4) - [SoundCloud](https://soundcloud.com/dhruv-rajan/sossity-youre-a-woman-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Jethro Tull
+
+### How Can I Tell You - [YouTube](https://youtu.be/vfmbufxg7tU) - [SoundCloud](https://soundcloud.com/dhruv-rajan/how-can-i-tell-you-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Cat Stevens
+
+### Moonshadow - [YouTube](https://youtu.be/RCwpMf03KH4) - [SoundCloud](https://soundcloud.com/dhruv-rajan/moonshadow-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Cat Stevens
+
+### The Wind - [YouTube](https://youtu.be/cl2gq3OcME0) - [SoundCloud](https://soundcloud.com/dhruv-rajan/sossity-youre-a-woman-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Cat Stevens
+
+### Skating Away on the Thin Ice of a New Day - [YouTube](https://youtu.be/SZesABJoEpY) - [SoundCloud](https://soundcloud.com/dhruv-rajan/skating-away-on-the-thin-ice?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Jethro Tull
+
+### One Brown Mouse - [YouTube](https://www.youtube.com/watch?v=RXL396jJ30k&t=1610s)
+- Original Artist: Jethro Tull
+
+### The Cave - [YouTube](https://www.youtube.com/watch?v=VwCpdeWSgdI&t=322s)
+- Original Artist: Mumford and Sons
+
+### Summerday Sands - [YouTube](https://youtu.be/OBK7vbtGDXg) - [SoundCloud](https://soundcloud.com/dhruv-rajan/summerday-sands-2-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Jethro Tull
+
+### Canadee I O - [SoundCloud](https://soundcloud.com/dhruv-rajan/untitled-song?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Nic Jones
+
+### Clyde Water - [YouTube](https://youtu.be/hFHqbJ4IeAE) - [SoundCloud](https://soundcloud.com/dhruv-rajan/clyde-water-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Nic Jones
+
+### Humpback Whale - [YouTube](https://youtu.be/hdvohiRdips) - [SoundCloud](https://soundcloud.com/dhruv-rajan/the-humpback-whale-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Nic Jones
+
+### Magpie’s Nest - (to be recorded)
+
+### Where Do My Bluebird Fly - [SoundCloud](https://soundcloud.com/dhruv-rajan/where-do-my-bluebird-fly?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Tallest Man on Earth
+
+### The Gardener - [YouTube](https://youtu.be/_sD9O-mdNAQ) - [SoundCloud](https://soundcloud.com/dhruv-rajan/the-gardener-tallest-man-on-earth?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Tallest Man on Earth
 
 ## Setlist #2: Solo Clawhammer Banjo, ~40min (40 minutes)
 
-- **Jesse James / Julianne Johnson / Goodbye Liza Jane** (5 minutes)
-- **St. Anne’s Reel** (4 minutes)
-- **Dark Bird is Home** (to be recorded)
-- **Somewhere in the Mountains** (to be recorded)
-- **Anabelle Lee** (4 minutes)
-- **My Dear** (to be recorded)
-- **Crossing Muddy Waters** (4 minutes)
-- **Waiting for My Ghost** (to be recorded)
-- **Choctaw Hayride** (4 minutes)
-- **I Wish I Was a Mole In the Ground** (to be recorded)
-- **Pretenders** (to be recorded)
-- **Yarrow** (to be recorded)
-- **What Wondrous Love is This** (to be recorded)
+### Jesse James / Julianne Johnson / Goodbye Liza Jane - [YouTube](https://youtu.be/Yo4kLds85Ts)
+- Original Artist: Traditional
+
+### St. Anne’s Reel - (to be recorded)
+
+### Dark Bird is Home - (to be recorded)
+
+### Somewhere in the Mountains - (to be recorded)
+
+### Anabelle Lee - [YouTube](https://studio.youtube.com/video/sjDa4spV9-8/edit)
+- Original Artist: Sarah Jarosz
+
+### My Dear - [YouTube](https://www.youtube.com/watch?v=RXL396jJ30k&t=1204s)
+- Original Artist: Tallest Man on Earth
+
+### Crossing Muddy Waters - [YouTube](https://www.youtube.com/watch?v=RXL396jJ30k&t=205s)
+- Original Artist: I’m With Her
+
+### Waiting for My Ghost - (to be recorded)
+
+### Choctaw Hayride - [YouTube](https://www.youtube.com/watch?v=RXL396jJ30k&t=787s)
+- Original Artist: Jerry Douglas
+
+### I Wish I Was a Mole In the Ground - (to be recorded)
+
+### Pretenders - [YouTube](https://www.youtube.com/watch?v=RXL396jJ30k&t=911s)
+- Original Artist: Taylor Ashton
+
+### Yarrow - (to be recorded)
+
+### What Wondrous Love is This - (to be recorded)
 
 ## Setlist #3: Solo Guitar, ~1hr (60 minutes)
 
-- **Blues Run The Game** (4 minutes)
-- **If You Want To Sing Out, Sing Out** (4 minutes)
-- **Nursie** (to be recorded)
-- **Mother Goose** (to be recorded)
-- **One White Duck / 0^10 = Nothing At All** (to be recorded)
-- **Geordie** (4 minutes)
-- **Tuesday’s Dead** (4 minutes)
-- **Shankill Butchers** (to be recorded)
-- **Where do the Children Play** (to be recorded)
-- **Annie’s Song** (to be recorded)
-- **The Little Pot Stove** (to be recorded)
-- **This Old Guitar** (to be recorded)
-- **Farewell to the Gold** (to be recorded)
-- **Wond’ring Aloud** (to be recorded)
-- **Life’s a Long Song** (4 minutes)
+### Blues Run The Game - [SoundCloud](https://soundcloud.com/dhruv-rajan/blues-run-the-game-jason-c?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Jason C.
+
+### If You Want To Sing Out, Sing Out - [SoundCloud](https://soundcloud.com/dhruv-rajan/if-you-want-to-sing-out-sing-out-by-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Cat Stevens
+
+### Nursie - [SoundCloud](https://soundcloud.com/dhruv-rajan/nursie-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Jethro Tull
+
+### Mother Goose - [SoundCloud](https://soundcloud.com/dhruv-rajan/mother-goose-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Jethro Tull
+
+### One White Duck / 0^10 = Nothing At All - (to be recorded)
+
+### Geordie - [SoundCloud](https://soundcloud.com/dhruv-rajan/geordie-anais-mitchell-jefferson-hamer?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Anais Mitchell + Jefferson Hamer
+
+### Tuesday’s Dead - [YouTube](https://youtu.be/tMmw27PHWzI) - [SoundCloud](https://soundcloud.com/dhruv-rajan/tuesdaysdead?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Cat Stevens
+
+### Shankill Butchers - (to be recorded)
+
+### Where do the Children Play - (to be recorded)
+
+### Annie’s Song - (to be recorded)
+
+### The Little Pot Stove - (to be recorded)
+
+### This Old Guitar - (to be recorded)
+
+### Farewell to the Gold - (to be recorded)
+
+### Wond’ring Aloud - (to be recorded)
+
+### Life’s a Long Song - [YouTube](https://soundcloud.com/dhruv-rajan/lifes-a-long-song-jethro-1?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing)
+- Original Artist: Jethro Tull
