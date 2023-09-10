@@ -89,7 +89,8 @@ I’m happy to work with you to restructure this setlist if helpful, add / remov
 ### Crossing Muddy Waters (I’m With Her)
 - [YouTube](https://www.youtube.com/watch?v=RXL396jJ30k&t=205s)
 
-### Waiting for My Ghost (to be recorded)
+### Waiting for My Ghost
+- [YouTube](https://youtu.be/1AbTqUTDW-A)
 
 ### Choctaw Hayride (Jerry Douglas)
 - [YouTube](https://www.youtube.com/watch?v=RXL396jJ30k&t=787s)
