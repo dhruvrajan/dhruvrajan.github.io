@@ -13,7 +13,7 @@
     {% for song_title in setlist.songs %}
       {% assign song = site.data.songs | where: 'title', song_title | first %}
       <li>
-        <a href="{{ song.youtube_link }}" target="_blank">{{ song.title }}</a>
+        <a href="{{ song.youtube_link }}" target="_blank">{{ song_title }}</a>
       </li>
     {% endfor %}
   </ul>
