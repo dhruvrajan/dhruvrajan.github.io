@@ -13,29 +13,10 @@ I’ve linked recordings below in both video (YouTube) and audio (SoundCloud) fo
 
 I’m happy to work with you to restructure this setlist if helpful, add / remove songs to fit the performance better! Please let me know any thoughts you have to help me prepare for an enjoyable performance.
 
-<h1>Setlist</h1>
+## Songs By Artists
 
-{% assign songs = site.data.songs %}
+- [View Artists View](/artists_view/)
 
-{% assign artists = songs | map: 'artist' | uniq %}
+## Sample Setlists
 
-{% for artist in artists %}
-  <h2>{{ artist }}</h2>
-  <ul>
-    {% for song in songs %}
-      {% if song.artist == artist  and song.youtube_link %}
-        <li>
-          <a href="{{ song.youtube_link }}" target="_blank">{{ song.title }}</a>
-        </li>
-      {% elsif song.artist == artist  and song.soundcloud_link %}
-        <li>
-          <a href="{{ song.soundcloud_link }}" target="_blank">{{ song.title }}</a>
-        </li>
-      {% elsif song.artist == artist %}
-        <li>
-          {{ song.title }}
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-{% endfor %}
+- [View Setlists](/setlists/)

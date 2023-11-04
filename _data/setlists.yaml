@@ -1,0 +1,67 @@
+- setlist_name: Setlist 1 (Solo Guitar, ~1hr)
+  instruments:
+    - Guitar
+  songs:
+    - title: Don't Be Shy
+    - title: Moonshadow
+    - title: How Can I Tell You
+    - title: The Wind
+    - title: Sossity, You’re a Woman
+    - title: Skating Away on the Thin Ice of a New Day
+    - title: Summerday Sands
+    - title: One Brown Mouse
+    - title: Salamander
+    - title: The Cave
+    - title: Canadee I O
+    - title: Clyde Water
+    - title: Humpback Whale
+    - title: Magpie’s Nest
+    - title: Where Do My Bluebird Fly
+    - title: The Gardener
+
+- setlist_name: Setlist 2 (Solo Clawhammer Banjo, ~40min)
+  instruments:
+    - Banjo
+  songs:
+    - title: Jesse James / Julianne Johnson / Goodbye Liza Jane
+    - title: Anabelle Lee
+    - title: Clyde Water
+    - title: Choctaw Hayride
+    - title: Shove that Pig’s Foot a little Further into the Fire / St. Anne’s Reel
+
+- setlist_name: Setlist 3 (Solo Guitar, ~1hr)
+  instruments:
+    - Guitar
+  songs:
+    - title: If You Want To Sing Out, Sing Out
+    - title: Tuesday’s Dead
+    - title: Where do the Children Play
+    - title: Blues Run The Game
+    - title: Annie’s Song
+    - title: This Old Guitar
+    - title: Nursie
+    - title: Mother Goose
+    - title: Wond’ring Aloud
+    - title: One White Duck / 0^10 = Nothing At All
+
+- setlist_name: Setlist 4 (Solo Banjo + Guitar, 1hr)
+  instruments:
+    - Banjo
+    - Guitar
+  songs:
+    - title: Jesse James / Julianne Johnson / Goodbye Liza Jane
+    - title: One Brown Mouse
+    - title: Salamander
+    - title: Magpie’s Nest
+
+- setlist_name: Setlist 4 (British Acoustic)
+  instruments:
+    - Guitar
+  songs:
+    - title: Clyde Water
+    - title: Lakes of Ponchartrain
+    - title: Who Knows Where the Time Goes
+    - title: Canadee - IO
+    - title: Humpback Whale
+    - title: Little Pot Stove
+    - title: Ploughman Lads
