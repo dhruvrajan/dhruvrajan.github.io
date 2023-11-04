@@ -14,11 +14,15 @@
       {% assign song = site.data.songs | where: 'title', song_title.title | first %}
       {% if song and song.youtube_link %}
         <li>
-          <a href="{{ song.youtube_link }}" target="_blank">{{ song_title.title }}</a>
+          <a href="{{ song.youtube_link }}" target="_blank">{{ song_title.title }}({{song.artist}})</a>
         </li>
       {% elsif song and song.soundcloud_link %}
         <li>
-          <a href="{{ song.soundcloud_link }}" target="_blank">{{ song_title.title }}</a>
+          <a href="{{ song.soundcloud_link }}" target="_blank">{{ song_title.title }}({{song.artist}})</a>
+        </li>
+      {% elsif song and song.artist %}
+        <li>
+          {{ song_title.title }}({{song.artist}})
         </li>
       {% else %}
         <li>
