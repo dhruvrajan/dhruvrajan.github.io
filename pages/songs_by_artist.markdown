@@ -7,4 +7,4 @@ title: Setlists
 
 [Sample Setlists](/pages/setlists.html)
 
-{ % include songs_by_artist.markdown % }
+{% include songs_by_artist.markdown %}
