@@ -11,9 +11,9 @@
   <h2>{{ setlist.setlist_name }}</h2>
   <ul>
     {% for song_title in setlist.songs %}
-      {% assign song = site.data.songs | where: 'title', song_title | first %}
+      {% assign song = site.data.songs | where: 'title', song_title.title | first %}
       <li>
-        <a href="{{ song.youtube_link }}" target="_blank">{{ song_title }}</a>
+        <a href="{{ song.youtube_link }}" target="_blank">{{ song_title.title }}</a>
       </li>
     {% endfor %}
   </ul>
