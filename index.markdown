@@ -3,13 +3,11 @@ layout: home
 title: Dhruv Rajan's Performance Setlists
 ---
 
-<div class="image-container">
-  <img src="images/winery.jpg" alt="Image 1">
-  <img src="/images/home.jpg" alt="Image 2">
-</div>
-
 # Dhruv Rajan’s Performance Setlist
 
+<div style="width: 100%; display: table;">
+  <div style="display: table-row; height: 100px;">
+      <div style="width: 50%; display: table-cell; background: green;">
 Instruments: Guitar, Banjo, Octave Mandolin, Flute
 
 I’m hoping to perform the setlists below on solo guitar and banjo, perhaps at coffee shops or at farmers markets. These are solo arrangements of classic acoustic rock / folk songs, largely from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), with some more recent selections (Tallest Man on Earth, Mumford and Sons).
@@ -18,7 +16,18 @@ I’ve linked recordings below in both video ([YouTube](https://www.youtube.com/
 
 Please see my [Youtube Channel](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q) for my most recent covers.
 
-I’m happy to work with you to restructure this setlist if helpful, add / remove songs to fit the performance better! Please let me know any thoughts you have to help me prepare for an enjoyable performance.
+I’m happy to work with you to restructure this setlist if helpful, add / remove songs to fit the performance better! Please let me know any thoughts you have to help me prepare for an enjoyable performance. 
+      </div>
+      <div style="display: table-cell; background: blue;"> 
+        <div class="image-container">
+          <img src="images/winery.jpg" alt="Image 1">
+          <img src="images/home.jpg" alt="Image 2">
+        </div>
+      </div>
+  </div>
+</div>
+
+
 
 [Sample Setlists](/pages/setlists.html)
 
