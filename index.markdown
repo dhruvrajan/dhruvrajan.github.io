@@ -15,4 +15,4 @@ I’m happy to work with you to restructure this setlist if helpful, add / remov
 
 [Sample Setlists](/pages/setlists.html)
 
-{% include_relative pages/songs_by_artist.markdown %}
+{% include songs_by_artist.markdown %}
