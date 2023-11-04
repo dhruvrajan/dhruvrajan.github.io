@@ -27,9 +27,13 @@ I’m happy to work with you to restructure this setlist if helpful, add / remov
         <li>
           <a href="{{ song.youtube_link }}" target="_blank">{{ song.title }}</a>
         </li>
-      {% if song.artist == artist  and song.soundcloud_link %}
+      {% elsif song.artist == artist  and song.soundcloud_link %}
         <li>
           <a href="{{ song.soundcloud_link }}" target="_blank">{{ song.title }}</a>
+        </li>
+      {% elsif song.artist == artist %}
+        <li>
+          {{ song.title }}
         </li>
       {% endif %}
     {% endfor %}
