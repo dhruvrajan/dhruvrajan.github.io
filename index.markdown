@@ -3,6 +3,11 @@ layout: home
 title: Dhruv Rajan's Performance Setlists
 ---
 
+<div class="image-container">
+  <img src="images/winery.jpg" alt="Image 1">
+  <img src="/images/home.jpg" alt="Image 2">
+</div>
+
 # Dhruv Rajan’s Performance Setlist
 
 Instruments: Guitar, Banjo, Octave Mandolin, Flute
