@@ -13,6 +13,6 @@ I’ve linked recordings below in both video (YouTube) and audio (SoundCloud) fo
 
 I’m happy to work with you to restructure this setlist if helpful, add / remove songs to fit the performance better! Please let me know any thoughts you have to help me prepare for an enjoyable performance.
 
-
-[Songs By Artist](/pages/songs_by_artist.html)
 [Sample Setlists](/pages/setlists.html)
+
+{% include_relative pages/songs_by_artist.markdown %}

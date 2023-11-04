@@ -5,6 +5,8 @@ title: Setlists
 
 <h1>Songs by Artist</h1>
 
+[Sample Setlists](/pages/setlists.html)
+
 {% assign songs = site.data.songs %}
 
 {% assign artists = songs | map: 'artist' | uniq %}
