@@ -15,7 +15,7 @@ Please see my [Youtube Channel](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj
 
 I’m happy to work with you to restructure this setlist if helpful, add / remove songs to fit the performance better! Please let me know any thoughts you have to help me prepare for an enjoyable performance. 
 
-Please feel free to contact me at [dhruv@krishnaprem.com](dhruv@krishnaprem.com) or (650) 229-4572!
+Please feel free to contact me at [dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com) or (650) 229-4572!
 
 <div class="image-container">
   <img src="images/winery.jpg" alt="Image 1" height="250px" float="left">
