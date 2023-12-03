@@ -1,9 +1,9 @@
 ---
 layout: home
-title: Dhruv Rajan's Performance Setlists
+title: Dhruv Rajan's Performance Setlist
 ---
 
-# Dhruv Rajan’s Performance Setlist
+# Dhruv Rajan's Performance Setlist
 
 Instruments: Guitar, Banjo, Octave Mandolin, Flute
 
