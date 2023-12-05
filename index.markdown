@@ -20,9 +20,9 @@ Please feel free to contact me at [dhruv@krishnaprem.com](mailto:dhruv@krishnapr
 <div class="image-container">
   <img src="images/IMG_0461.jpg" alt="Image 0" height="250px" float="left">
   <span></span>
-  <img src="images/winery.jpg" alt="Image 1" height="250px" float="left">
-  <span></span>
-  <img src="images/home.jpg" alt="Image 2" height="250px" float="right">
+  <img src="images/winery.jpg" alt="Image 1" height="250px" float="right">
+<!--   <span></span>
+  <img src="images/home.jpg" alt="Image 2" height="250px" float="right"> -->
 </div>
 
 [Sample Setlists](/pages/setlists.html)
