@@ -18,6 +18,8 @@ I’m happy to work with you to restructure this setlist if helpful, add / remov
 Please feel free to contact me at [dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com) or (650) 229-4572!
 
 <div class="image-container">
+  <img src="images/first-friday.jpg" alt="Image 0" height="250px" float="left">
+  <span></span>
   <img src="images/winery.jpg" alt="Image 1" height="250px" float="left">
   <span></span>
   <img src="images/home.jpg" alt="Image 2" height="250px" float="right">
