@@ -27,4 +27,6 @@ Please feel free to contact me at [dhruv@krishnaprem.com](mailto:dhruv@krishnapr
 
 [Sample Setlists](/pages/setlists.html)
 
+{% include events.markdown %}
+
 {% include songs_by_artist.markdown %}
