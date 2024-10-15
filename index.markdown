@@ -5,6 +5,8 @@ title: Dhruv Rajan's Performance Setlist
 
 # Dhruv Rajan's Performance Setlist
 
+[Previous Events](/pages/events.html), [Sample Setlists](/pages/setlists.html), [All Songs by Artist](/pages/songs_by_artist.html)
+
 Instruments: Guitar, Banjo, Octave Mandolin, Flute
 
 I’m hoping to perform the setlists below on solo guitar and banjo, perhaps at coffee shops or at farmers markets. These are solo arrangements of classic acoustic rock / folk songs, largely from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), with some more recent selections (Tallest Man on Earth, Mumford and Sons).
@@ -24,9 +26,3 @@ Please feel free to contact me at [dhruv@krishnaprem.com](mailto:dhruv@krishnapr
 <!--   <span></span>
   <img src="images/home.jpg" alt="Image 2" height="250px" float="right"> -->
 </div>
-
-[Sample Setlists](/pages/setlists.html)
-
-{% include events.markdown %}
-
-{% include songs_by_artist.markdown %}
