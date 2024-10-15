@@ -11,11 +11,13 @@ title: Music
 
 ---
 
-Hi! I perform solo guitar, banjo, and octave mandolin at coffee shops, farmers markets, and other events. Largely, I play arrangements of classic acoustic rock / folk songs, particuarly from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), along with some more recent selections (Tallest Man on Earth, Mumford and Sons). I'd love to chat about any opportunities to play this music!
+Hi! My name is Dhruv Rajan. I'm an avid guitarist and multi-instrumenetalist living in the Bay Area, CA. I perform solo on guitar, clawhammer banjo, octave mandolin, and vocals, and would love to discuss opportunities to perform at coffee shops, farmers and other events.
+
+I mainly play arrangements of classic acoustic rock and folk songs, particuarly from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), along with some more recent selections like Tallest Man on Earth, and Mumford and Sons.
 
 For examples of my playing, please check out my [setlist recordings](/pages/setlists.html).
 
-I’d be happy to work with you to restructure this setlist if helpful, add / remove songs to fit a performance better! Please let me know any thoughts you have to help me prepare for an enjoyable performance.
+I’m always happy to tailor my setlist to fit the environment best! Please let me know any thoughts you might have to prepare for an enjoyable performance.
 
 **Contact me:**
 Dhruv Rajan
