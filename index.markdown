@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Dhruv Rajan's Performance Setlist
+title: Music
 ---
 
 # Dhruv Rajan's Performance Setlist
