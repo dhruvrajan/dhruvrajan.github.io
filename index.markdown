@@ -11,7 +11,7 @@ title: Music
 
 ---
 
-Hi! My name is Dhruv Rajan. I'm an avid guitarist and multi-instrumenetalist (if only, by moonlight) living in the Bay Area, CA. I perform solo on guitar, clawhammer banjo, octave mandolin, and vocals, and would love to discuss opportunities to perform at coffee shops, farmers and other events.
+Hi! My name is Dhruv Rajan. I'm an avid guitarist and multi-instrumentalist living in the Bay Area, CA. I perform solo on guitar, clawhammer banjo, octave mandolin, and vocals, and would love to discuss opportunities to perform at coffee shops, farmers and other events.
 
 I mainly play arrangements of classic acoustic rock and folk songs, particuarly from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), along with some more recent selections like Tallest Man on Earth, and Mumford and Sons.
 
