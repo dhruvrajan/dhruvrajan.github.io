@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Previous Events
+title: Past Performances
 ---
 
-<h1>Previous Events</h1>
+<h1>Past Performances</h1>
 
 {% include events.markdown %}
