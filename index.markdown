@@ -17,10 +17,15 @@ For examples of my playing, please check out my [setlist recordings](/pages/setl
 
 I’d be happy to work with you to restructure this setlist if helpful, add / remove songs to fit a performance better! Please let me know any thoughts you have to help me prepare for an enjoyable performance.
 
-**Contact me:**  
+**Contact me:**
+Dhruv Rajan
+
 [dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)  
+
 (650) 229-4572
+
 [YouTube](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q)
+
 [SoundCloud](https://soundcloud.com/dhruv-rajan)
 
 ---
