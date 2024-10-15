@@ -4,8 +4,8 @@ title: Music
 ---
 
 <div style="text-align:center;">
-  <a href="/pages/events.html">Previous Events</a> |
-  <a href="/pages/setlists.html">Sample Setlists</a> |
+  <a href="/pages/events.html">Past Performances</a> |
+  <a href="/pages/setlists.html">Sample Setlists & Recordings</a> |
   <a href="/pages/songs_by_artist.html">All Songs by Artist</a>
 </div>
 
@@ -19,13 +19,9 @@ I’d be happy to work with you to restructure this setlist if helpful, add / re
 
 **Contact me:**
 Dhruv Rajan
-
-[dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)  
-
+[dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)
 (650) 229-4572
-
 [YouTube](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q)
-
 [SoundCloud](https://soundcloud.com/dhruv-rajan)
 
 ---
