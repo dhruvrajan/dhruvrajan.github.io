@@ -24,3 +24,10 @@ I’m happy to work with you to restructure this setlist if helpful, add / remov
 **Contact me:**  
 [dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)  
 (650) 229-4572
+
+---
+
+<div style="display: flex; justify-content: center; gap: 20px;">
+  <img src="/images/IMG_0461.jpg" alt="Image 0" style="height: 250px; float: left;">
+  <img src="/images/winery.jpg" alt="Image 1" style="height: 250px; float: right;">
+</div>
