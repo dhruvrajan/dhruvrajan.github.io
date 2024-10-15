@@ -2,6 +2,6 @@
 
 
 {% for event in events %}
-  <h2>{{ event.event_name }}</h2>
+  <h3>{{ event.event_name }}</h3>
   {{ event.location }}, {{ event.date }}
 {% endfor %}
