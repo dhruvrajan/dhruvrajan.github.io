@@ -37,7 +37,7 @@ title: Dhruv Rajan - Music
   <!-- Two-Column Layout -->
   <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
     <!-- Left Column: Navigation, Text, and Contact -->
-    <div class="md:col-span-3 flex flex-col space-y-6 h-full">
+    <div class="md:col-span-3 flex flex-col space-y-6 h-full max-h-[500px]">
       <!-- Navigation Card -->
       <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
         <nav class="flex space-x-4">
@@ -76,7 +76,7 @@ title: Dhruv Rajan - Music
     </div>
 
     <!-- Right Column: Scrollable YouTube Videos -->
-    <div class="md:col-span-2 flex flex-col h-full">
+    <div class="md:col-span-2 flex flex-1 flex-col h-full max-h-[500px]">
       <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
         <h2 class="text-lg font-bold text-gray-800 mb-4">Selected Performances</h2>
         <div class="video-list flex-1">
