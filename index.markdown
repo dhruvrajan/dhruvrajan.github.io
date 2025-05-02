@@ -1,6 +1,5 @@
 ---
-layout: home
-title: Dhruv Rajan - Music
+layout: base
 ---
 
 <!-- Tailwind CSS CDN -->
