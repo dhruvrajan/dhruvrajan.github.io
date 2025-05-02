@@ -69,7 +69,7 @@ title: Dhruv Rajan - Music
           </p>
         </div>
         <div class="border-l border-gray-200 h-full mx-4"></div>
-        <div class="flex justify-center items-center w-1/4">
+        <div class="flex justify-center items-center w-1/2">
           <img src="/images/IMG_0461.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
         </div>
       </div>
