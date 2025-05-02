@@ -1,83 +1,125 @@
----
-layout: home
-title: Music
----
 
-<style>
+layout: hometitle: Music
+
+  body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
   .nav-links {
     text-align: center;
-    margin: 1.5em 0;
-    font-size: 1.2em;
+    margin-bottom: 30px;
   }
-
   .nav-links a {
-    margin: 0 1em;
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #e9ecef;
+    color: #495057;
     text-decoration: none;
-    color: #1a73e8;
+    border-radius: 5px;
+    transition: background-color 0.3s;
   }
-
+  .nav-links a:hover {
+    background-color: #dee2e6;
+  }
+  .intro, .contact {
+    text-align: center;
+    margin: 40px 0;
+  }
+  .intro h1 {
+    font-size: 2.2em;
+    color: #495057;
+    margin-bottom: 20px;
+  }
+  .contact h2 {
+    font-size: 1.8em;
+    color: #495057;
+    margin-bottom: 15px;
+  }
+  .contact a {
+    color: #6c757d;
+    text-decoration: none;
+  }
+  .contact a:hover {
+    text-decoration: underline;
+  }
   .video-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    margin: 2em 0;
+    margin-bottom: 40px;
   }
-
   .video-grid iframe {
-    max-width: 100%;
-    width: 560px;
-    height: 315px;
-    border-radius: 8px;
+    width: 100%;
+    height: 200px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-
-  .image-row {
+  .image-gallery {
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-top: 2em;
+    flex-wrap: wrap;
   }
-
-  .image-row img {
-    height: 250px;
-    border-radius: 8px;
+  .image-gallery img {
+    width: 300px;
+    height: 200px;
     object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-</style>
+  @media (max-width: 768px) {
+    .video-grid {
+      grid-template-columns: 1fr;
+    }
+    .image-gallery img {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
 
-<div class="nav-links">
-  <a href="/pages/events.html">Past Performances</a>
-  |
-  <a href="/pages/setlists.html">Sample Setlists & Recordings</a>
-  |
-  <a href="/pages/songs_by_artist.html">All Songs by Artist</a>
-</div>
 
----
 
-Hi! My name is Dhruv Rajan. I'm an avid guitarist and multi-instrumentalist living in the Bay Area, CA. I perform solo on guitar, clawhammer banjo, octave mandolin, and vocals, and would love to discuss opportunities to perform at coffee shops, farmers and other events.
+  
+    Past Performances
+    Sample Setlists & Recordings
+    All Songs by Artist
+  
 
-I mainly play arrangements of classic acoustic rock and folk songs, particuarly from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), along with some more recent selections like Tallest Man on Earth, and Mumford and Sons.
+  
+    Welcome to My Music
+    Hi! My name is Dhruv Rajan. I'm an avid guitarist and multi-instrumentalist living in the Bay Area, CA. I perform solo on guitar, clawhammer banjo, octave mandolin, and vocals, and would love to discuss opportunities to perform at coffee shops, farmers' markets, and other events.
+    I mainly play arrangements of classic acoustic rock and folk songs, particularly from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), along with some more recent selections like Tallest Man on Earth and Mumford and Sons.
+    For examples of my playing, please check out my setlist recordings.
+    I’m always happy to tailor my setlist to fit the environment best! Please let me know any thoughts you might have to prepare for an enjoyable performance.
+  
 
-For examples of my playing, please check out my [setlist recordings](/pages/setlists.html).
+  
+    
+    
+    
+  
 
-I’m always happy to tailor my setlist to fit the environment best! Please let me know any thoughts you might have to prepare for an enjoyable performance.
+  
+    
+    
+  
 
-**Contact me:**  
-Dhruv Rajan  
-[dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)  
-(650) 229-4572  
-[YouTube](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q) | [SoundCloud](https://soundcloud.com/dhruv-rajan)
-
----
-
-<div class="video-grid">
-  <iframe src="https://www.youtube.com/embed/uCfZE9MxoTA?si=7JpvyhUYtp4txQGq" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/3DIuH4BS8ds?si=I7wsSWrqmkL3et6P" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/7l0m7DScp94?si=MOSvXziJ0LJISt5r" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-</div>
-
-<div class="image-row">
-  <img src="/images/IMG_0461.jpg" alt="Performance photo 1">
-  <img src="/images/winery.jpg" alt="Performance photo 2">
-</div>
+  
+    Contact Me
+    Dhruv Rajan
+    dhruv@krishnaprem.com
+    (650) 229-4572
+    YouTube |
+    SoundCloud
+  
