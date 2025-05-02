@@ -11,7 +11,7 @@ title: Dhruv Rajan - Music
     background: #FAFAFA; /* Soft white background */
   }
   .video-list {
-    max-height: 100vh; /* Fixed height for scrollable list */
+/*     max-height: 100vh; /* Fixed height for scrollable list */ */
     overflow-y: auto; /* Enable vertical scrolling */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
@@ -24,7 +24,7 @@ title: Dhruv Rajan - Music
   }
   .no-scroll {
     height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevent page scroll on desktop */
+    overflow: auto; /* Prevent page scroll on desktop */
   }
   @media (max-width: 768px) {
     .no-scroll {
