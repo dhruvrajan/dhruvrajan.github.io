@@ -26,7 +26,7 @@ title: Dhruv Rajan - Music
 
 <div class="container mx-auto px-4 py-12 font-sans max-w-6xl">
   <!-- Page Title -->
-  <h1 class="text-4xl font-bold text-gray-800 text-center mb-8">Music</h1>
+<!--   <h1 class="text-4xl font-bold text-gray-800 text-center mb-8">Music</h1> -->
 
   <!-- Navigation Bar -->
   <nav class="bg-gray-50 rounded-lg mb-12 py-4">
@@ -63,7 +63,7 @@ title: Dhruv Rajan - Music
     <!-- Right Column: Scrollable YouTube Videos -->
     <div>
       <div class="border border-gray-200 p-8 rounded-lg hover:scale-105 transition-transform duration-300">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">My YouTube Playlist</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Selected Performances</h2>
         <div class="video-list">
           <!-- 14 video links -->
           <div class="mb-4">
