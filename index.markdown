@@ -60,7 +60,6 @@ title: Dhruv Rajan - Music
       <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-row items-start">
         <div class="flex-1">
           <h2 class="text-xl font-bold text-gray-800 mb-4">Contact</h2>
-          <div class="border-b border-gray-200 mb-4"></div>
           <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
           <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
           <p class="text-gray-600">(650) 229-4572</p>
@@ -80,7 +79,6 @@ title: Dhruv Rajan - Music
     <div class="md:col-span-2 flex flex-col h-full">
       <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
         <h2 class="text-lg font-bold text-gray-800 mb-4">Selected Performances</h2>
-        <div class="border-b border-gray-200 mb-4"></div>
         <div class="video-list flex-1">
           <!-- 14 video links -->
           <div class="mb-4">
