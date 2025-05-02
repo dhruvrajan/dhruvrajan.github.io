@@ -11,7 +11,7 @@ title: Dhruv Rajan - Music
     background: #FAFAFA; /* Soft white background */
   }
   .video-list {
-    max-height: 380px; /* Adjusted height for scrollable list to fit photo card */
+    max-height: 450px; /* Fixed height for scrollable list */
     overflow-y: auto; /* Enable vertical scrolling */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
@@ -35,9 +35,9 @@ title: Dhruv Rajan - Music
 
 <div class="container mx-auto px-4 py-8 font-sans max-w-6xl no-scroll">
   <!-- Two-Column Layout -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
     <!-- Left Column: Navigation, Text, and Contact -->
-    <div class="md:col-span-2 flex flex-col space-y-6">
+    <div class="md:col-span-3 flex flex-col space-y-6 h-full">
       <!-- Navigation Card -->
       <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
         <nav class="flex space-x-4">
@@ -48,7 +48,7 @@ title: Dhruv Rajan - Music
       </div>
 
       <!-- Main Text Card -->
-      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex-1">
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 max-h-[200px] overflow-auto">
         <div class="prose prose-base text-gray-600">
           <p class="mb-4">I'm Dhruv, a passionate guitarist and multi-instrumentalist based in the Bay Area, CA. I perform solo with guitar, clawhammer banjo, octave mandolin, and vocals, bringing music to coffee shops, farmers markets, and events.</p>
           <p class="mb-4">My repertoire features classic acoustic rock and folk from the 70’s—think Cat Stevens, Jethro Tull, and Nic Jones—alongside modern artists like Tallest Man on Earth and Mumford and Sons.</p>
@@ -56,31 +56,31 @@ title: Dhruv Rajan - Music
         </div>
       </div>
 
-      <!-- Contact Card -->
-      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Contact</h2>
-        <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
-        <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
-        <p class="text-gray-600">(650) 229-4572</p>
-        <p class="text-gray-600 mt-2">
-          <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" class="text-blue-600 hover:underline">YouTube</a> | 
-          <a href="https://soundcloud.com/dhruv-rajan" class="text-blue-600 hover:underline">SoundCloud</a>
-        </p>
+      <!-- Contact Card with Photo -->
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-row items-start">
+        <div class="flex-1">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">Contact</h2>
+          <div class="border-b border-gray-200 mb-4"></div>
+          <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
+          <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
+          <p class="text-gray-600">(650) 229-4572</p>
+          <p class="text-gray-600 mt-2">
+            <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" class="text-blue-600 hover:underline">YouTube</a> | 
+            <a href="https://soundcloud.com/dhruv-rajan" class="text-blue-600 hover:underline">SoundCloud</a>
+          </p>
+        </div>
+        <div class="border-l border-gray-200 h-full mx-4"></div>
+        <div class="flex justify-center items-center w-1/4">
+          <img src="/images/IMG_0461.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
+        </div>
       </div>
     </div>
 
-    <!-- Right Column: Photo and Scrollable YouTube Videos -->
-    <div class="flex flex-col space-y-6">
-      <!-- Photo Card -->
-      <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
-        <div class="flex justify-center">
-          <img src="/images/downsampled.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
-        </div>
-      </div>
-
-      <!-- Scrollable YouTube Videos -->
+    <!-- Right Column: Scrollable YouTube Videos -->
+    <div class="md:col-span-2 flex flex-col h-full">
       <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Selected Performances</h2>
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Selected Performances</h2>
+        <div class="border-b border-gray-200 mb-4"></div>
         <div class="video-list flex-1">
           <!-- 14 video links -->
           <div class="mb-4">
