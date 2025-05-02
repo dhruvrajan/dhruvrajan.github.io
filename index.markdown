@@ -37,7 +37,7 @@ title: Dhruv Rajan - Music
   <!-- Two-Column Layout -->
   <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
     <!-- Left Column: Navigation, Text, and Contact -->
-    <div class="md:col-span-3 flex md:flex-row space-y-6 h-full">
+    <div class="md:col-span-3 flex md:flex-col space-y-6 h-full">
       <!-- Navigation Card -->
       <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
         <nav class="flex space-x-4">
