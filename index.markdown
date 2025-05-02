@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Music
+title: Dhruv Rajan - Music
 ---
 
 <!-- Tailwind CSS CDN -->
@@ -24,7 +24,7 @@ title: Music
   }
 </style>
 
-<div class="container mx-auto px-4 py-12 font-sans">
+<div class="container mx-auto px-4 py-12 font-sans max-w-6xl">
   <!-- Page Title -->
   <h1 class="text-4xl font-bold text-gray-800 text-center mb-8">Music</h1>
 
@@ -62,8 +62,8 @@ title: Music
 
     <!-- Right Column: Scrollable YouTube Videos -->
     <div>
-      <div class="border border-gray-200 p-6 rounded-lg hover:scale-105 transition-transform duration-300">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">My YouTube Playlist</h2>
+      <div class="border border-gray-200 p-8 rounded-lg hover:scale-105 transition-transform duration-300">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">My YouTube Playlist</h2>
         <div class="video-list">
           <!-- 14 video links -->
           <div class="mb-4">
@@ -142,11 +142,11 @@ title: Music
   </div>
 
   <!-- Photos Section -->
-  <div class="max-w-3xl mx-auto">
+  <div class="max-w-5xl mx-auto">
     <div class="border border-gray-200 p-6 rounded-lg hover:scale-105 transition-transform duration-300">
       <div class="flex space-x-4">
-        <img src="/images/IMG_0461.jpg" alt="Performance photo 1" class="w-1/2 h-28 object-cover rounded-md">
-        <img src="/images/winery.jpg" alt="Performance photo 2" class="w-1/2 h-28 object-cover rounded-md">
+        <img src="/images/IMG_0461.jpg" alt="Performance photo 1" class="w-1/2 h-36 object-contain rounded-md">
+        <img src="/images/winery.jpg" alt="Performance photo 2" class="w-1/2 h-36 object-contain rounded-md">
       </div>
     </div>
   </div>
