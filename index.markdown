@@ -1,5 +1,6 @@
 ---
-layout: base
+layout: home
+title: Dhruv Rajan - Music
 ---
 
 <!-- Tailwind CSS CDN -->
@@ -10,7 +11,7 @@ layout: base
     background: #FAFAFA; /* Soft white background */
   }
   .video-list {
-    max-height: 450px; /* Fixed height for scrollable list */
+    max-height: 380px; /* Adjusted height for scrollable list to fit photo card */
     overflow-y: auto; /* Enable vertical scrolling */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
@@ -55,27 +56,32 @@ layout: base
         </div>
       </div>
 
-      <!-- Contact Card with Image -->
-      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 min-h-[450px] flex flex-row items-start">
-        <div class="flex-1">
-          <h2 class="text-xl font-bold text-gray-800 mb-4">Contact</h2>
-          <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
-          <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
-          <p class="text-gray-600">(650) 229-4572</p>
-          <p class="text-gray-600 mt-2">
-            <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" class="text-blue-600 hover:underline">YouTube</a> | 
-            <a href="https://soundcloud.com/dhruv-rajan" class="text-blue-600 hover:underline">SoundCloud</a>
-          </p>
-        </div>
-        <img src="/images/IMG_0461.jpg" alt="Performance photo" class="w-1/3 h-36 object-contain rounded-md ml-4">
+      <!-- Contact Card -->
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Contact</h2>
+        <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
+        <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
+        <p class="text-gray-600">(650) 229-4572</p>
+        <p class="text-gray-600 mt-2">
+          <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" class="text-blue-600 hover:underline">YouTube</a> | 
+          <a href="https://soundcloud.com/dhruv-rajan" class="text-blue-600 hover:underline">SoundCloud</a>
+        </p>
       </div>
     </div>
 
-    <!-- Right Column: Scrollable YouTube Videos -->
-    <div>
-      <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 min-h-[450px]">
+    <!-- Right Column: Photo and Scrollable YouTube Videos -->
+    <div class="flex flex-col space-y-6">
+      <!-- Photo Card -->
+      <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
+        <div class="flex justify-center">
+          <img src="/images/IMG_0461.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
+        </div>
+      </div>
+
+      <!-- Scrollable YouTube Videos -->
+      <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
         <h2 class="text-xl font-bold text-gray-800 mb-4">Selected Performances</h2>
-        <div class="video-list">
+        <div class="video-list flex-1">
           <!-- 14 video links -->
           <div class="mb-4">
             <div class="relative" style="padding-bottom: 56.25%; height: 0;">
