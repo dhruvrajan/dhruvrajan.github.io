@@ -12,7 +12,7 @@ title: Dhruv Rajan - Music
   }
   .video-list {
 /*     max-height: 500px; /* Fixed height for scrollable list */ */
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: hidden; /* Enable vertical scrolling */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
   .video-list::-webkit-scrollbar {
