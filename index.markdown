@@ -3,6 +3,9 @@ layout: home
 title: Music
 ---
 
+<!-- Adding Tailwind CSS CDN for styling -->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
 <style>
   .nav-links {
     text-align: center;
@@ -15,37 +18,9 @@ title: Music
     text-decoration: none;
     color: #1a73e8;
   }
-
-  .video-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin: 2em 0;
-  }
-
-  .video-grid iframe {
-    max-width: 100%;
-    width: 560px;
-    height: 315px;
-    border-radius: 8px;
-  }
-
-  .image-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 2em;
-  }
-
-  .image-row img {
-    height: 250px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
 </style>
 
-<div style="text-align:center;">
+<div class="nav-links">
   <a href="/pages/events.html">Past Performances</a> |
   <a href="/pages/setlists.html">Sample Setlists & Recordings</a> |
   <a href="/pages/songs_by_artist.html">All Songs by Artist</a>
@@ -53,36 +28,40 @@ title: Music
 
 ---
 
-Hi! My name is Dhruv Rajan. I'm an avid guitarist and multi-instrumentalist living in the Bay Area, CA. I perform solo on guitar, clawhammer banjo, octave mandolin, and vocals, and would love to discuss opportunities to perform at coffee shops, farmers and other events.
+<div class="container mx-auto px-4 py-8">
+  <div class="text-center mb-8">
+    <p class="text-lg">Hi! My name is Dhruv Rajan. I'm an avid guitarist and multi-instrumentalist living in the Bay Area, CA. I perform solo on guitar, clawhammer banjo, octave mandolin, and vocals, and would love to discuss opportunities to perform at coffee shops, farmers markets, and other events.</p>
+    <p class="text-lg mt-4">I mainly play arrangements of classic acoustic rock and folk songs, particularly from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), along with some more recent selections like Tallest Man on Earth and Mumford and Sons.</p>
+    <p class="text-lg mt-4">For examples of my playing, please check out my <a href="/pages/setlists.html" class="text-blue-600 hover:underline">setlist recordings</a>.</p>
+    <p class="text-lg mt-4">I’m always happy to tailor my setlist to fit the environment best! Please let me know any thoughts you might have to prepare for an enjoyable performance.</p>
+  </div>
 
-I mainly play arrangements of classic acoustic rock and folk songs, particuarly from the 70’s (Cat Stevens, Jethro Tull, Nic Jones), along with some more recent selections like Tallest Man on Earth, and Mumford and Sons.
+  <!-- Single row for contact, video, and images -->
+  <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
+    <!-- Contact Section -->
+    <div class="bg-gray-100 p-6 rounded-lg shadow-md w-full md:w-1/3">
+      <h2 class="text-xl font-semibold mb-4">Contact Me</h2>
+      <p><strong>Dhruv Rajan</strong></p>
+      <p><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
+      <p>(650) 229-4572</p>
+      <p><a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" class="text-blue-600 hover:underline">YouTube</a> | <a href="https://soundcloud.com/dhruv-rajan" class="text-blue-600 hover:underline">SoundCloud</a></p>
+    </div>
 
-For examples of my playing, please check out my [setlist recordings](/pages/setlists.html).
+    <!-- Video Section -->
+    <div class="w-full md:w-1/3">
+      <h2 class="text-xl font-semibold mb-4 text-center">My YouTube Playlist</h2>
+      <div class="relative" style="padding-bottom: 56.25%; height: 0;">
+        <iframe class="absolute top-0 left-0 w-full h-full rounded-lg" src="https://www.youtube.com/embed/3JAcX3mY5e4?si=KUA9yE3OLjXQnMrX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
 
-I’m always happy to tailor my setlist to fit the environment best! Please let me know any thoughts you might have to prepare for an enjoyable performance.
-
----
-
-
-**Contact me:**  
-Dhruv Rajan  
-
-
-[dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)  
-
-
-(650) 229-4572  
-
-
-[YouTube](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q) | [SoundCloud](https://soundcloud.com/dhruv-rajan)
-
-
----
-# My YouTube Playlist
-
-<iframe width="560px" height="315" src="https://www.youtube.com/embed/3JAcX3mY5e4?si=KUA9yE3OLjXQnMrX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-<div class="image-row">
-  <img src="/images/IMG_0461.jpg" alt="Performance photo 1">
-  <img src="/images/winery.jpg" alt="Performance photo 2">
+    <!-- Images Section -->
+    <div class="flex flex-col gap-4 w-full md:w-1/3">
+      <h2 class="text-xl font-semibold mb-4 text-center">Performances</h2>
+      <div class="flex gap-4">
+        <img src="/images/IMG_0461.jpg" alt="Performance photo 1" class="w-1/2 h-40 object-cover rounded-lg shadow-md">
+        <img src="/images/winery.jpg" alt="Performance photo 2" class="w-1/2 h-40 object-cover rounded-lg shadow-md">
+      </div>
+    </div>
+  </div>
 </div>
