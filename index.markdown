@@ -74,7 +74,7 @@ title: Dhruv Rajan - Music
       <!-- Photo Card -->
       <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
         <div class="flex justify-center">
-          <img src="/images/IMG_0461.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
+          <img src="/images/downsampled.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
         </div>
       </div>
 
