@@ -3,6 +3,48 @@ layout: home
 title: Music
 ---
 
+<style>
+  .nav-links {
+    text-align: center;
+    margin: 1.5em 0;
+    font-size: 1.2em;
+  }
+
+  .nav-links a {
+    margin: 0 1em;
+    text-decoration: none;
+    color: #1a73e8;
+  }
+
+  .video-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 2em 0;
+  }
+
+  .video-grid iframe {
+    max-width: 100%;
+    width: 560px;
+    height: 315px;
+    border-radius: 8px;
+  }
+
+  .image-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 2em;
+  }
+
+  .image-row img {
+    height: 250px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+</style>
+
 <div style="text-align:center;">
   <a href="/pages/events.html">Past Performances</a> |
   <a href="/pages/setlists.html">Sample Setlists & Recordings</a> |
@@ -19,27 +61,28 @@ For examples of my playing, please check out my [setlist recordings](/pages/setl
 
 I’m always happy to tailor my setlist to fit the environment best! Please let me know any thoughts you might have to prepare for an enjoyable performance.
 
-**Contact me:**
-Dhruv Rajan
-[dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)
-(650) 229-4572
-[YouTube](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q)
-[SoundCloud](https://soundcloud.com/dhruv-rajan)
+**Contact me:**  
+Dhruv Rajan  
+
+
+[dhruv@krishnaprem.com](mailto:dhruv@krishnaprem.com)  
+
+
+(650) 229-4572  
+
+
+[YouTube](https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q) | [SoundCloud](https://soundcloud.com/dhruv-rajan)
+
 
 ---
-<div>
-  <span>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uCfZE9MxoTA?si=7JpvyhUYtp4txQGq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  </span>
-  <span>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/3DIuH4BS8ds?si=I7wsSWrqmkL3et6P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  </span>
-  <span>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/7l0m7DScp94?si=MOSvXziJ0LJISt5r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  </span>
+<div class="video-grid">
+  <iframe src="https://www.youtube.com/embed/uCfZE9MxoTA?si=7JpvyhUYtp4txQGq" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/3DIuH4BS8ds?si=I7wsSWrqmkL3et6P" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/7l0m7DScp94?si=MOSvXziJ0LJISt5r" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 </div>
 
-<div style="display: flex; justify-content: center; gap: 20px;">
-  <img src="/images/IMG_0461.jpg" alt="Image 0" style="height: 250px; float: left;">
-  <img src="/images/winery.jpg" alt="Image 1" style="height: 250px; float: right;">
+
+<div class="image-row">
+  <img src="/images/IMG_0461.jpg" alt="Performance photo 1">
+  <img src="/images/winery.jpg" alt="Performance photo 2">
 </div>
