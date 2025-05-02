@@ -8,10 +8,10 @@ title: Dhruv Rajan - Music
 
 <style>
   body {
-    background: #FFFFFF; /* Pure white background */
+    background: #FAFAFA; /* Soft white background */
   }
   .video-list {
-    max-height: 600px; /* Adjusted height for scrollable list */
+    max-height: 450px; /* Fixed height for scrollable list */
     overflow-y: auto; /* Enable vertical scrolling */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
@@ -22,45 +22,60 @@ title: Dhruv Rajan - Music
     background-color: #E5E7EB; /* Light gray scrollbar */
     border-radius: 4px;
   }
+  .no-scroll {
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent page scroll on desktop */
+  }
+  @media (max-width: 768px) {
+    .no-scroll {
+      overflow: auto; /* Allow scroll on mobile */
+    }
+  }
 </style>
 
-<div class="container mx-auto px-4 py-12 font-sans max-w-6xl">
+<div class="container mx-auto px-4 py-8 font-sans max-w-6xl no-scroll">
   <!-- Two-Column Layout -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
     <!-- Left Column: Navigation, Text, and Contact -->
-    <div class="md:col-span-2 space-y-6">
-      <!-- Navigation Links -->
-      <nav class="flex flex-col space-y-2">
-        <a href="/pages/events.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-4 py-2 rounded-md font-medium text-base">Past Performances</a>
-        <a href="/pages/setlists.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-4 py-2 rounded-md font-medium text-base">Setlists & Recordings</a>
-        <a href="/pages/songs_by_artist.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-4 py-2 rounded-md font-medium text-base">Songs by Artist</a>
-      </nav>
-
-      <!-- Main Text -->
-      <div class="prose prose-lg text-gray-600">
-        <p class="mb-4">I'm Dhruv, a passionate guitarist and multi-instrumentalist based in the Bay Area, CA. I perform solo with guitar, clawhammer banjo, octave mandolin, and vocals, bringing music to coffee shops, farmers markets, and events.</p>
-        <p class="mb-4">My repertoire features classic acoustic rock and folk from the 70’s—think Cat Stevens, Jethro Tull, and Nic Jones—alongside modern artists like Tallest Man on Earth and Mumford and Sons.</p>
-        <p class="mb-4">Check out my <a href="/pages/setlists.html" class="text-blue-600 hover:underline">setlist recordings</a> to hear my performances. I’m happy to tailor my setlist to your venue or event—let’s create a memorable show together!</p>
+    <div class="md:col-span-2 flex flex-col space-y-6">
+      <!-- Navigation Card -->
+      <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
+        <nav class="flex space-x-4">
+          <a href="/pages/events.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-3 py-1 rounded-md font-medium text-sm">Past Performances</a>
+          <a href="/pages/setlists.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-3 py-1 rounded-md font-medium text-sm">Setlists & Recordings</a>
+          <a href="/pages/songs_by_artist.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-3 py-1 rounded-md font-medium text-sm">Songs by Artist</a>
+        </nav>
       </div>
 
-      <!-- Contact with Image -->
-      <div class="border border-gray-200 p-6 rounded-lg hover:scale-105 transition-transform duration-300">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">Contact</h2>
-        <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
-        <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
-        <p class="text-gray-600">(650) 229-4572</p>
-        <p class="text-gray-600 mt-2">
-          <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" class="text-blue-600 hover:underline">YouTube</a> | 
-          <a href="https://soundcloud.com/dhruv-rajan" class="text-blue-600 hover:underline">SoundCloud</a>
-        </p>
-        <img src="/images/IMG_0461.jpg" alt="Performance photo" class="w-full h-36 object-contain rounded-md mt-4">
+      <!-- Main Text Card -->
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex-1">
+        <div class="prose prose-base text-gray-600">
+          <p class="mb-4">I'm Dhruv, a passionate guitarist and multi-instrumentalist based in the Bay Area, CA. I perform solo with guitar, clawhammer banjo, octave mandolin, and vocals, bringing music to coffee shops, farmers markets, and events.</p>
+          <p class="mb-4">My repertoire features classic acoustic rock and folk from the 70’s—think Cat Stevens, Jethro Tull, and Nic Jones—alongside modern artists like Tallest Man on Earth and Mumford and Sons.</p>
+          <p class="mb-4">Check out my <a href="/pages/setlists.html" class="text-blue-600 hover:underline">setlist recordings</a> to hear my performances. I’m happy to tailor my setlist to your venue or event—let’s create a memorable show together!</p>
+        </div>
+      </div>
+
+      <!-- Contact Card with Image -->
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 min-h-[450px] flex flex-row items-start">
+        <div class="flex-1">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">Contact</h2>
+          <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
+          <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
+          <p class="text-gray-600">(650) 229-4572</p>
+          <p class="text-gray-600 mt-2">
+            <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" class="text-blue-600 hover:underline">YouTube</a> | 
+            <a href="https://soundcloud.com/dhruv-rajan" class="text-blue-600 hover:underline">SoundCloud</a>
+          </p>
+        </div>
+        <img src="/images/IMG_0461.jpg" alt="Performance photo" class="w-1/3 h-36 object-contain rounded-md ml-4">
       </div>
     </div>
 
     <!-- Right Column: Scrollable YouTube Videos -->
     <div>
-      <div class="border border-gray-200 p-8 rounded-lg hover:scale-105 transition-transform duration-300">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">My YouTube Playlist</h2>
+      <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 min-h-[450px]">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Selected Performances</h2>
         <div class="video-list">
           <!-- 14 video links -->
           <div class="mb-4">
@@ -137,4 +152,3 @@ title: Dhruv Rajan - Music
       </div>
     </div>
   </div>
-</div>
