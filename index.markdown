@@ -28,6 +28,8 @@ Dhruv Rajan
 
 ---
 
+{% include youtubePlayer.html id=uCfZE9MxoTA?si=7JpvyhUYtp4txQGq %}
+
 <div style="display: flex; justify-content: center; gap: 20px;">
   <img src="/images/IMG_0461.jpg" alt="Image 0" style="height: 250px; float: left;">
   <img src="/images/winery.jpg" alt="Image 1" style="height: 250px; float: right;">
