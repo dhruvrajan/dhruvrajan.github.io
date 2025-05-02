@@ -61,6 +61,9 @@ For examples of my playing, please check out my [setlist recordings](/pages/setl
 
 I’m always happy to tailor my setlist to fit the environment best! Please let me know any thoughts you might have to prepare for an enjoyable performance.
 
+---
+
+
 **Contact me:**  
 Dhruv Rajan  
 
@@ -75,11 +78,8 @@ Dhruv Rajan
 
 
 ---
-<div class="video-grid">
-  <iframe src="https://www.youtube.com/embed/uCfZE9MxoTA?si=7JpvyhUYtp4txQGq" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/3DIuH4BS8ds?si=I7wsSWrqmkL3et6P" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/7l0m7DScp94?si=MOSvXziJ0LJISt5r" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-</div>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=4TyXEVg2AN8gFHEh&amp;list=PLyw5PDI7XsbJol90piiRloKlu2tB3xMup" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 <div class="image-row">
