@@ -27,8 +27,17 @@ Dhruv Rajan
 [SoundCloud](https://soundcloud.com/dhruv-rajan)
 
 ---
-
-{% include youtubePlayer.html id=uCfZE9MxoTA?si=7JpvyhUYtp4txQGq %}
+<div>
+  <span>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uCfZE9MxoTA?si=7JpvyhUYtp4txQGq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </span>
+  <span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/3DIuH4BS8ds?si=I7wsSWrqmkL3et6P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </span>
+  <span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/7l0m7DScp94?si=MOSvXziJ0LJISt5r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </span>
+</div>
 
 <div style="display: flex; justify-content: center; gap: 20px;">
   <img src="/images/IMG_0461.jpg" alt="Image 0" style="height: 250px; float: left;">
