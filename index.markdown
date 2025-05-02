@@ -37,7 +37,7 @@ title: Dhruv Rajan - Music
   <!-- Two-Column Layout -->
   <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
     <!-- Left Column: Navigation, Text, and Contact -->
-    <div class="md:col-span-3 flex md:flex-col space-y-6 h-full">
+    <div class="md:col-span-3 flex md:flex-row space-y-6 h-full">
       <!-- Navigation Card -->
       <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
         <nav class="flex space-x-4">
@@ -76,12 +76,12 @@ title: Dhruv Rajan - Music
     </div>
 
     <!-- Right Column: Scrollable YouTube Videos -->
-    <div class="md:col-span-2 flex flex-1 flex-col max-h-[100vh] overflow-y-auto">
+    <div class="md:col-span-2 flex flex-1 flex-col max-h-[100vh]">
       <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex flex-col">
         <h2 class="text-lg font-bold text-gray-800 mb-4">Selected Performances</h2>
         <div class="video-list flex-1">
           <!-- 14 video links -->
-          <div class="mb-4">
+          <div class="mb-4 overflow-y-auto">
             <div class="relative" style="padding-bottom: 56.25%; height: 0;">
               <iframe class="absolute top-0 left-0 w-full h-full rounded-md" src="https://www.youtube.com/embed/3JAcX3mY5e4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
