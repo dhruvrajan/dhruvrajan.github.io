@@ -23,7 +23,7 @@ title: Dhruv Rajan - Music
     border-radius: 4px;
   }
   .no-scroll {
-    height: 500px; /* Full viewport height */
+    height: 100vh; /* Full viewport height */
     overflow: hidden; /* Prevent page scroll on desktop */
   }
   @media (max-width: 768px) {
