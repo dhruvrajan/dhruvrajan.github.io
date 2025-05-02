@@ -78,9 +78,75 @@ Dhruv Rajan
 
 
 ---
+# My YouTube Playlist
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=4TyXEVg2AN8gFHEh&amp;list=PLyw5PDI7XsbJol90piiRloKlu2tB3xMup" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="player">
+  <iframe id="mainPlayer" src="https://www.youtube.com/embed/uCfZE9MxoTA" allowfullscreen></iframe>
+</div>
 
+<div class="video-grid" id="videoGrid"></div>
+
+{% raw %}
+<style>
+  .video-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 2em auto;
+    max-width: 1000px;
+  }
+
+  .video-grid img {
+    width: 300px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s;
+  }
+
+  .video-grid img:hover {
+    transform: scale(1.05);
+  }
+
+  .player {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+  }
+
+  iframe {
+    width: 560px;
+    height: 315px;
+    border: none;
+    border-radius: 8px;
+  }
+</style>
+
+<script>
+  const videoIds = [
+    '3JAcX3mY5e4',
+    'uCfZE9MxoTA',
+    '7l0m7DScp94',
+    '3DIuH4BS8ds',
+    'tlYO5shY4dk',
+    // Add more video IDs here
+  ];
+
+  const grid = document.getElementById('videoGrid');
+  const player = document.getElementById('mainPlayer');
+
+  videoIds.forEach(id => {
+    const img = document.createElement('img');
+    img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+    img.alt = "Video thumbnail";
+    img.onclick = () => {
+      player.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    grid.appendChild(img);
+  });
+</script>
+{% endraw %}
 
 <div class="image-row">
   <img src="/images/IMG_0461.jpg" alt="Performance photo 1">
