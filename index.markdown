@@ -57,9 +57,9 @@ title: Dhruv Rajan - Music
       </div>
 
       <!-- Contact Card with Photo -->
-      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[450px] flex flex-row items-start">
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[350px] flex flex-row items-start">
         <div class="flex-1">
-          <h2 class="text-xl font-bold text-gray-800 mb-4">Contact</h2>
+          
           <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
           <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
           <p class="text-gray-600">(650) 229-4572</p>
