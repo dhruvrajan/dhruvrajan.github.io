@@ -11,6 +11,7 @@ title: Dhruv Rajan - Music
     background: #FAFAFA; /* Soft white background */
   }
   .video-list {
+    overflow-y: auto; /* Enable vertical scrolling for videos */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
   .video-list::-webkit-scrollbar {
@@ -25,6 +26,10 @@ title: Dhruv Rajan - Music
       height: 100vh; /* Full viewport height on desktop */
       overflow: hidden; /* Prevent page scroll on desktop */
     }
+    .video-container {
+      max-height: 100vh; /* Constrain video container to viewport height */
+      overflow-y: auto; /* Enable scrolling for video container */
+    }
   }
   @media (max-width: 767px) {
     .no-scroll {
@@ -36,6 +41,10 @@ title: Dhruv Rajan - Music
       top: 0;
       z-index: 10; /* Keep nav visible at top on mobile */
       background: #FAFAFA; /* Match body background */
+    }
+    .video-container {
+      max-height: none; /* Remove height constraint on mobile */
+      overflow-y: visible; /* Allow natural flow on mobile */
     }
   }
 </style>
@@ -67,7 +76,7 @@ title: Dhruv Rajan - Music
         </div>
         <div class="border-l border-gray-200 h-full mx-4"></div>
         <div class="flex justify-center items-center w-1/2">
-          <img src="/images/downsampled.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
+          <img src="/images/IMG_0461.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
         </div>
       </div>
 
@@ -82,10 +91,10 @@ title: Dhruv Rajan - Music
     </div>
 
     <!-- Right Column: Scrollable YouTube Videos -->
-    <div class="md:col-span-2 flex flex-col space-y-6 overflow-y-auto">
-      <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex flex-col order-3 md:order-none">
+    <div class="md:col-span-2 flex flex-col space-y-6 video-container order-3 md:order-none">
+      <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex flex-col">
         <h2 class="text-lg font-bold text-gray-800 mb-4">Selected Performances</h2>
-        <div class="video-list flex-1">
+        <div class="video-list">
           <!-- 14 video links -->
           <div class="mb-4">
             <div class="relative" style="padding-bottom: 56.25%; height: 0;">
