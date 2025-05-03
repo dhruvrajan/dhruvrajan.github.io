@@ -21,7 +21,7 @@ title: Dhruv Rajan - Music
     background-color: #E5E7EB; /* Light gray scrollbar */
     border-radius: 4px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 1000px) {
     .no-scroll {
       height: 100vh; /* Full viewport height on desktop */
       overflow: hidden; /* Prevent page scroll on desktop */
@@ -49,7 +49,7 @@ title: Dhruv Rajan - Music
   }
 </style>
 
-<div class="container mx-auto px-4 py-8 font-sans max-w-6xl no-scroll">
+<div class="container mx-auto px-4 font-sans max-w-6xl no-scroll">
   <!-- Layout -->
   <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
     <!-- Left Column (stacks on mobile) -->
