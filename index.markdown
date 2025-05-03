@@ -11,8 +11,7 @@ title: Dhruv Rajan - Music
     background: #FAFAFA; /* Soft white background */
   }
   .video-list {
-/*     max-height: 500px; /* Fixed height for scrollable list */ */
-    overflow-y: hidden; /* Enable vertical scrolling */
+    overflow-y: auto; /* Enable vertical scrolling for videos */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
   .video-list::-webkit-scrollbar {
@@ -22,44 +21,43 @@ title: Dhruv Rajan - Music
     background-color: #E5E7EB; /* Light gray scrollbar */
     border-radius: 4px;
   }
-  .no-scroll {
-    height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevent page scroll on desktop */
+  @media (min-width: 768px) {
+    .no-scroll {
+      height: 100vh; /* Full viewport height on desktop */
+      overflow: hidden; /* Prevent page scroll on desktop */
+    }
   }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .no-scroll {
       overflow: auto; /* Allow scroll on mobile */
+      height: auto; /* Allow content to expand */
+    }
+    .nav-card {
+      position: sticky;
+      top: 0;
+      z-index: 10; /* Keep nav visible at top on mobile */
+      background: #FAFAFA; /* Match body background */
     }
   }
 </style>
 
 <div class="container mx-auto px-4 py-8 font-sans max-w-6xl no-scroll">
-  <!-- Two-Column Layout -->
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
-    <!-- Left Column: Navigation, Text, and Contact -->
-    <div class="md:col-span-3 flex md:flex-col space-y-6 h-full">
+  <!-- Layout -->
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+    <!-- Left Column (stacks on mobile) -->
+    <div class="md:col-span-3 flex flex-col space-y-6">
       <!-- Navigation Card -->
-      <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300">
-        <nav class="flex space-x-4">
+      <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 nav-card">
+        <nav class="flex flex-wrap space-x-4">
           <a href="/pages/events.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-3 py-1 rounded-md font-medium text-sm">Past Performances</a>
           <a href="/pages/setlists.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-3 py-1 rounded-md font-medium text-sm">Setlists & Recordings</a>
           <a href="/pages/songs_by_artist.html" class="text-gray-600 hover:bg-blue-600 hover:text-white transition duration-300 px-3 py-1 rounded-md font-medium text-sm">Songs by Artist</a>
         </nav>
       </div>
 
-      <!-- Main Text Card -->
-      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 max-h-[200px] flex-1 overflow-auto">
-        <div class="prose prose-base text-gray-600">
-          <p class="mb-4">I'm Dhruv, a passionate guitarist and multi-instrumentalist based in the Bay Area, CA. I perform solo with guitar, clawhammer banjo, octave mandolin, and vocals, bringing music to coffee shops, farmers markets, and events.</p>
-          <p class="mb-4">My repertoire features classic acoustic rock and folk from the 70’s—think Cat Stevens, Jethro Tull, and Nic Jones—alongside modern artists like Tallest Man on Earth and Mumford and Sons.</p>
-          <p class="mb-4">Check out my <a href="/pages/setlists.html" class="text-blue-600 hover:underline">setlist recordings</a> to hear my performances. I’m happy to tailor my setlist to your venue or event—let’s create a memorable show together!</p>
-        </div>
-      </div>
-
       <!-- Contact Card with Photo -->
-      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 h-[350px] flex flex-row items-start">
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex flex-row items-start order-1 md:order-none">
         <div class="flex-1">
-          
           <p class="text-gray-600"><strong>Dhruv Rajan</strong></p>
           <p class="text-gray-600"><a href="mailto:dhruv@krishnaprem.com" class="text-blue-600 hover:underline">dhruv@krishnaprem.com</a></p>
           <p class="text-gray-600">(650) 229-4572</p>
@@ -70,14 +68,23 @@ title: Dhruv Rajan - Music
         </div>
         <div class="border-l border-gray-200 h-full mx-4"></div>
         <div class="flex justify-center items-center w-1/2">
-          <img src="/images/IMG_0461.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
+          <img src="/images/downsampled.jpg" alt="Performance photo" class="h-36 object-contain rounded-md">
+        </div>
+      </div>
+
+      <!-- Main Text Card -->
+      <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex-1 overflow-auto order-2 md:order-none">
+        <div class="prose prose-base text-gray-600">
+          <p class="mb-4">I'm Dhruv, a passionate guitarist and multi-instrumentalist based in the Bay Area, CA. I perform solo with guitar, clawhammer banjo, octave mandolin, and vocals, bringing music to coffee shops, farmers markets, and events.</p>
+          <p class="mb-4">My repertoire features classic acoustic rock and folk from the 70’s—think Cat Stevens, Jethro Tull, and Nic Jones—alongside modern artists like Tallest Man on Earth and Mumford and Sons.</p>
+          <p class="mb-4">Check out my <a href="/pages/setlists.html" class="text-blue-600 hover:underline">setlist recordings</a> to hear my performances. I’m happy to tailor my setlist to your venue or event—let’s create a memorable show together!</p>
         </div>
       </div>
     </div>
 
     <!-- Right Column: Scrollable YouTube Videos -->
-    <div class="md:col-span-2 flex flex-1 flex-col max-h-[100vh] overflow-y-auto">
-      <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex flex-col">
+    <div class="md:col-span-2 flex flex-col space-y-6">
+      <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex flex-col order-3 md:order-none">
         <h2 class="text-lg font-bold text-gray-800 mb-4">Selected Performances</h2>
         <div class="video-list flex-1">
           <!-- 14 video links -->
@@ -155,3 +162,4 @@ title: Dhruv Rajan - Music
       </div>
     </div>
   </div>
+</div>
