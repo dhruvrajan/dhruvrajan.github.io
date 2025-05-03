@@ -11,7 +11,6 @@ title: Dhruv Rajan - Music
     background: #FAFAFA; /* Soft white background */
   }
   .video-list {
-    overflow-y: auto; /* Enable vertical scrolling for videos */
     scrollbar-width: thin; /* Subtle scrollbar for Firefox */
   }
   .video-list::-webkit-scrollbar {
@@ -83,7 +82,7 @@ title: Dhruv Rajan - Music
     </div>
 
     <!-- Right Column: Scrollable YouTube Videos -->
-    <div class="md:col-span-2 flex flex-col space-y-6">
+    <div class="md:col-span-2 flex flex-col space-y-6 overflow-y-auto">
       <div class="bg-white border border-gray-200 p-8 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex flex-col order-3 md:order-none">
         <h2 class="text-lg font-bold text-gray-800 mb-4">Selected Performances</h2>
         <div class="video-list flex-1">
