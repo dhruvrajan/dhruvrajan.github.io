@@ -83,7 +83,7 @@ title: Dhruv Rajan - Music
       <!-- Main Text Card -->
       <div class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm hover:scale-105 transition-transform duration-300 flex-1 overflow-auto order-2 md:order-none">
         <div class="prose prose-base text-gray-600">
-          <p class="mb-4">I'm Dhruv, a passionate guitarist and multi-instrumentalist based in the Bay Area, CA. I perform solo with guitar, clawhammer banjo, octave mandolin, and vocals, bringing music to coffee shops, farmers markets, and events.</p>
+          <p class="mb-4">I'm Dhruv, a passionate guitarist and multi-instrumentalist based in Newport Beach, CA (previously, up in the Bay Area). I perform solo with guitar, clawhammer banjo, octave mandolin, and vocals, bringing music to coffee shops, farmers markets, and events.</p>
           <p class="mb-4">My repertoire features classic acoustic rock and folk from the 70’s—think Cat Stevens, Jethro Tull, and Nic Jones—alongside modern artists like Tallest Man on Earth and Mumford and Sons.</p>
           <p class="mb-4">Check out my <a href="/pages/setlists.html" class="text-blue-600 hover:underline">setlist recordings</a> to hear my performances. I’m happy to tailor my setlist to your venue or event—let’s create a memorable show together!</p>
         </div>
