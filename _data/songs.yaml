@@ -253,9 +253,8 @@
   artist: Jethro Tull
   instruments:
     - name: Guitar
-      tuning: Open E (EBEG#BE)
+      tuning: DADGAD
       capo: 0
-      unverified: true
   youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1610s'
   soundcloud_link: ~
 - title: One White Duck / 0^10 = Nothing at All
@@ -386,6 +385,16 @@
       tuning: Open D (DADF#AD)
       capo: 2
   youtube_link: 'https://www.youtube.com/watch?v=VwCpdeWSgdI&t=322s'
+  soundcloud_link: ~
+- title: Winter Winds
+  instrument: guitar
+  artist: Mumford and Sons
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
+      unverified: true
+  youtube_link: ~
   soundcloud_link: ~
 - title: Bonny Light Horseman
   artist: Nic Jones
@@ -592,7 +601,7 @@
   artist: Tallest Man on Earth
   instruments:
     - name: Guitar
-      tuning: EADGBD
+      tuning: Standard (EADGBE)
       capo: 7
   youtube_link: ~
   soundcloud_link: ~
