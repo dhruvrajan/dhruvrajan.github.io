@@ -14,6 +14,6 @@ The browser derives one AES-256-GCM key from the passphrase (UTF-8) with PBKDF2-
 - `iv`: base64 (12 bytes)
 - `ciphertext`: base64 of AES-256-GCM ciphertext with the 16-byte auth tag appended (WebCrypto layout)
 
-Plaintext is UTF-8 JSON. The index decrypts to an array of `{slug, title, artist, source}`. Each song decrypts to title/artist/source/lyrics fields (lyrics may be null).
+Plaintext is UTF-8 JSON. The index decrypts to an array of `{slug, title, artist, source}` where `source` is `web`, `docs`, or `missing`. Each song decrypts to `{title, artist, source, lyrics, doc_name?}` (`lyrics` may be null).
 
 Wrong passphrase fails AES-GCM auth when decrypting the index (clear UI error). Do **not** commit real passphrases or API keys.

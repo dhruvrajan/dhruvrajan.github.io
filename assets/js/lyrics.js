@@ -173,9 +173,7 @@
   async function fetchJson(url) {
     var res = await fetch(url, { cache: "no-cache" });
     if (!res.ok) {
-      throw new Error(
-        "Could not load " + url + " (" + res.status + ")."
-      );
+      throw new Error("Could not load " + url + " (" + res.status + ").");
     }
     return res.json();
   }
@@ -220,8 +218,7 @@
   function normalizeIndexEntry(entry) {
     var title = (entry && entry.title) || "Untitled";
     var artist = normalizeArtist(entry && entry.artist);
-    var slug =
-      (entry && entry.slug) || slugify(title, artist);
+    var slug = (entry && entry.slug) || slugify(title, artist);
     return {
       slug: slug,
       title: title,
@@ -300,11 +297,6 @@
       ),
       source: payload.source || meta.source || "missing",
       lyrics: payload.lyrics == null ? null : String(payload.lyrics),
-      lyrics_copyright: payload.lyrics_copyright || "",
-      track_id: payload.track_id || "",
-      track_name: payload.track_name || "",
-      web_artist: payload.web_artist || "",
-      source_url: payload.source_url || "",
       doc_name: payload.doc_name || "",
     };
     state.songCache[slug] = details;
@@ -453,19 +445,10 @@
   function attributionHtml(song) {
     var source = String(song.source || "missing").toLowerCase();
     if (source === "web") {
-      if (song.lyrics_copyright) {
-        return (
-          '<p class="song-detail__copyright">' +
-          escapeHtml(song.lyrics_copyright) +
-          "</p>"
-        );
-      }
       return "";
     }
     if (source === "docs") {
-      return (
-        '<p class="song-detail__copyright">From my lyric docs</p>'
-      );
+      return '<p class="song-detail__copyright">From my lyric docs</p>';
     }
     return (
       '<p class="song-detail__copyright">No lyrics (instrumental or unavailable)</p>'

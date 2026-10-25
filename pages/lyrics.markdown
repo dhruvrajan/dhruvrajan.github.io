@@ -60,4 +60,4 @@ narrow: true
     "{{ '/assets/data/lyrics/' | relative_url }}"
   );
 </script>
-<script src="{{ '/assets/js/lyrics.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/lyrics.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
