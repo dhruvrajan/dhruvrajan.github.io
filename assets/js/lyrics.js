@@ -610,6 +610,17 @@
     applyTextSize();
   }
 
+  function setupCompactForSong(song) {
+    var meta = metaForSong(song);
+    if (
+      window.LyricsSetup &&
+      typeof window.LyricsSetup.formatSetupCompact === "function"
+    ) {
+      return window.LyricsSetup.formatSetupCompact(meta) || "";
+    }
+    return formatTuningCapo(meta).replace(/\n/g, " · ");
+  }
+
   function renderArtistBrowse() {
     if (!els.artistList) return;
     els.artistList.innerHTML = "";
@@ -642,7 +653,12 @@
           var btn = document.createElement("button");
           btn.type = "button";
           btn.className = "repertoire-song linkish";
-          btn.textContent = song.title;
+          var setup = setupCompactForSong(song);
+          btn.innerHTML =
+            escapeHtml(song.title) +
+            (setup
+              ? ' <span class="song-setup">' + escapeHtml(setup) + "</span>"
+              : "");
           btn.setAttribute("data-slug", songSlug(song));
           btn.addEventListener("click", function () {
             openSong(song, true);
@@ -676,11 +692,15 @@
       btn.type = "button";
       btn.className = "lyrics-result";
       btn.setAttribute("role", "option");
+      var setup = setupCompactForSong(song);
       btn.innerHTML =
         '<span class="lyrics-result__text">' +
         '<span class="lyrics-result__title">' +
         escapeHtml(song.title) +
         "</span>" +
+        (setup
+          ? '<span class="song-setup">' + escapeHtml(setup) + "</span>"
+          : "") +
         '<span class="lyrics-result__artist">' +
         escapeHtml(song.artist) +
         "</span>" +

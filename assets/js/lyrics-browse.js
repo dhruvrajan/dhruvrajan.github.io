@@ -270,16 +270,47 @@
   }
 
   function formatSetup(song) {
+    var list = instrumentsOf(song);
+    var preferred =
+      activeInstrumentName() === "all" ? "" : activeInstrumentName();
+    if (window.LyricsSetup && window.LyricsSetup.formatSetupCompact) {
+      return window.LyricsSetup.formatSetupCompact(
+        { instruments: list },
+        preferred || null
+      );
+    }
     var parts = [];
     var tuning = tuningDisplay(song);
     var capo = capoOf(song);
-    var inst = setupForSong(song);
-    if (inst && inst.name && activeInstrumentName() === "all") {
-      parts.push(inst.name);
-    }
     if (tuning) parts.push(tuning);
     if (capo != null && capo !== 0) parts.push("Capo " + capo);
     return parts.join(" · ");
+  }
+
+  function notesApi() {
+    return window.LyricsNotes || null;
+  }
+
+  function songHasNotes(slug) {
+    var N = notesApi();
+    return !!(N && N.hasNotes(slug));
+  }
+
+  function exportNotesBundle() {
+    var N = notesApi();
+    if (!N) return null;
+    return N.buildExportObject(function (slug) {
+      var song = songs().filter(function (s) {
+        return songSlug(s) === slug;
+      })[0];
+      if (!song) return null;
+      return {
+        title: song.title,
+        artist: song.artist,
+        _meta: metaForSong(song),
+        _instruments: instrumentsOf(song),
+      };
+    });
   }
 
   function songs() {
@@ -675,8 +706,24 @@
       '<input id="lb-search" class="lb-search" type="search" placeholder="Search title or artist" enterkeyhint="search" autocomplete="off">' +
       "</div>" +
       '<button type="button" class="lb-btn lb-btn--secondary" id="lb-stage-toggle" aria-pressed="false">Stage mode</button>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-notes-export" title="Export notes JSON">Export notes</button>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-notes-copy">Copy notes</button>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-notes-share" hidden>Share notes</button>' +
+      '<label class="lb-btn lb-btn--ghost lb-file-btn" for="lb-notes-import">Import notes<input id="lb-notes-import" type="file" accept="application/json,.json" hidden></label>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-sync-gear" aria-expanded="false" title="Note sync settings" aria-label="Note sync settings">⚙</button>' +
       '<button type="button" class="lb-btn lb-btn--ghost" id="lb-lock">Lock</button>' +
       "</div>" +
+      '<div class="lb-sync-panel" id="lb-sync-panel" hidden>' +
+      '<h3 class="lb-sync-panel__title">Note sync</h3>' +
+      '<p class="lb-status">Optional webhook for live note backup. Stored only on this device.</p>' +
+      '<label class="lb-sync-field">Webhook URL<input id="lb-sync-url" type="url" inputmode="url" autocomplete="off" placeholder="https://…"></label>' +
+      '<label class="lb-sync-field">Sender key<input id="lb-sync-key" type="password" autocomplete="off" spellcheck="false"></label>' +
+      '<label class="lb-sync-field">Key header name<input id="lb-sync-header" type="text" autocomplete="off" placeholder="Authorization"></label>' +
+      '<div class="lb-bar"><button type="button" class="lb-btn" id="lb-sync-save">Save settings</button>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-sync-flush">Retry queue</button></div>' +
+      '<p class="lb-status" id="lb-sync-msg" hidden></p>' +
+      "</div>" +
+      '<p class="lb-status" id="lb-notes-msg" hidden aria-live="polite"></p>' +
       '<div class="lb-seg" role="group" aria-label="Sort songs">' +
       '<button type="button" class="lb-seg__btn" data-sort="artist" aria-pressed="true">Artist</button>' +
       '<button type="button" class="lb-seg__btn" data-sort="title" aria-pressed="false">Title</button>' +
@@ -925,14 +972,18 @@
       group.songs.forEach(function (song) {
         var slug = songSlug(song);
         var setup = formatSetup(song);
+        var noted = songHasNotes(slug);
         html +=
-          '<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0.35rem;align-items:stretch">';
+          '<div class="lb-row" style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:0.35rem;align-items:stretch">';
         html +=
           '<button type="button" class="lb-song" data-open-slug="' +
           escapeHtml(slug) +
           '">' +
           '<span class="lb-song__title">' +
           escapeHtml(song.title) +
+          (noted
+            ? '<span class="lb-note-dot" title="Has notes" aria-label="Has notes"></span>'
+            : "") +
           "</span>" +
           '<span class="lb-song__meta">' +
           escapeHtml(song.artist) +
@@ -942,6 +993,10 @@
             '<span class="lb-song__setup">' + escapeHtml(setup) + "</span>";
         }
         html += "</button>";
+        html +=
+          '<button type="button" class="lb-pin" data-open-notes="' +
+          escapeHtml(slug) +
+          '" aria-label="Edit notes">Notes</button>';
         html +=
           '<button type="button" class="lb-pin" data-pin="' +
           escapeHtml(slug) +
@@ -1021,35 +1076,88 @@
     );
   }
 
-  function renderSongChrome(meta, details) {
+  function syncStatusLabel(slug) {
+    var N = notesApi();
+    if (!N) return "";
+    var st = N.getStatus(slug) || {};
+    if (st.status === "synced") return "Synced";
+    if (st.status === "offline") return "Offline — queued";
+    if (st.status === "cors") return st.detail || "CORS blocked — use Export";
+    if (st.status === "error" || st.status === "pending") {
+      return st.detail || (st.status === "pending" ? "Syncing…" : "Not synced");
+    }
+    if (st.status === "off") return "";
+    return "";
+  }
+
+  function bindNotesEditor(meta, details) {
+    var N = notesApi();
+    var ta = $("#lb-notes-ta", els.song);
+    var statusEl = $("#lb-notes-sync-status", els.song);
+    if (!N || !ta) return;
+    var slug = songSlug(meta);
+    var title = (details && details.title) || meta.title;
+    var artist = (details && details.artist) || meta.artist;
+    var songMeta = Object.assign({}, metaForSong(meta), {
+      title: title,
+      artist: artist,
+      instruments: instrumentsOf(meta),
+    });
+
+    function refreshStatus() {
+      if (!statusEl) return;
+      var label = syncStatusLabel(slug);
+      statusEl.textContent = label || "Notes stay on this device";
+      statusEl.className =
+        "lb-notes-sync" +
+        (label.indexOf("Not synced") !== -1 || label.indexOf("CORS") !== -1
+          ? " lb-notes-sync--warn"
+          : label === "Synced"
+            ? " lb-notes-sync--ok"
+            : "");
+      statusEl.setAttribute(
+        "data-retry",
+        label.indexOf("Not synced") !== -1 || label.indexOf("Offline") !== -1
+          ? "1"
+          : "0"
+      );
+    }
+
+    function persist(immediate) {
+      N.saveNoteAndSync(
+        slug,
+        { title: title, artist: artist, notes: ta.value },
+        songMeta,
+        { immediate: !!immediate }
+      ).then(refreshStatus);
+      refreshStatus();
+    }
+
+    ta.addEventListener("input", function () {
+      persist(false);
+    });
+    ta.addEventListener("blur", function () {
+      persist(true);
+    });
+    if (statusEl) {
+      statusEl.addEventListener("click", function () {
+        if (statusEl.getAttribute("data-retry") === "1") {
+          N.syncNow(slug, songMeta, N.getNote(slug)).then(refreshStatus);
+        }
+      });
+    }
+    refreshStatus();
+  }
+
+  function renderSongChrome(meta, details, opts) {
+    opts = opts || {};
     var slug = songSlug(meta);
     var prev = neighborSlug(slug, -1);
     var next = neighborSlug(slug, 1);
-    var setupInst = setupForSong(meta);
-    var tuning = tuningOf(meta);
-    var capo = capoOf(meta);
-    var setup = "";
-    if (setupInst && setupInst.name) {
-      setup +=
-        '<span class="lb-setup-pill">' +
-        escapeHtml(setupInst.name) +
-        "</span>";
-    }
-    if (tuning) {
-      setup +=
-        '<span class="lb-setup-pill">Tuning: ' +
-        escapeHtml(tuning) +
-        (tuningUnverified(meta)
-          ? '<span class="lb-unverified" title="Tuning not verified">?</span>'
-          : "") +
-        "</span>";
-    }
-    if (capo != null && capo !== 0) {
-      setup +=
-        '<span class="lb-setup-pill">Capo ' + escapeHtml(String(capo)) + "</span>";
-    } else if (capo === 0) {
-      setup += '<span class="lb-setup-pill">No capo</span>';
-    }
+    var setupLine = formatSetup(meta);
+    var N = notesApi();
+    var noteEntry = N ? N.getNote(slug) : null;
+    var noteText = noteEntry ? noteEntry.notes || "" : "";
 
     var body = details
       ? lyricsBodyHtml(details) + attributionHtml(details)
@@ -1081,11 +1189,23 @@
       '<p class="lb-stage-view__artist">' +
       escapeHtml((details && details.artist) || meta.artist) +
       "</p>" +
-      (setup ? '<div class="lb-setup-banner">' + setup + "</div>" : "") +
+      (setupLine
+        ? '<p class="lb-setup-banner"><span class="lb-setup-pill song-setup">' +
+          escapeHtml(setupLine) +
+          "</span></p>"
+        : "") +
       "</div>" +
       '<div id="lb-song-body">' +
       body +
       "</div>" +
+      '<section class="lb-notes" aria-label="Song notes">' +
+      '<div class="lb-notes__head"><h3 class="lb-notes__title">Notes</h3>' +
+      '<button type="button" class="lb-notes-sync" id="lb-notes-sync-status">Notes stay on this device</button></div>' +
+      '<label class="visually-hidden" for="lb-notes-ta">Notes</label>' +
+      '<textarea id="lb-notes-ta" class="lb-notes__ta" rows="5" placeholder="Personal notes for this song…">' +
+      escapeHtml(noteText) +
+      "</textarea>" +
+      "</section>" +
       '<div class="lb-dock">' +
       '<div class="lb-dock__row lb-dock__row--nav">' +
       '<button type="button" class="lb-btn lb-btn--secondary lb-btn--flex" id="lb-prev" ' +
@@ -1105,7 +1225,24 @@
     els.fontLabel = $("#lb-font-label", els.song);
     els.scrollBtn = $("#lb-autoscroll", els.song);
 
-    $("#lb-back", els.song).addEventListener("click", closeSongView);
+    $("#lb-back", els.song).addEventListener("click", function () {
+      var ta = $("#lb-notes-ta", els.song);
+      if (ta && N) {
+        N.saveNoteAndSync(
+          slug,
+          {
+            title: (details && details.title) || meta.title,
+            artist: (details && details.artist) || meta.artist,
+            notes: ta.value,
+          },
+          Object.assign({}, metaForSong(meta), {
+            instruments: instrumentsOf(meta),
+          }),
+          { immediate: true }
+        );
+      }
+      closeSongView();
+    });
     $("#lb-font-down", els.song).addEventListener("click", function () {
       bumpTextSize(-1);
     });
@@ -1116,7 +1253,7 @@
       state.stage = !state.stage;
       storageSet(STAGE_KEY, state.stage ? "1" : "0");
       applyStageClass();
-      renderSongChrome(meta, details);
+      renderSongChrome(meta, details, opts);
     });
     $("#lb-song-pin", els.song).addEventListener("click", function () {
       togglePin(slug);
@@ -1136,9 +1273,20 @@
       storageSet(SPEED_KEY, String(state.scrollSpeed));
       if (state.autoScroll) startAutoScroll();
     });
+    bindNotesEditor(meta, details);
+    if (opts.focusNotes) {
+      var taFocus = $("#lb-notes-ta", els.song);
+      if (taFocus) {
+        setTimeout(function () {
+          taFocus.focus();
+          taFocus.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 50);
+      }
+    }
   }
 
-  function openSongBySlug(slug, updateHash) {
+  function openSongBySlug(slug, updateHash, opts) {
+    opts = opts || {};
     if (!slug || !api) return;
     var meta =
       typeof api.findSongBySlug === "function"
@@ -1156,7 +1304,7 @@
     if (els.browse) els.browse.classList.add("lb-hidden");
     els.song.hidden = false;
     els.song.classList.remove("lb-hidden");
-    renderSongChrome(meta, null);
+    renderSongChrome(meta, null, opts);
     requestWakeLock();
     if (updateHash && typeof api.setHashForSong === "function") {
       api.setHashForSong(meta);
@@ -1167,7 +1315,7 @@
       .loadSongDetails(meta)
       .then(function (details) {
         if (state.currentSlug !== slug) return;
-        renderSongChrome(meta, details);
+        renderSongChrome(meta, details, opts);
       })
       .catch(function (err) {
         if (state.currentSlug !== slug) return;
@@ -1208,6 +1356,13 @@
     if (t) {
       state.capoFilter = t.getAttribute("data-capo");
       renderBrowse();
+      return;
+    }
+    t = e.target.closest("[data-open-notes]");
+    if (t) {
+      openSongBySlug(t.getAttribute("data-open-notes"), true, {
+        focusNotes: true,
+      });
       return;
     }
     t = e.target.closest("[data-open-slug]");
@@ -1261,6 +1416,17 @@
     els.song = $("#lb-song", root);
     els.stageToggle = $("#lb-stage-toggle", root);
     els.lockBtn = $("#lb-lock", root);
+    els.notesMsg = $("#lb-notes-msg", root);
+    els.syncPanel = $("#lb-sync-panel", root);
+    els.syncMsg = $("#lb-sync-msg", root);
+
+    function setNotesMsg(text, kind) {
+      if (!els.notesMsg) return;
+      els.notesMsg.textContent = text || "";
+      els.notesMsg.hidden = !text;
+      els.notesMsg.className =
+        "lb-status" + (kind ? " lb-status--" + kind : "");
+    }
 
     if (els.search) {
       els.search.value = state.query;
@@ -1275,6 +1441,25 @@
         state.artistFilter = e.target.value || "all";
         renderBrowse();
       }
+      if (e.target && e.target.id === "lb-notes-import") {
+        var file = e.target.files && e.target.files[0];
+        if (!file || !notesApi()) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            var n = notesApi().importNotesJson(String(reader.result || ""));
+            setNotesMsg("Imported " + n + " note" + (n === 1 ? "" : "s"), "ok");
+            renderBrowse();
+          } catch (err) {
+            setNotesMsg(
+              (err && err.message) || "Could not import notes",
+              "error"
+            );
+          }
+          e.target.value = "";
+        };
+        reader.readAsText(file);
+      }
     });
 
     if (els.stageToggle) {
@@ -1284,6 +1469,101 @@
         applyStageClass();
         renderBrowse();
       });
+    }
+
+    var exportBtn = $("#lb-notes-export", root);
+    var copyBtn = $("#lb-notes-copy", root);
+    var shareBtn = $("#lb-notes-share", root);
+    if (shareBtn && navigator.share) shareBtn.hidden = false;
+
+    if (exportBtn) {
+      exportBtn.addEventListener("click", function () {
+        var N = notesApi();
+        if (!N) return;
+        var obj = exportNotesBundle();
+        N.downloadExport(obj);
+        setNotesMsg("Downloaded " + obj.count + " notes", "ok");
+      });
+    }
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var N = notesApi();
+        if (!N) return;
+        var obj = exportNotesBundle();
+        N.copyExport(obj)
+          .then(function () {
+            setNotesMsg("Copied notes JSON to clipboard", "ok");
+          })
+          .catch(function () {
+            setNotesMsg("Could not copy — try Export", "error");
+          });
+      });
+    }
+    if (shareBtn) {
+      shareBtn.addEventListener("click", function () {
+        var N = notesApi();
+        if (!N) return;
+        var obj = exportNotesBundle();
+        N.shareExport(obj).catch(function () {
+          setNotesMsg("Share canceled", "info");
+        });
+      });
+    }
+
+    var gear = $("#lb-sync-gear", root);
+    if (gear && els.syncPanel) {
+      gear.addEventListener("click", function () {
+        var open = els.syncPanel.hidden;
+        els.syncPanel.hidden = !open;
+        gear.setAttribute("aria-expanded", open ? "true" : "false");
+        if (open && notesApi()) {
+          var s = notesApi().loadSyncSettings();
+          var url = $("#lb-sync-url", root);
+          var key = $("#lb-sync-key", root);
+          var header = $("#lb-sync-header", root);
+          if (url) url.value = s.url || "";
+          if (key) key.value = s.key || "";
+          if (header) header.value = s.header || "Authorization";
+        }
+      });
+    }
+    var syncSave = $("#lb-sync-save", root);
+    if (syncSave) {
+      syncSave.addEventListener("click", function () {
+        if (!notesApi()) return;
+        notesApi().saveSyncSettings({
+          url: ($("#lb-sync-url", root) || {}).value,
+          key: ($("#lb-sync-key", root) || {}).value,
+          header: ($("#lb-sync-header", root) || {}).value,
+        });
+        if (els.syncMsg) {
+          els.syncMsg.hidden = false;
+          els.syncMsg.textContent = "Sync settings saved on this device";
+        }
+        notesApi().flushQueue();
+      });
+    }
+    var syncFlush = $("#lb-sync-flush", root);
+    if (syncFlush) {
+      syncFlush.addEventListener("click", function () {
+        if (!notesApi()) return;
+        notesApi().flushQueue().then(function () {
+          if (els.syncMsg) {
+            els.syncMsg.hidden = false;
+            els.syncMsg.textContent = "Retry finished";
+          }
+          if (state.currentSlug) {
+            /* status refreshes via onChange */
+          }
+        });
+      });
+    }
+
+    if (notesApi()) {
+      notesApi().onChange(function () {
+        if (!state.currentSlug) renderBrowse();
+      });
+      notesApi().flushQueue();
     }
 
     if (els.lockBtn) {

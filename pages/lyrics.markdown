@@ -94,6 +94,8 @@ narrow: true
   );
 </script>
 <script src="{{ '/assets/js/vendor/jspdf.umd.min.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/assets/js/lyrics-setup.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/assets/js/lyrics-notes.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script src="{{ '/assets/js/songbook-pdf.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script src="{{ '/assets/js/lyrics-browse.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script src="{{ '/assets/js/lyrics.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

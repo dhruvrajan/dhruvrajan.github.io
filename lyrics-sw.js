@@ -10,8 +10,11 @@
     "/pages/lyrics.html",
     "/assets/css/site.css",
     "/assets/css/lyrics-browse.css",
+    "/assets/js/lyrics-setup.js",
+    "/assets/js/lyrics-notes.js",
     "/assets/js/lyrics.js",
     "/assets/js/lyrics-browse.js",
+    "/assets/js/songbook-pdf.js",
     "/assets/data/lyrics/salt.json",
     "/assets/data/lyrics/index.enc.json",
   ];

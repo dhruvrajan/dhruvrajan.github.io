@@ -31,13 +31,16 @@
     {% for song in songs %}
       {% if song.artist == artist %}
       <li class="song-item" data-title="{{ song.title | escape }}" data-artist="{{ song.artist | escape }}">
-        {% if song.youtube_link %}
-          <a href="{{ song.youtube_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
-        {% elsif song.soundcloud_link %}
-          <a href="{{ song.soundcloud_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
-        {% else %}
-          {{ song.title }}
-        {% endif %}
+        <span class="song-item__main">
+          {% if song.youtube_link %}
+            <a href="{{ song.youtube_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
+          {% elsif song.soundcloud_link %}
+            <a href="{{ song.soundcloud_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
+          {% else %}
+            {{ song.title }}
+          {% endif %}
+          {% include song_setup_inline.markdown %}
+        </span>
         <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}#song={{ song.title | append: '-' | append: song.artist | slugify }}">Lyrics</a>
       </li>
       {% endif %}
@@ -56,13 +59,16 @@
     {% for song in songs %}
       {% if song.artist == "Unknown" %}
       <li class="song-item" data-title="{{ song.title | escape }}" data-artist="Unknown">
-        {% if song.youtube_link %}
-          <a href="{{ song.youtube_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
-        {% elsif song.soundcloud_link %}
-          <a href="{{ song.soundcloud_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
-        {% else %}
-          {{ song.title }}
-        {% endif %}
+        <span class="song-item__main">
+          {% if song.youtube_link %}
+            <a href="{{ song.youtube_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
+          {% elsif song.soundcloud_link %}
+            <a href="{{ song.soundcloud_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
+          {% else %}
+            {{ song.title }}
+          {% endif %}
+          {% include song_setup_inline.markdown %}
+        </span>
         <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}#song={{ song.title | append: '-Other' | slugify }}">Lyrics</a>
       </li>
       {% endif %}
