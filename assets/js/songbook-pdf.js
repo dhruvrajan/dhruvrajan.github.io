@@ -423,9 +423,9 @@
   }
 
   /**
-   * Extra sections from setlists marked for the songbook (_data/setlists.yaml,
-   * songbook: true), in setlist order, each song re-rendered with only the
-   * setlist's instrument and a "Retune" line wherever the tuning changes.
+   * Extra sections from the setlists (_data/setlists.yaml, all of them unless
+   * a setlist sets songbook: false), in file order and saved song order, each
+   * song re-rendered with only the setlist's instrument and a "Retune" line wherever the tuning changes.
    */
   function readSections(options) {
     if (options && Array.isArray(options.sections)) return options.sections;

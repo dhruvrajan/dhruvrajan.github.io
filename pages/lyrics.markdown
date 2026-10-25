@@ -92,14 +92,14 @@ narrow: true
 </script>
 <script type="application/json" id="songbook-sections-json">
 [
-{% assign songbook_setlists = site.data.setlists | where: "songbook", true %}
-{% for sl in songbook_setlists %}
-  {
+{% assign sep = "" %}
+{% for sl in site.data.setlists %}{% unless sl.songbook == false %}
+  {{ sep }}{
     "name": {{ sl.setlist_name | jsonify }},
     "instrument": {{ sl.instruments | first | jsonify }},
     "titles": [{% for s in sl.songs %}{{ s.title | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}]
-  }{% unless forloop.last %},{% endunless %}
-{% endfor %}
+  }{% assign sep = "," %}
+{% endunless %}{% endfor %}
 ]
 </script>
 <script>

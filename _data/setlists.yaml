@@ -75,7 +75,6 @@
 - setlist_name: Alternate Tunings (Guitar)
   instruments:
     - Guitar
-  songbook: true
   songs:
     - title: Whatsername
     - title: Childish Things
@@ -121,7 +120,6 @@
 - setlist_name: Octave Mandolin
   instruments:
     - Octave Mandolin
-  songbook: true
   songs:
     - title: Creggan White Hare
     - title: Pat Rainey
