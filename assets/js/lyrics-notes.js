@@ -97,22 +97,73 @@
     return entry;
   }
 
+  var HEADER_TOKEN_RE = /^[!#$%&'*+\-.^_`|~0-9A-Za-z]+$/;
+
+  function isByteString(str) {
+    var s = String(str || "");
+    for (var i = 0; i < s.length; i++) {
+      if (s.charCodeAt(i) > 255) return false;
+    }
+    return true;
+  }
+
+  /**
+   * Trim fields; if header contains ":", split into name/value.
+   * Strip leading "Bearer " from key so it isn't doubled.
+   * Returns {url, key, header, errors: {url?, header?, key?}}.
+   */
+  function normalizeSyncSettings(raw) {
+    var url = String((raw && raw.url) || "").trim();
+    var key = String((raw && raw.key) || "").trim();
+    var header = String((raw && raw.header) || "Authorization").trim();
+    var errors = {};
+
+    if (header.indexOf(":") !== -1) {
+      var parts = header.split(":");
+      header = parts.shift().trim();
+      var rest = parts.join(":").trim();
+      if (rest && !key) key = rest;
+    }
+    if (!header) header = "Authorization";
+    key = key.replace(/^Bearer\s+/i, "").trim();
+
+    if (url) {
+      try {
+        var u = new URL(url);
+        if (u.protocol !== "http:" && u.protocol !== "https:") {
+          errors.url = "URL is invalid";
+        }
+      } catch (e) {
+        errors.url = "URL is invalid";
+      }
+    }
+    if (!HEADER_TOKEN_RE.test(header)) {
+      errors.header = "Header name is invalid";
+    }
+    if (key && !isByteString(key)) {
+      errors.key = "Key contains invalid characters";
+    }
+
+    return { url: url, key: key, header: header, errors: errors };
+  }
+
   function loadSyncSettings() {
     var s = storageGetJson(SYNC_KEY, {});
-    return {
+    return normalizeSyncSettings({
       url: (s && s.url) || "",
       key: (s && s.key) || "",
       header: (s && s.header) || "Authorization",
-    };
+    });
   }
 
   function saveSyncSettings(settings) {
+    var norm = normalizeSyncSettings(settings || {});
     storageSetJson(SYNC_KEY, {
-      url: String((settings && settings.url) || "").trim(),
-      key: String((settings && settings.key) || ""),
-      header: String((settings && settings.header) || "Authorization").trim() ||
-        "Authorization",
+      url: norm.url,
+      key: norm.key,
+      header: norm.header || "Authorization",
     });
+    return norm;
   }
 
   function loadQueue() {
@@ -194,6 +245,11 @@
     return headers;
   }
 
+  function firstFieldError(errors) {
+    if (!errors) return "";
+    return errors.url || errors.header || errors.key || "";
+  }
+
   function enqueue(payload) {
     var q = loadQueue().filter(function (item) {
       return item && item.slug !== payload.slug;
@@ -202,39 +258,131 @@
     saveQueue(q);
   }
 
-  function postPayload(payload) {
-    var settings = loadSyncSettings();
-    if (!settings.url) {
-      return Promise.resolve({ ok: false, skipped: true });
+  function withKeyInBody(payload, key) {
+    var out = {};
+    Object.keys(payload || {}).forEach(function (k) {
+      out[k] = payload[k];
+    });
+    if (key) out.key = key;
+    return out;
+  }
+
+  function urlWithKeyQuery(url, key) {
+    if (!key) return url;
+    try {
+      var u = new URL(url);
+      u.searchParams.set("key", key);
+      return u.toString();
+    } catch (e) {
+      return url;
     }
-    return fetch(settings.url, {
+  }
+
+  function classifyFetchError(err) {
+    var msg = (err && err.message) || "Network error";
+    var offline = typeof navigator !== "undefined" && !navigator.onLine;
+    var wrapped = new Error(msg);
+    wrapped.offline = offline;
+    wrapped.syncTypeError =
+      err &&
+      (err.name === "TypeError" ||
+        /Failed to execute 'fetch'|Invalid.*header|ByteString|URL/i.test(msg));
+    wrapped.corsLikely =
+      !offline &&
+      !wrapped.syncTypeError &&
+      /failed to fetch|networkerror|cors|load failed|TypeError/i.test(msg);
+    return wrapped;
+  }
+
+  function fetchCors(url, settings, payload) {
+    return fetch(url, {
       method: "POST",
       headers: authHeaders(settings),
       body: JSON.stringify(payload),
       mode: "cors",
       credentials: "omit",
-    }).then(
-      function (res) {
-        if (!res.ok) {
-          var err = new Error("HTTP " + res.status);
-          err.status = res.status;
-          throw err;
-        }
-        return { ok: true };
-      },
-      function (err) {
-        var msg = (err && err.message) || "Network error";
-        var cors =
-          /failed to fetch|networkerror|cors|load failed/i.test(msg) ||
-          (typeof navigator !== "undefined" && !navigator.onLine);
-        var wrapped = new Error(msg);
-        wrapped.corsLikely =
-          /failed to fetch|cors|networkerror/i.test(msg) &&
-          !!(typeof navigator !== "undefined" && navigator.onLine);
-        wrapped.offline = typeof navigator !== "undefined" && !navigator.onLine;
-        throw wrapped;
+    }).then(function (res) {
+      if (!res.ok) {
+        var err = new Error("HTTP " + res.status);
+        err.status = res.status;
+        throw err;
       }
-    );
+      return { ok: true, mode: "cors" };
+    });
+  }
+
+  /** Simple request: no custom headers, so no preflight. */
+  function fetchNoCors(url, settings, payload) {
+    var bodyObj = withKeyInBody(payload, settings.key);
+    var target = urlWithKeyQuery(url, settings.key);
+    return fetch(target, {
+      method: "POST",
+      mode: "no-cors",
+      credentials: "omit",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify(bodyObj),
+    }).then(function () {
+      // Opaque response — cannot confirm, treat as sent.
+      return { ok: true, mode: "no-cors", opaque: true };
+    });
+  }
+
+  function postPayload(payload) {
+    var settings = loadSyncSettings();
+    if (!settings.url) {
+      return Promise.resolve({ ok: false, skipped: true });
+    }
+    var fieldErr = firstFieldError(settings.errors);
+    if (fieldErr) {
+      var ve = new Error(fieldErr);
+      ve.validation = true;
+      ve.errors = settings.errors;
+      return Promise.reject(ve);
+    }
+
+    var run;
+    try {
+      run = fetchCors(settings.url, settings, payload);
+    } catch (syncErr) {
+      return Promise.reject(classifyFetchError(syncErr));
+    }
+
+    return run.catch(function (err) {
+      var classified = classifyFetchError(err);
+      if (classified.offline || classified.validation) throw classified;
+      // Invalid fetch init (bad header/URL) → clear field message, no no-cors mask
+      if (classified.syncTypeError) {
+        var again = loadSyncSettings();
+        var fe = firstFieldError(again.errors);
+        var ve = new Error(
+          fe ||
+            (/header/i.test(classified.message)
+              ? "Header name is invalid"
+              : /url/i.test(classified.message)
+                ? "URL is invalid"
+                : "Request settings are invalid")
+        );
+        ve.validation = true;
+        ve.errors = again.errors || {};
+        throw ve;
+      }
+      // CORS / network TypeError ("Failed to fetch") → simple no-cors retry
+      if (
+        classified.corsLikely ||
+        (err && err.name === "TypeError")
+      ) {
+        try {
+          return fetchNoCors(settings.url, settings, payload).catch(function (
+            err2
+          ) {
+            throw classifyFetchError(err2);
+          });
+        } catch (syncErr2) {
+          throw classifyFetchError(syncErr2);
+        }
+      }
+      throw classified;
+    });
   }
 
   function syncNow(slug, song, entry) {
@@ -250,25 +398,29 @@
     var payload = buildSyncPayload(slug, song, entry);
     setStatus(slug, "pending", "Syncing…");
     return postPayload(payload)
-      .then(function () {
+      .then(function (res) {
         // drop from queue if present
         saveQueue(
           loadQueue().filter(function (item) {
             return item && item.slug !== slug;
           })
         );
-        setStatus(slug, "synced", "Synced");
-        return { ok: true };
+        setStatus(slug, "synced", res && res.opaque ? "Sent" : "Synced");
+        return { ok: true, opaque: !!(res && res.opaque) };
       })
       .catch(function (err) {
-        enqueue(payload);
+        if (!(err && err.validation)) enqueue(payload);
         if (err && err.offline) {
           setStatus(slug, "offline", "Offline — queued");
+        } else if (err && err.opaque) {
+          setStatus(slug, "synced", "Sent");
+        } else if (err && err.validation) {
+          setStatus(slug, "error", err.message || "Invalid sync settings");
         } else if (err && err.corsLikely) {
           setStatus(
             slug,
             "cors",
-            "CORS blocked — use Export"
+            (err.message ? err.message + " — " : "") + "try Export if it persists"
           );
         } else {
           setStatus(
@@ -279,6 +431,29 @@
         }
         return { ok: false, error: err };
       });
+  }
+
+  function sendTest() {
+    var settings = loadSyncSettings();
+    if (!settings.url) {
+      return Promise.reject(new Error("Set a webhook URL first"));
+    }
+    var fieldErr = firstFieldError(settings.errors);
+    if (fieldErr) {
+      var ve = new Error(fieldErr);
+      ve.validation = true;
+      ve.errors = settings.errors;
+      return Promise.reject(ve);
+    }
+    var payload = {
+      event: "test",
+      updated: new Date().toISOString(),
+      page_url: (typeof location !== "undefined" && location.href) || "",
+    };
+    return postPayload(payload).then(function (res) {
+      if (res && res.opaque) return { ok: true, message: "Sent (unconfirmed)" };
+      return { ok: true, message: "Test sent" };
+    });
   }
 
   function flushQueue() {
@@ -293,19 +468,33 @@
     q.forEach(function (payload) {
       chain = chain.then(function () {
         return postPayload(payload)
-          .then(function () {
+          .then(function (res) {
             saveQueue(
               loadQueue().filter(function (item) {
                 return item && item.slug !== payload.slug;
               })
             );
-            setStatus(payload.slug, "synced", "Synced");
+            setStatus(
+              payload.slug,
+              "synced",
+              res && res.opaque ? "Sent" : "Synced"
+            );
           })
           .catch(function (err) {
             if (err && err.offline) {
               setStatus(payload.slug, "offline", "Offline — queued");
+            } else if (err && err.validation) {
+              setStatus(
+                payload.slug,
+                "error",
+                err.message || "Invalid sync settings"
+              );
             } else if (err && err.corsLikely) {
-              setStatus(payload.slug, "cors", "CORS blocked — use Export");
+              setStatus(
+                payload.slug,
+                "cors",
+                (err.message || "Network error") + " — try Export if it persists"
+              );
             } else {
               setStatus(
                 payload.slug,
@@ -515,6 +704,8 @@
     flushQueue: flushQueue,
     loadSyncSettings: loadSyncSettings,
     saveSyncSettings: saveSyncSettings,
+    normalizeSyncSettings: normalizeSyncSettings,
+    sendTest: sendTest,
     getStatus: getStatus,
     setStatus: setStatus,
     buildExportObject: buildExportObject,

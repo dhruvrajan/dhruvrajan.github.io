@@ -10,8 +10,11 @@
   var SETLIST_KEY = "lyrics_browse_setlist_v1";
   var SORT_KEY = "lyrics_browse_sort_v1";
   var SPEED_KEY = "lyrics_browse_scroll_speed_v1";
+  var FILTERS_OPEN_KEY = "lyrics_browse_filters_open_v1";
+  var LAYOUT_KEY = "lyrics_browse_layout_v1";
   var PREFETCH_CONCURRENCY = 4;
   var TEXT_SIZES = ["sm", "md", "lg"];
+  var LAYOUT_MODES = ["auto", "desktop", "touch"];
   var INSTRUMENTS = ["Guitar", "Octave mandolin", "Banjo"];
   var INSTRUMENT_KEY = "lyrics_browse_instrument_v1";
 
@@ -25,6 +28,8 @@
     capoFilter: "all",
     artistFilter: "all",
     stage: false,
+    filtersOpen: false,
+    layoutMode: "auto",
     recent: [],
     setlist: [],
     order: [],
@@ -105,10 +110,115 @@
       INSTRUMENTS.indexOf(inst) !== -1 || inst === "all" ? inst : "Guitar";
     var speed = Number(storageGet(SPEED_KEY, "35"));
     state.scrollSpeed = isNaN(speed) ? 35 : Math.min(120, Math.max(8, speed));
+    state.filtersOpen = storageGet(FILTERS_OPEN_KEY, "0") === "1";
+    var layout = storageGet(LAYOUT_KEY, "auto") || "auto";
+    state.layoutMode =
+      LAYOUT_MODES.indexOf(layout) !== -1 ? layout : "auto";
     var recent = storageGetJson(RECENT_KEY, []);
     state.recent = Array.isArray(recent) ? recent.slice(0, 40) : [];
     var setlist = storageGetJson(SETLIST_KEY, []);
     state.setlist = Array.isArray(setlist) ? setlist.slice(0, 40) : [];
+  }
+
+  function detectTouchPreferred() {
+    try {
+      if (
+        window.matchMedia &&
+        (window.matchMedia("(pointer: coarse)").matches ||
+          window.matchMedia("(hover: none)").matches)
+      ) {
+        return true;
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    var ua = (navigator && navigator.userAgent) || "";
+    var maxTp = (navigator && navigator.maxTouchPoints) || 0;
+    if (maxTp > 1 && /Macintosh|Mac OS X/i.test(ua)) return true;
+    if (/iPhone|iPad|iPod|Android.*Mobile|Mobile.*Android/i.test(ua)) {
+      return true;
+    }
+    return false;
+  }
+
+  function effectiveLayout() {
+    if (state.layoutMode === "desktop") return "desktop";
+    if (state.layoutMode === "touch") return "touch";
+    return detectTouchPreferred() ? "touch" : "desktop";
+  }
+
+  function applyLayoutClass() {
+    var layout = effectiveLayout();
+    var isDesktop = layout === "desktop";
+    if (root) {
+      root.classList.toggle("lb-layout-desktop", isDesktop);
+      root.classList.toggle("lb-layout-touch", !isDesktop);
+      root.setAttribute("data-lb-layout", layout);
+    }
+    document.body.classList.toggle("lb-layout-desktop", isDesktop);
+    document.body.classList.toggle("lb-layout-touch", !isDesktop);
+  }
+
+  function activeFilterCount() {
+    var n = 0;
+    if (state.instrumentFilter && state.instrumentFilter !== "Guitar") n += 1;
+    if (state.tuningFilter && state.tuningFilter !== "all") n += 1;
+    if (state.capoFilter && state.capoFilter !== "all") n += 1;
+    if (state.artistFilter && state.artistFilter !== "all") n += 1;
+    return n;
+  }
+
+  function updateFiltersToggle() {
+    var btn = els.filtersToggle || (root && $("#lb-filters-toggle", root));
+    if (!btn) return;
+    var n = activeFilterCount();
+    btn.textContent = n ? "Filters (" + n + ")" : "Filters";
+    btn.setAttribute("aria-expanded", state.filtersOpen ? "true" : "false");
+    btn.setAttribute("aria-pressed", state.filtersOpen ? "true" : "false");
+    if (els.filtersPanel) {
+      els.filtersPanel.hidden = !state.filtersOpen;
+    }
+  }
+
+  function setFiltersOpen(open) {
+    state.filtersOpen = !!open;
+    storageSet(FILTERS_OPEN_KEY, state.filtersOpen ? "1" : "0");
+    updateFiltersToggle();
+  }
+
+  function setLayoutMode(mode) {
+    if (LAYOUT_MODES.indexOf(mode) === -1) mode = "auto";
+    state.layoutMode = mode;
+    storageSet(LAYOUT_KEY, mode);
+    applyLayoutClass();
+    syncLayoutMenu();
+    if (state.currentSlug) {
+      applySongPaneVisibility();
+    }
+  }
+
+  function syncLayoutMenu() {
+    if (!root) return;
+    root.querySelectorAll("[data-layout-mode]").forEach(function (btn) {
+      btn.setAttribute(
+        "aria-pressed",
+        btn.getAttribute("data-layout-mode") === state.layoutMode
+          ? "true"
+          : "false"
+      );
+    });
+  }
+
+  function applySongPaneVisibility() {
+    if (!els.browse) return;
+    var desktop = effectiveLayout() === "desktop";
+    if (state.currentSlug && desktop) {
+      els.browse.classList.remove("lb-hidden");
+    } else if (state.currentSlug) {
+      els.browse.classList.add("lb-hidden");
+    } else {
+      els.browse.classList.remove("lb-hidden");
+    }
   }
 
   function loadSongsMetaFallback() {
@@ -700,43 +810,85 @@
   function shellHtml() {
     return (
       '<div class="lb-browse">' +
-      '<div class="lb-bar">' +
+      '<div class="lb-chrome">' +
+      '<div class="lb-bar lb-bar--compact">' +
       '<div class="lb-bar__grow">' +
       '<label class="visually-hidden" for="lb-search">Search songs</label>' +
       '<input id="lb-search" class="lb-search" type="search" placeholder="Search title or artist" enterkeyhint="search" autocomplete="off">' +
       "</div>" +
-      '<button type="button" class="lb-btn lb-btn--secondary" id="lb-stage-toggle" aria-pressed="false">Stage mode</button>' +
-      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-notes-export" title="Export notes JSON">Export notes</button>' +
-      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-notes-copy">Copy notes</button>' +
-      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-notes-share" hidden>Share notes</button>' +
-      '<label class="lb-btn lb-btn--ghost lb-file-btn" for="lb-notes-import">Import notes<input id="lb-notes-import" type="file" accept="application/json,.json" hidden></label>' +
-      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-sync-gear" aria-expanded="false" title="Note sync settings" aria-label="Note sync settings">⚙</button>' +
+      '<button type="button" class="lb-btn lb-btn--secondary" id="lb-filters-toggle" aria-expanded="false" aria-controls="lb-filters-panel">Filters</button>' +
+      '<label class="visually-hidden" for="lb-sort">Sort songs</label>' +
+      '<select id="lb-sort" class="lb-select lb-select--sort">' +
+      '<option value="artist">Artist</option>' +
+      '<option value="title">Title</option>' +
+      '<option value="tuning">Tuning</option>' +
+      '<option value="capo">Capo</option>' +
+      '<option value="recent">Recent</option>' +
+      "</select>" +
+      '<div class="lb-overflow">' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-settings-btn" aria-expanded="false" aria-haspopup="true" aria-controls="lb-settings-menu" title="Settings" aria-label="Settings">⋯</button>' +
+      '<div class="lb-menu" id="lb-settings-menu" role="menu" hidden>' +
+      '<div class="lb-menu__section" role="none">' +
+      '<p class="lb-menu__label">Text size</p>' +
+      '<div class="lb-menu__row" role="none">' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-menu-font-down" aria-label="Smaller text">A−</button>' +
+      '<span class="lb-menu__value" id="lb-font-label">MD</span>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-menu-font-up" aria-label="Larger text">A+</button>' +
+      "</div></div>" +
+      '<div class="lb-menu__section" role="none">' +
+      '<button type="button" class="lb-menu__item" id="lb-stage-toggle" role="menuitemcheckbox" aria-checked="false">Stage mode</button>' +
+      "</div>" +
+      '<div class="lb-menu__section" role="none">' +
+      '<p class="lb-menu__label">Layout</p>' +
+      '<div class="lb-menu__row lb-menu__row--seg" role="group" aria-label="Layout mode">' +
+      '<button type="button" class="lb-btn lb-btn--ghost" data-layout-mode="auto" aria-pressed="true">Auto</button>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" data-layout-mode="desktop" aria-pressed="false">Desktop</button>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" data-layout-mode="touch" aria-pressed="false">Touch</button>' +
+      "</div></div>" +
+      '<div class="lb-menu__section" role="none">' +
+      '<p class="lb-menu__label">Notes</p>' +
+      '<button type="button" class="lb-menu__item" id="lb-notes-export" role="menuitem">Export notes</button>' +
+      '<button type="button" class="lb-menu__item" id="lb-notes-copy" role="menuitem">Copy notes</button>' +
+      '<button type="button" class="lb-menu__item" id="lb-notes-share" role="menuitem" hidden>Share notes</button>' +
+      '<label class="lb-menu__item lb-file-btn" for="lb-notes-import" role="menuitem">Import notes<input id="lb-notes-import" type="file" accept="application/json,.json" hidden></label>' +
+      "</div>" +
+      '<div class="lb-menu__section" role="none">' +
+      '<button type="button" class="lb-menu__item" id="lb-sync-gear" role="menuitem" aria-expanded="false">Note sync…</button>' +
+      '<button type="button" class="lb-menu__item" id="lb-menu-print" role="menuitem">Print song</button>' +
+      '<button type="button" class="lb-menu__item" id="lb-menu-songbook" role="menuitem">Download songbook PDF</button>' +
+      "</div>" +
+      "</div></div>" +
       '<button type="button" class="lb-btn lb-btn--ghost" id="lb-lock">Lock</button>' +
+      "</div>" +
+      '<div class="lb-filters-panel" id="lb-filters-panel" hidden>' +
+      '<div class="lb-filters" id="lb-filters"></div>' +
       "</div>" +
       '<div class="lb-sync-panel" id="lb-sync-panel" hidden>' +
       '<h3 class="lb-sync-panel__title">Note sync</h3>' +
       '<p class="lb-status">Optional webhook for live note backup. Stored only on this device.</p>' +
-      '<label class="lb-sync-field">Webhook URL<input id="lb-sync-url" type="url" inputmode="url" autocomplete="off" placeholder="https://…"></label>' +
-      '<label class="lb-sync-field">Sender key<input id="lb-sync-key" type="password" autocomplete="off" spellcheck="false"></label>' +
-      '<label class="lb-sync-field">Key header name<input id="lb-sync-header" type="text" autocomplete="off" placeholder="Authorization"></label>' +
-      '<div class="lb-bar"><button type="button" class="lb-btn" id="lb-sync-save">Save settings</button>' +
-      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-sync-flush">Retry queue</button></div>' +
-      '<p class="lb-status" id="lb-sync-msg" hidden></p>' +
+      '<label class="lb-sync-field">Webhook URL' +
+      '<input id="lb-sync-url" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://…">' +
+      '<span class="lb-field-error" id="lb-sync-url-err" hidden></span></label>' +
+      '<label class="lb-sync-field">Sender key' +
+      '<input id="lb-sync-key" type="password" autocomplete="off" spellcheck="false">' +
+      '<span class="lb-field-error" id="lb-sync-key-err" hidden></span></label>' +
+      '<label class="lb-sync-field">Key header name' +
+      '<input id="lb-sync-header" type="text" autocomplete="off" spellcheck="false" placeholder="Authorization">' +
+      '<span class="lb-field-error" id="lb-sync-header-err" hidden></span></label>' +
+      '<div class="lb-bar lb-bar--sync">' +
+      '<button type="button" class="lb-btn" id="lb-sync-save">Save settings</button>' +
+      '<button type="button" class="lb-btn lb-btn--secondary" id="lb-sync-test">Send test</button>' +
+      '<button type="button" class="lb-btn lb-btn--ghost" id="lb-sync-flush">Retry queue</button>' +
+      "</div>" +
+      '<p class="lb-status" id="lb-sync-msg" hidden aria-live="polite"></p>' +
       "</div>" +
       '<p class="lb-status" id="lb-notes-msg" hidden aria-live="polite"></p>' +
-      '<div class="lb-seg" role="group" aria-label="Sort songs">' +
-      '<button type="button" class="lb-seg__btn" data-sort="artist" aria-pressed="true">Artist</button>' +
-      '<button type="button" class="lb-seg__btn" data-sort="title" aria-pressed="false">Title</button>' +
-      '<button type="button" class="lb-seg__btn" data-sort="tuning" aria-pressed="false">Tuning</button>' +
-      '<button type="button" class="lb-seg__btn" data-sort="capo" aria-pressed="false">Capo</button>' +
-      '<button type="button" class="lb-seg__btn" data-sort="recent" aria-pressed="false">Recent</button>' +
-      "</div>" +
-      '<div class="lb-filters" id="lb-filters"></div>' +
       '<div class="lb-prefetch" id="lb-prefetch" hidden data-state="idle">' +
       '<span class="lb-prefetch__dot" aria-hidden="true"></span>' +
       '<span id="lb-prefetch-text"></span>' +
       "</div>" +
       '<p class="lb-status" id="lb-status" aria-live="polite"></p>' +
+      "</div>" +
       '<div class="lb-layout">' +
       '<div class="lb-list-wrap" id="lb-list"></div>' +
       '<nav class="lb-rail" id="lb-rail" aria-label="Jump to section"></nav>' +
@@ -918,16 +1070,22 @@
           : "No songs match these filters";
     }
 
-    document.querySelectorAll(".lb-seg__btn").forEach(function (btn) {
-      btn.setAttribute(
-        "aria-pressed",
-        btn.getAttribute("data-sort") === state.sort ? "true" : "false"
-      );
-    });
+    if (els.sortSelect) {
+      els.sortSelect.value = state.sort;
+    }
 
     if (els.stageToggle) {
-      els.stageToggle.setAttribute("aria-pressed", state.stage ? "true" : "false");
+      els.stageToggle.setAttribute(
+        "aria-checked",
+        state.stage ? "true" : "false"
+      );
       els.stageToggle.textContent = state.stage ? "Stage on" : "Stage mode";
+    }
+
+    updateFiltersToggle();
+    syncLayoutMenu();
+    if (els.fontLabel) {
+      els.fontLabel.textContent = currentTextSize().toUpperCase();
     }
 
     renderFilters();
@@ -1302,7 +1460,7 @@
     state.currentSlug = slug;
     stopAutoScroll();
     applySongOpenClass(true);
-    if (els.browse) els.browse.classList.add("lb-hidden");
+    applySongPaneVisibility();
     els.song.hidden = false;
     els.song.classList.remove("lb-hidden");
     renderSongChrome(meta, null, opts);
@@ -1331,11 +1489,9 @@
   }
 
   function onRootClick(e) {
-    var t = e.target.closest("[data-sort]");
-    if (t && t.hasAttribute("data-sort")) {
-      state.sort = t.getAttribute("data-sort");
-      storageSet(SORT_KEY, state.sort);
-      renderBrowse();
+    var t = e.target.closest("[data-layout-mode]");
+    if (t) {
+      setLayoutMode(t.getAttribute("data-layout-mode"));
       return;
     }
     t = e.target.closest("[data-instrument]");
@@ -1403,10 +1559,78 @@
     }
   }
 
+  function clearSyncFieldErrors() {
+    ["url", "key", "header"].forEach(function (name) {
+      var err = $("#lb-sync-" + name + "-err", root);
+      var input = $("#lb-sync-" + name, root);
+      if (err) {
+        err.textContent = "";
+        err.hidden = true;
+      }
+      if (input) input.removeAttribute("aria-invalid");
+    });
+  }
+
+  function showSyncFieldErrors(errors) {
+    clearSyncFieldErrors();
+    errors = errors || {};
+    var map = {
+      url: errors.url,
+      header: errors.header,
+      key: errors.key,
+    };
+    Object.keys(map).forEach(function (name) {
+      var msg = map[name];
+      if (!msg) return;
+      var err = $("#lb-sync-" + name + "-err", root);
+      var input = $("#lb-sync-" + name, root);
+      if (err) {
+        err.textContent = msg;
+        err.hidden = false;
+      }
+      if (input) input.setAttribute("aria-invalid", "true");
+    });
+  }
+
+  function fillSyncForm(settings) {
+    var url = $("#lb-sync-url", root);
+    var key = $("#lb-sync-key", root);
+    var header = $("#lb-sync-header", root);
+    if (url) url.value = (settings && settings.url) || "";
+    if (key) key.value = (settings && settings.key) || "";
+    if (header) header.value = (settings && settings.header) || "Authorization";
+  }
+
+  function readSyncForm() {
+    return {
+      url: ($("#lb-sync-url", root) || {}).value || "",
+      key: ($("#lb-sync-key", root) || {}).value || "",
+      header: ($("#lb-sync-header", root) || {}).value || "",
+    };
+  }
+
+  function setSyncMsg(text, kind) {
+    if (!els.syncMsg) return;
+    els.syncMsg.textContent = text || "";
+    els.syncMsg.hidden = !text;
+    els.syncMsg.className =
+      "lb-status" + (kind ? " lb-status--" + kind : "");
+  }
+
+  function closeSettingsMenu() {
+    if (els.settingsMenu) els.settingsMenu.hidden = true;
+    if (els.settingsBtn) {
+      els.settingsBtn.setAttribute("aria-expanded", "false");
+    }
+  }
+
   function bindShell() {
     root.addEventListener("click", onRootClick);
     els.search = $("#lb-search", root);
     els.filters = $("#lb-filters", root);
+    els.filtersPanel = $("#lb-filters-panel", root);
+    els.filtersToggle = $("#lb-filters-toggle", root);
+    els.sortSelect = $("#lb-sort", root);
     els.prefetch = $("#lb-prefetch", root);
     els.prefetchText = $("#lb-prefetch-text", root);
     els.status = $("#lb-status", root);
@@ -1420,6 +1644,9 @@
     els.notesMsg = $("#lb-notes-msg", root);
     els.syncPanel = $("#lb-sync-panel", root);
     els.syncMsg = $("#lb-sync-msg", root);
+    els.settingsBtn = $("#lb-settings-btn", root);
+    els.settingsMenu = $("#lb-settings-menu", root);
+    els.fontLabel = $("#lb-font-label", root);
 
     function setNotesMsg(text, kind) {
       if (!els.notesMsg) return;
@@ -1434,6 +1661,36 @@
       els.search.addEventListener("input", function () {
         state.query = els.search.value;
         renderBrowse();
+      });
+    }
+
+    if (els.sortSelect) {
+      els.sortSelect.value = state.sort;
+      els.sortSelect.addEventListener("change", function () {
+        state.sort = els.sortSelect.value || "artist";
+        storageSet(SORT_KEY, state.sort);
+        renderBrowse();
+      });
+    }
+
+    if (els.filtersToggle) {
+      els.filtersToggle.addEventListener("click", function () {
+        setFiltersOpen(!state.filtersOpen);
+      });
+    }
+
+    if (els.settingsBtn && els.settingsMenu) {
+      els.settingsBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var open = els.settingsMenu.hidden;
+        els.settingsMenu.hidden = !open;
+        els.settingsBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      document.addEventListener("click", function (e) {
+        if (!els.settingsMenu || els.settingsMenu.hidden) return;
+        if (els.settingsMenu.contains(e.target)) return;
+        if (els.settingsBtn && els.settingsBtn.contains(e.target)) return;
+        closeSettingsMenu();
       });
     }
 
@@ -1460,6 +1717,7 @@
           e.target.value = "";
         };
         reader.readAsText(file);
+        closeSettingsMenu();
       }
     });
 
@@ -1469,6 +1727,19 @@
         storageSet(STAGE_KEY, state.stage ? "1" : "0");
         applyStageClass();
         renderBrowse();
+      });
+    }
+
+    var fontDown = $("#lb-menu-font-down", root);
+    var fontUp = $("#lb-menu-font-up", root);
+    if (fontDown) {
+      fontDown.addEventListener("click", function () {
+        bumpTextSize(-1);
+      });
+    }
+    if (fontUp) {
+      fontUp.addEventListener("click", function () {
+        bumpTextSize(1);
       });
     }
 
@@ -1484,6 +1755,7 @@
         var obj = exportNotesBundle();
         N.downloadExport(obj);
         setNotesMsg("Downloaded " + obj.count + " notes", "ok");
+        closeSettingsMenu();
       });
     }
     if (copyBtn) {
@@ -1498,6 +1770,7 @@
           .catch(function () {
             setNotesMsg("Could not copy — try Export", "error");
           });
+        closeSettingsMenu();
       });
     }
     if (shareBtn) {
@@ -1508,6 +1781,24 @@
         N.shareExport(obj).catch(function () {
           setNotesMsg("Share canceled", "info");
         });
+        closeSettingsMenu();
+      });
+    }
+
+    var menuPrint = $("#lb-menu-print", root);
+    var menuSongbook = $("#lb-menu-songbook", root);
+    if (menuPrint) {
+      menuPrint.addEventListener("click", function () {
+        var btn = document.getElementById("print-lyrics-btn");
+        if (btn) btn.click();
+        closeSettingsMenu();
+      });
+    }
+    if (menuSongbook) {
+      menuSongbook.addEventListener("click", function () {
+        var btn = document.getElementById("download-songbook-btn");
+        if (btn) btn.click();
+        closeSettingsMenu();
       });
     }
 
@@ -1517,31 +1808,52 @@
         var open = els.syncPanel.hidden;
         els.syncPanel.hidden = !open;
         gear.setAttribute("aria-expanded", open ? "true" : "false");
+        clearSyncFieldErrors();
+        setSyncMsg("");
         if (open && notesApi()) {
-          var s = notesApi().loadSyncSettings();
-          var url = $("#lb-sync-url", root);
-          var key = $("#lb-sync-key", root);
-          var header = $("#lb-sync-header", root);
-          if (url) url.value = s.url || "";
-          if (key) key.value = s.key || "";
-          if (header) header.value = s.header || "Authorization";
+          fillSyncForm(notesApi().loadSyncSettings());
         }
+        closeSettingsMenu();
       });
     }
     var syncSave = $("#lb-sync-save", root);
     if (syncSave) {
       syncSave.addEventListener("click", function () {
         if (!notesApi()) return;
-        notesApi().saveSyncSettings({
-          url: ($("#lb-sync-url", root) || {}).value,
-          key: ($("#lb-sync-key", root) || {}).value,
-          header: ($("#lb-sync-header", root) || {}).value,
-        });
-        if (els.syncMsg) {
-          els.syncMsg.hidden = false;
-          els.syncMsg.textContent = "Sync settings saved on this device";
+        var norm = notesApi().saveSyncSettings(readSyncForm());
+        fillSyncForm(norm);
+        if (Object.keys(norm.errors || {}).length) {
+          showSyncFieldErrors(norm.errors);
+          setSyncMsg(firstSyncError(norm.errors) || "Fix the fields above", "error");
+          return;
         }
+        clearSyncFieldErrors();
+        setSyncMsg("Sync settings saved on this device", "ok");
         notesApi().flushQueue();
+      });
+    }
+    var syncTest = $("#lb-sync-test", root);
+    if (syncTest) {
+      syncTest.addEventListener("click", function () {
+        if (!notesApi()) return;
+        var norm = notesApi().saveSyncSettings(readSyncForm());
+        fillSyncForm(norm);
+        if (Object.keys(norm.errors || {}).length) {
+          showSyncFieldErrors(norm.errors);
+          setSyncMsg(firstSyncError(norm.errors) || "Fix the fields above", "error");
+          return;
+        }
+        clearSyncFieldErrors();
+        setSyncMsg("Sending test…");
+        notesApi()
+          .sendTest()
+          .then(function (res) {
+            setSyncMsg((res && res.message) || "Test sent", "ok");
+          })
+          .catch(function (err) {
+            if (err && err.errors) showSyncFieldErrors(err.errors);
+            setSyncMsg((err && err.message) || "Test failed", "error");
+          });
       });
     }
     var syncFlush = $("#lb-sync-flush", root);
@@ -1549,13 +1861,7 @@
       syncFlush.addEventListener("click", function () {
         if (!notesApi()) return;
         notesApi().flushQueue().then(function () {
-          if (els.syncMsg) {
-            els.syncMsg.hidden = false;
-            els.syncMsg.textContent = "Retry finished";
-          }
-          if (state.currentSlug) {
-            /* status refreshes via onChange */
-          }
+          setSyncMsg("Retry finished", "ok");
         });
       });
     }
@@ -1571,6 +1877,13 @@
       els.lockBtn.addEventListener("click", function () {
         if (api && typeof api.lock === "function") api.lock();
       });
+    }
+
+    updateFiltersToggle();
+    applyLayoutClass();
+    syncLayoutMenu();
+    if (els.fontLabel) {
+      els.fontLabel.textContent = currentTextSize().toUpperCase();
     }
 
     bindSongGestures();
@@ -1593,6 +1906,11 @@
     });
   }
 
+  function firstSyncError(errors) {
+    if (!errors) return "";
+    return errors.url || errors.header || errors.key || "";
+  }
+
   function mount(browseApi) {
     api = browseApi;
     loadPrefs();
@@ -1613,6 +1931,7 @@
 
     root.innerHTML = shellHtml();
     bindShell();
+    applyLayoutClass();
     renderBrowse();
     startPrefetch();
 
@@ -1627,6 +1946,7 @@
     releaseWakeLock();
     applySongOpenClass(false);
     document.body.classList.remove("lb-stage");
+    document.body.classList.remove("lb-layout-desktop", "lb-layout-touch");
     var browserEl = document.getElementById("lyrics-browser");
     if (browserEl) browserEl.classList.remove("lb-active");
     if (root) root.innerHTML = "";
