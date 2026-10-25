@@ -63,7 +63,7 @@
         {% else %}
           {{ song.title }}
         {% endif %}
-        <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}#song={{ song.title | append: '-Unknown' | slugify }}">Lyrics</a>
+        <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}#song={{ song.title | append: '-Other' | slugify }}">Lyrics</a>
       </li>
       {% endif %}
     {% endfor %}
