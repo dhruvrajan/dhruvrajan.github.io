@@ -126,26 +126,65 @@
     return inst.name + ": " + bits.join(" · ");
   }
 
+  function abbreviateInstrument(name) {
+    var n = normalizeInstrumentName(name);
+    if (n === "Guitar") return "Gtr";
+    if (n === "Octave mandolin") return "OM";
+    if (n === "Banjo") return "Banjo";
+    return n || "Gtr";
+  }
+
+  /** Compact muted setup for titles / TOC / headers. */
   function formatSetup(song) {
-    var instruments = instrumentsForSong(song);
-    if (instruments.length) {
-      return instruments.map(formatInstrumentLine).filter(Boolean).join("\n");
+    if (
+      root.LyricsSetup &&
+      typeof root.LyricsSetup.formatSetupCompact === "function"
+    ) {
+      var compact = root.LyricsSetup.formatSetupCompact(
+        Object.assign({}, song, { instruments: instrumentsForSong(song) })
+      );
+      if (compact) return compact;
     }
-    var parts = [];
+    var instruments = instrumentsForSong(song);
+    if (instruments.length === 1) {
+      var bits = [];
+      var inst = instruments[0];
+      if (inst.tuning) bits.push(inst.tuning + (inst.unverified ? "?" : ""));
+      if (inst.capo != null && Number(inst.capo) !== 0) {
+        bits.push("Capo " + Number(inst.capo));
+      }
+      return bits.join(" · ");
+    }
+    if (instruments.length > 1) {
+      return instruments
+        .map(function (row) {
+          var parts = [];
+          if (row.tuning) parts.push(row.tuning + (row.unverified ? "?" : ""));
+          if (row.capo != null && Number(row.capo) !== 0) {
+            parts.push("Capo " + Number(row.capo));
+          }
+          if (!parts.length) return "";
+          return abbreviateInstrument(row.name) + ": " + parts.join(" · ");
+        })
+        .filter(Boolean)
+        .join(" · ");
+    }
+    var legacy = [];
     if (song.tuning) {
       var tuning = song.tuning;
       if (song.tuning_unverified) tuning += "?";
-      parts.push("Tuning: " + tuning);
+      legacy.push(tuning);
     }
     if (song.capo != null && Number(song.capo) !== 0) {
-      parts.push("Capo " + Number(song.capo));
+      legacy.push("Capo " + Number(song.capo));
     }
-    return parts.join(" · ");
+    return legacy.join(" · ");
   }
 
   function setupLines(song) {
     var text = formatSetup(song);
     if (!text) return [];
+    // Compact form is one line; keep split for older multi-line callers
     return String(text).split("\n").filter(Boolean);
   }
 
@@ -189,7 +228,7 @@
     var y = CONTENT_TOP + 26 + 28;
     var pages = 1;
     artists.forEach(function (artist) {
-      var block = 18 + (songsByArtist[artist].length || 0) * 15 + 8;
+      var block = 18 + (songsByArtist[artist].length || 0) * 24 + 8;
       if (y + 40 > CONTENT_BOTTOM) {
         pages += 1;
         y = CONTENT_TOP + 28;
@@ -268,7 +307,7 @@
       var py = CONTENT_TOP + 26 + 28;
       var pp = tocStart;
       artists.forEach(function (artist) {
-        var block = 18 + songsByArtist[artist].length * 15 + 8;
+        var block = 18 + songsByArtist[artist].length * 24 + 8;
         if (py + 40 > CONTENT_BOTTOM) {
           pp += 1;
           py = CONTENT_TOP + 28;
@@ -345,7 +384,7 @@
       doc.text(artist, MARGIN, y);
       y += 16;
       songsByArtist[artist].forEach(function (song) {
-        if (y + 16 > CONTENT_BOTTOM) newTocPage();
+        if (y + 26 > CONTENT_BOTTOM) newTocPage();
         var dest = songStartPage[songKey(song)];
         var pageLabel = String(dest);
         doc.setFont("helvetica", "normal");
@@ -357,7 +396,19 @@
         if (titleLines.length > 1) line = line.replace(/\s+$/, "") + "…";
         doc.textWithLink(line, MARGIN + 10, y, { pageNumber: dest });
         doc.text(pageLabel, PAGE.w - MARGIN - pw, y);
-        y += 15;
+        y += 12;
+        var setup = formatSetup(song);
+        if (setup) {
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          doc.setTextColor(110);
+          var setupLine = doc.splitTextToSize(setup, maxTitleW)[0];
+          doc.text(setupLine, MARGIN + 10, y);
+          doc.setTextColor(0);
+          y += 11;
+        } else {
+          y += 3;
+        }
       });
       y += 8;
     });

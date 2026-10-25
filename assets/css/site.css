@@ -815,6 +815,28 @@ ol.song-list li::marker {
   font-weight: 700;
 }
 
+.song-item__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.song-setup {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.setup-unverified,
+.song-setup .setup-unverified {
+  font-weight: 700;
+  vertical-align: super;
+  font-size: 0.75em;
+}
+
 .song-detail__unverified {
   margin-left: 0.1em;
   font-weight: 500;
