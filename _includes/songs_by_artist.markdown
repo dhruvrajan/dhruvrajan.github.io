@@ -1,24 +1,33 @@
 {% assign songs = site.data.songs %}
+{% assign artists = songs | map: "artist" | uniq | sort %}
 
-{% assign artists = songs | map: 'artist' | uniq %}
+<nav class="jump-nav" aria-label="Artists">
+  {% for artist in artists %}
+    {% if artist and artist != "" %}
+    <a href="#artist-{{ forloop.index }}">{{ artist }}</a>
+    {% endif %}
+  {% endfor %}
+</nav>
 
 {% for artist in artists %}
-  <h2>{{ artist }}</h2>
-  <ul>
+  {% if artist and artist != "" %}
+  <section class="group" id="artist-{{ forloop.index }}" aria-labelledby="artist-heading-{{ forloop.index }}">
+    <h2 id="artist-heading-{{ forloop.index }}" class="group-heading">{{ artist }}</h2>
+    <ul class="song-list">
     {% for song in songs %}
-      {% if song.artist == artist  and song.youtube_link %}
-        <li>
-          <a href="{{ song.youtube_link }}" target="_blank">{{ song.title }}</a>
-        </li>
-      {% elsif song.artist == artist  and song.soundcloud_link %}
-        <li>
-          <a href="{{ song.soundcloud_link }}" target="_blank">{{ song.title }}</a>
-        </li>
-      {% elsif song.artist == artist %}
-        <li>
+      {% if song.artist == artist %}
+      <li>
+        {% if song.youtube_link %}
+          <a href="{{ song.youtube_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
+        {% elsif song.soundcloud_link %}
+          <a href="{{ song.soundcloud_link }}" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
+        {% else %}
           {{ song.title }}
-        </li>
+        {% endif %}
+      </li>
       {% endif %}
     {% endfor %}
-  </ul>
+    </ul>
+  </section>
+  {% endif %}
 {% endfor %}

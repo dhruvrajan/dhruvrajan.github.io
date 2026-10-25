@@ -26,28 +26,41 @@ description: Solo acoustic and folk performer — guitar, clawhammer banjo, octa
   <img class="portrait" src="{{ '/images/portrait.jpg' | relative_url }}" alt="Dhruv Rajan performing with guitar">
 </section>
 
+{% assign videos = site.data.videos %}
+{% assign featured = videos | first %}
+{% assign more_videos = videos | slice: 1, videos.size %}
+
 <section aria-labelledby="performances-heading">
   <h2 id="performances-heading" class="section-heading">Selected Performances</h2>
 
+  {% if featured %}
   <div class="video-featured">
     <div class="video">
-      <iframe src="https://www.youtube.com/embed/3JAcX3mY5e4" title="Selected performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+      <iframe
+        src="https://www.youtube.com/embed/{{ featured.id }}"
+        title="Selected performance video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+        loading="lazy"></iframe>
     </div>
   </div>
+  {% endif %}
 
-  <div class="video-grid">
-    <div class="video"><iframe src="https://www.youtube.com/embed/uCfZE9MxoTA" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/7l0m7DScp94" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/3DIuH4BS8ds" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/tlYO5shY4dk" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/0SYvUWQqR1s" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/E5_Q0tIqDSk" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/vfmbufxg7tU" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/SZesABJoEpY" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/OBK7vbtGDXg" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/EdKrhMwY64w" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/fuHATtM9ZZo" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/sjDa4spV9-8" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-    <div class="video"><iframe src="https://www.youtube.com/embed/hFHqbJ4IeAE" title="Performance video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
-  </div>
+  {% if more_videos.size > 0 %}
+  <h3 class="subheading">More recordings</h3>
+  <ul class="thumb-grid">
+    {% for video in more_videos %}
+    <li>
+      <a class="thumb" href="https://www.youtube.com/watch?v={{ video.id }}" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/{{ video.id }}/hqdefault.jpg" alt="Watch performance on YouTube" width="480" height="360" loading="lazy">
+        <span class="thumb-label">Watch on YouTube</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="section-more">
+    <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" rel="noopener noreferrer">Full channel on YouTube →</a>
+  </p>
+  {% endif %}
 </section>
