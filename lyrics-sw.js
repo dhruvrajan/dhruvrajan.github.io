@@ -23,7 +23,7 @@
     try {
       var u = new URL(url, self.location.origin);
       if (u.origin !== self.location.origin) return false;
-      return /\/assets\/data\/lyrics\/songs\/[^/]+\.enc\.json$/i.test(u.pathname);
+      return /\/assets\/data\/(lyrics|chords)\/(songs\/[^/]+|index)\.enc\.json$/i.test(u.pathname);
     } catch (e) {
       return false;
     }

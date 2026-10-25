@@ -1014,7 +1014,7 @@
       );
       var enriched = details.map(enrichForSongbook);
       setSongbookProgress("Building PDF…", "info");
-      var result = window.DhruvSongbookPdf.build(enriched, {
+      var result = await window.DhruvSongbookPdf.build(enriched, {
         orientation: getOrientation(),
         onProgress: function (msg) {
           setSongbookProgress(msg, "info");
@@ -1046,6 +1046,10 @@
       },
       hasLyrics: hasLyricsFile,
       loadSongDetails: loadSongDetails,
+      decryptJson: async function (url) {
+        if (!state.cryptoKey) throw new Error("Locked.");
+        return decryptPayload(state.cryptoKey, await fetchJson(url));
+      },
       songSlug: songSlug,
       titleSlug: titleSlug,
       findSongBySlug: findSongBySlug,
