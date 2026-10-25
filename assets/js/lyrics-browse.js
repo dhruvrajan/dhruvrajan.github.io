@@ -1105,6 +1105,7 @@
 
     var html = '<div class="lb-song-view">';
     html += '<div class="lb-song-view__top">';
+    html += '<div class="lb-song-view__actions" role="group" aria-label="Song tools">';
     if (touch) {
       html +=
         '<button type="button" class="lb-btn lb-btn--subtle" id="lb-back">Back</button>';
@@ -1128,18 +1129,21 @@
       '">' +
       (isPinned(slug) ? "Pinned" : "Pin") +
       "</button>";
+    html += "</div>";
     html +=
       '<h2 class="lb-song-view__title">' +
       escapeHtml(meta.title) +
       "</h2>";
+    html += '<p class="lb-song-view__meta">';
     html +=
-      '<p class="lb-song-view__artist">' +
+      '<span class="lb-song-view__artist">' +
       escapeHtml(meta.artist || "") +
-      "</p>";
+      "</span>";
     if (setup) {
       html +=
-        '<p class="lb-setup-line">' + escapeHtml(setup) + "</p>";
+        '<span class="lb-setup-line">' + escapeHtml(setup) + "</span>";
     }
+    html += "</p>";
     html += "</div>";
 
     html +=
