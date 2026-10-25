@@ -191,8 +191,8 @@
       throw new Error("Decrypted data is not a valid lyrics payload.");
     }
     return payload.songs.map(function (song) {
-      var artist = String(song.artist || "").trim() || "Other";
       var title = song.title || "Untitled";
+      var artist = normalizeArtist(song.artist);
       return {
         title: title,
         artist: artist,
@@ -203,6 +203,13 @@
         slug: slugify(title, artist),
       };
     });
+  }
+
+  /** Blank / Unknown artists share the "Other" bucket (matches songs-by-artist deep links). */
+  function normalizeArtist(artist) {
+    var a = String(artist == null ? "" : artist).trim();
+    if (!a || /^unknown$/i.test(a)) return "Other";
+    return a;
   }
 
   async function unlockWithPassphrase(passphrase, remember) {
