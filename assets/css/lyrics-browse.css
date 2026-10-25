@@ -101,11 +101,45 @@ body.lb-song-open .page-narrow {
   max-width: none;
 }
 
+#lyrics-browser.lb-active .lyrics-toolbar,
 #lyrics-browser.lb-active .lyrics-legacy-search,
 #lyrics-browser.lb-active #search-results,
 #lyrics-browser.lb-active .repertoire,
 #lyrics-browser.lb-active #song-detail:not(.lb-owned) {
   display: none !important;
+}
+
+#lyrics-browse-root.lb-layout-desktop {
+  --lb-touch: 36px;
+}
+
+#lyrics-browse-root.lb-layout-touch {
+  --lb-touch: 44px;
+}
+
+body.lb-layout-desktop.lb-song-open #lyrics-browse-root {
+  display: grid;
+  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+  gap: 0;
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+body.lb-layout-desktop.lb-song-open #lyrics-browse-root > .lb-browse {
+  max-height: 100vh;
+  overflow: auto;
+  border-right: 1px solid var(--lb-line);
+  padding: 0.75rem;
+}
+
+body.lb-layout-desktop.lb-song-open #lyrics-browse-root > .lb-stage-view {
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: auto;
+}
+
+body.lb-layout-desktop .lb-song:hover {
+  background: color-mix(in srgb, var(--lb-accent) 8%, transparent);
 }
 
 body.lb-song-open .lyrics-toolbar,
@@ -144,9 +178,122 @@ body.lb-song-open #songbook-progress {
   margin: 0 0 1rem;
 }
 
+.lb-bar--compact {
+  margin-bottom: 0.65rem;
+}
+
+.lb-bar--sync {
+  margin-top: 0.35rem;
+}
+
 .lb-bar__grow {
   flex: 1 1 12rem;
   min-width: 0;
+}
+
+.lb-select--sort {
+  flex: 0 1 8.5rem;
+  min-width: 7rem;
+  width: auto;
+}
+
+.lb-overflow {
+  position: relative;
+}
+
+.lb-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 40;
+  width: min(18rem, calc(100vw - 1.5rem));
+  padding: 0.45rem 0;
+  border: 1px solid var(--lb-line);
+  border-radius: 6px;
+  background: var(--lb-surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.lb-menu__section {
+  padding: 0.35rem 0.65rem 0.55rem;
+  border-bottom: 1px solid var(--lb-line);
+}
+
+.lb-menu__section:last-child {
+  border-bottom: 0;
+}
+
+.lb-menu__label {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--lb-muted);
+}
+
+.lb-menu__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.lb-menu__row--seg .lb-btn[aria-pressed="true"] {
+  background: var(--lb-accent);
+  border-color: var(--lb-accent);
+  color: #fff;
+}
+
+.lb-menu__value {
+  min-width: 2.25rem;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--lb-muted);
+}
+
+.lb-menu__item {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: var(--lb-touch);
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  border: 0;
+  background: transparent;
+  color: var(--lb-ink);
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.lb-menu__item:hover,
+.lb-menu__item:focus-visible {
+  background: var(--lb-chip);
+  outline: none;
+}
+
+.lb-menu__item[aria-checked="true"] {
+  font-weight: 700;
+  color: var(--lb-accent);
+}
+
+.lb-filters-panel {
+  margin: 0 0 0.85rem;
+}
+
+.lb-field-error {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #b33;
+}
+
+body.lb-stage .lb-field-error {
+  color: #f0a0a0;
 }
 
 .lb-search {
