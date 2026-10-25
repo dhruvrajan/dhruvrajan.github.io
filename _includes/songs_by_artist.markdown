@@ -24,6 +24,7 @@
         {% else %}
           {{ song.title }}
         {% endif %}
+        <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}?q={{ song.title | append: ' ' | append: song.artist | url_encode }}">Lyrics</a>
       </li>
       {% endif %}
     {% endfor %}
