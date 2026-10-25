@@ -556,9 +556,8 @@
   artist: Sarah Jarosz
   instruments:
     - name: Banjo
-      tuning: Standard (EADGBE)
+      tuning: Banjo Double C (gCGCD)
       capo: 0
-      unverified: true
   youtube_link: 'https://studio.youtube.com/video/sjDa4spV9-8/edit'
   soundcloud_link: ~
 - title: Green Lights
