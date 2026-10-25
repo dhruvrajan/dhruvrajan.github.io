@@ -386,6 +386,16 @@
       capo: 2
   youtube_link: 'https://www.youtube.com/watch?v=VwCpdeWSgdI&t=322s'
   soundcloud_link: ~
+- title: Winter Winds
+  instrument: guitar
+  artist: Mumford and Sons
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
 - title: Bonny Light Horseman
   artist: Nic Jones
   youtube_link: 'https://youtu.be/f9sNhNfpkbk?si=JI5Yq3o0b_-Q83JZ'
@@ -591,7 +601,7 @@
   artist: Tallest Man on Earth
   instruments:
     - name: Guitar
-      tuning: EADGBD
+      tuning: Standard (EADGBE)
       capo: 7
   youtube_link: ~
   soundcloud_link: ~
