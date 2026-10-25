@@ -464,6 +464,23 @@ ol.song-list li::marker {
   color: var(--muted);
 }
 
+.remember-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1 1 100%;
+  margin: 0.15rem 0 0;
+  font-size: 0.925rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.remember-row input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
 .token-form input,
 .search-form input {
   flex: 1 1 12rem;
@@ -688,26 +705,54 @@ ol.song-list li::marker {
   font-size: 0.95rem;
 }
 
-.song-detail__embed {
-  margin: 1rem 0;
-  min-height: 4rem;
-  max-width: 100%;
-  overflow-x: auto;
+.song-lyrics {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ink);
 }
 
-.song-detail__embed iframe,
-.genius-embed-frame {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-height: 22rem;
-  height: 28rem;
-  border: 1px solid var(--line);
-  background: #fff;
+.song-detail--large .song-lyrics {
+  font-size: 1.35rem;
+  line-height: 1.85;
 }
 
-.genius-embed-fallback {
-  margin: 0.65rem 0 0;
+.song-detail__copyright {
+  margin: 1.25rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .lyrics-toolbar,
+  .repertoire,
+  #search-results,
+  #unlock-gate,
+  .page-lead {
+    display: none !important;
+  }
+
+  .song-detail {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .song-lyrics {
+    font-size: 12pt;
+    line-height: 1.6;
+  }
 }
 
 .repertoire {

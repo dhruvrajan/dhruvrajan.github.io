@@ -38,7 +38,7 @@
         {% else %}
           {{ song.title }}
         {% endif %}
-        <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}?q={{ song.title | append: ' ' | append: song.artist | url_encode }}">Lyrics</a>
+        <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}#song={{ song.title | append: '-' | append: song.artist | slugify }}">Lyrics</a>
       </li>
       {% endif %}
     {% endfor %}
@@ -63,7 +63,7 @@
         {% else %}
           {{ song.title }}
         {% endif %}
-        <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}?q={{ song.title | url_encode }}">Lyrics</a>
+        <a class="lyrics-quick" href="{{ '/pages/lyrics.html' | relative_url }}#song={{ song.title | append: '-Unknown' | slugify }}">Lyrics</a>
       </li>
       {% endif %}
     {% endfor %}
