@@ -481,9 +481,8 @@
   artist: Nick Drake
   instruments:
     - name: Guitar
-      tuning: CGCFCE
-      capo: 0
-      unverified: true
+      tuning: EADF#BE
+      capo: 6
   youtube_link: ~
   soundcloud_link: ~
 - title: Blacksmith
