@@ -191,14 +191,16 @@
       throw new Error("Decrypted data is not a valid lyrics payload.");
     }
     return payload.songs.map(function (song) {
+      var artist = String(song.artist || "").trim() || "Other";
+      var title = song.title || "Untitled";
       return {
-        title: song.title || "Untitled",
-        artist: song.artist || "Unknown artist",
+        title: title,
+        artist: artist,
         lyrics: song.lyrics || "",
         source: song.source || "",
         lyrics_copyright: song.lyrics_copyright || "",
         track_id: song.track_id || "",
-        slug: slugify(song.title || "Untitled", song.artist || "Unknown artist"),
+        slug: slugify(title, artist),
       };
     });
   }
@@ -247,6 +249,8 @@
       map[s.artist] = true;
     });
     return Object.keys(map).sort(function (a, b) {
+      if (a === "Other") return 1;
+      if (b === "Other") return -1;
       return a.localeCompare(b);
     });
   }
