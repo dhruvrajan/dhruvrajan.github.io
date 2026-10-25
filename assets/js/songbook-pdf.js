@@ -57,7 +57,74 @@
     return song.slug || song.title + "|" + song.artist;
   }
 
+  function normalizeInstrumentName(name) {
+    var s = String(name || "").trim();
+    if (!s) return "";
+    var lower = s.toLowerCase();
+    if (lower === "guitar") return "Guitar";
+    if (lower === "octave mandolin" || lower === "octave-mandolin")
+      return "Octave mandolin";
+    if (lower === "mandolin") return "Mandolin";
+    if (lower === "banjo") return "Banjo";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function instrumentsForSong(song) {
+    var list = [];
+    if (song && Array.isArray(song.instruments)) {
+      song.instruments.forEach(function (inst) {
+        if (!inst) return;
+        var entry = {
+          name: normalizeInstrumentName(inst.name) || "Guitar",
+          tuning: inst.tuning,
+          capo: inst.capo,
+          unverified: !!(inst.unverified || inst.tuning_unverified),
+        };
+        if (entry.tuning || (entry.capo != null && entry.capo !== "")) {
+          list.push(entry);
+        }
+      });
+    }
+    if (!list.length && song && (song.tuning || song.capo != null)) {
+      list.push({
+        name: normalizeInstrumentName(song.instrument) || "Guitar",
+        tuning: song.tuning,
+        capo: song.capo,
+        unverified: !!(song.tuning_unverified || song.unverified),
+      });
+    }
+    var preferred = normalizeInstrumentName(song && song.instrument);
+    if (preferred) {
+      var head = [];
+      var rest = [];
+      list.forEach(function (inst) {
+        if (String(inst.name).toLowerCase() === preferred.toLowerCase())
+          head.push(inst);
+        else rest.push(inst);
+      });
+      list = head.concat(rest);
+    }
+    return list;
+  }
+
+  function formatInstrumentLine(inst) {
+    if (!inst) return "";
+    var bits = [];
+    if (inst.tuning) {
+      bits.push(inst.tuning + (inst.unverified ? "?" : ""));
+    }
+    if (inst.capo != null && Number(inst.capo) !== 0) {
+      bits.push("Capo " + Number(inst.capo));
+    }
+    if (!bits.length) return "";
+    return inst.name + ": " + bits.join(" · ");
+  }
+
   function formatSetup(song) {
+    var instruments = instrumentsForSong(song);
+    if (instruments.length) {
+      return instruments.map(formatInstrumentLine).filter(Boolean).join("\n");
+    }
     var parts = [];
     if (song.tuning) {
       var tuning = song.tuning;
@@ -68,6 +135,12 @@
       parts.push("Capo " + Number(song.capo));
     }
     return parts.join(" · ");
+  }
+
+  function setupLines(song) {
+    var text = formatSetup(song);
+    if (!text) return [];
+    return String(text).split("\n").filter(Boolean);
   }
 
   function lyricsLines(song) {
@@ -85,10 +158,10 @@
   }
 
   function measureSongPages(doc, song) {
-    var setup = formatSetup(song);
+    var setups = setupLines(song);
     var body = lyricsLines(song);
     var y = CONTENT_TOP + 26 + 18;
-    if (setup) y += 16;
+    if (setups.length) y += setups.length * 16;
     y += 10;
     if (!body) return 1;
     doc.setFont("times", "normal");
@@ -319,7 +392,7 @@
         pageNumber: start,
       });
 
-      var setup = formatSetup(song);
+      var setups = setupLines(song);
       var body = lyricsLines(song);
       var pageNum = start;
       var first = true;
@@ -347,11 +420,13 @@
           doc.setFontSize(13);
           doc.text(String(song.artist || ""), MARGIN, yy);
           yy += 18;
-          if (setup) {
+          if (setups.length) {
             doc.setFont("helvetica", "bold");
             doc.setFontSize(12);
-            doc.text(setup, MARGIN, yy);
-            yy += 16;
+            setups.forEach(function (line) {
+              doc.text(line, MARGIN, yy);
+              yy += 16;
+            });
           }
         }
         yy += 8;

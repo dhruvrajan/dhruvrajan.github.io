@@ -1,286 +1,394 @@
-# Optional per-song fields (used by the Lyrics page / songbook):
-#   tuning: string (e.g. DADGAD / Standard (EADGBE))
-#   capo: integer (0 = none; omit when unset)
-#   tuning_unverified: true when confidence is low/unverified
-# Source URLs live in _data/tuning_sources.yaml (keyed by title).
+# Song list with optional per-instrument setup for the Lyrics page / songbook.
+#
+# instruments:   # omit entirely when unknown
+#   - name: Guitar            # Guitar | Octave mandolin | Mandolin | Banjo | ...
+#     tuning: DADGAD          # string as played
+#     capo: 2                 # integer; 0 = none
+#     unverified: true        # optional; show a subtle ? in the UI/PDF
+#
+# The top-level `instrument` field (when set) is the preferred instrument and
+# is listed first on the lyrics page. Source URLs: _data/tuning_sources.yaml.
 
 - title: Geordie
   instrument: guitar
   artist: 'Anais Mitchell & Jefferson Hamer'
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/geordie-anais-mitchell-jefferson-hamer?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Downeaster Alexa
   instrument: guitar
   artist: Billy Joel
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: 'Magpie''s Nest'
   artist: Bonny Light Horseman
-  tuning: Open D (DADF#AD)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Open D (DADF#AD)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: 'Feelin'' Satisfied'
   artist: Boston
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: 'Don''t Be Shy'
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: 'https://www.youtube.com/watch?v=dGa3_ZwVxq4&feature=youtu.be'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/dont-by-shy-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Father and Son
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: How Can I Tell You
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: 'https://youtu.be/vfmbufxg7tU'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/how-can-i-tell-you-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: If You Want to Sing Out, Sing Out
   instrument: guitar
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/if-you-want-to-sing-out-sing-out-by-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Moonshadow
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: 'https://youtu.be/RCwpMf03KH4'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/moonshadow-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: The Wind
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: 'https://youtu.be/cl2gq3OcME0'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/the-wind-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: 'Tuesday''s Dead'
   instrument: guitar
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: 'https://youtu.be/tMmw27PHWzI'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/tuesdaysdead?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Where Do the Children Play
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Wild World
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Southern Man
   instrument: guitar
   artist: CSNY
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Annan Waters
   instrument: guitar
   artist: Decemberists
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Shankill Butchers
   instrument: guitar
   artist: Decemberists
-  tuning: Standard (EADGBE)
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: Creggan White Hare
   instrument: mandolin
   artist: Doiri Farell
-  tuning: Standard (EADGBE)
-  capo: 4
+  instruments:
+    - name: Mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
   youtube_link: 'https://youtu.be/3DIuH4BS8ds?si=WxsXZiVkGMUNeMXV'
   soundcloud_link: ~
 - title: Pat Rainey
   instrument: octave mandolin
   artist: Doiri Farell
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Octave mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: The Little Drummer
   instrument: octave mandolin
   artist: Doiri Farell
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Octave mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: The Ludlow Massacre
   instrument: octave mandolin
   artist: Doiri Farell
+  instruments:
+    - name: Octave mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Blues Run the Game
   instrument: guitar
   artist: Jackson C. Frank
-  tuning: Standard (EADGBE)
-  capo: 6
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 6
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/blues-run-the-game-jason-c?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: You Can Close Your Eyes
   artist: James Taylor
-  tuning: Standard (EADGBE)
-  capo: 1
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
   youtube_link: ~
   soundcloud_link: ~
 - title: Jack-a-Lynn
   instrument: guitar
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
   youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=jRFsJ70BuNJA8uHm'
   soundcloud_link: ~
 - title: 'Life''s a Long Song'
   instrument: guitar
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 7
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/lifes-a-long-song-jethro-1?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Mother Goose
   instrument: guitar
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 5
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 5
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/mother-goose-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Nursie
   instrument: guitar
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/nursie-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: One Brown Mouse
   artist: Jethro Tull
-  tuning: Open E (EBEG#BE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Open E (EBEG#BE)
+      capo: 0
+      unverified: true
   youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1610s'
   soundcloud_link: ~
 - title: One White Duck / 0^10 = Nothing at All
   instrument: guitar
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: Salamander
   artist: Jethro Tull
-  tuning: DADGAD
-  capo: 3
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: DADGAD
+      capo: 3
+      unverified: true
   youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1773s'
   soundcloud_link: ~
 - title: Skating Away on the Thin Ice of a New Day
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: 'https://youtu.be/SZesABJoEpY'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/skating-away-on-the-thin-ice?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: 'Sossity, You''re a Woman'
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: 'https://youtu.be/OKuJxKBd_wU'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/sossity-youre-a-woman-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Summerday Sands
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: 'https://youtu.be/OBK7vbtGDXg'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/summerday-sands-2-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: 'Wond''ring Aloud'
   instrument: guitar
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=zzP1vRoyEXKZlW6w&t=1681'
   soundcloud_link: ~
 - title: 'Annie''s Song'
   artist: John Denver
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: This Old Guitar
   artist: John Denver
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Crossing Muddy Waters
   instrument: banjo
   artist: 'John Hiatt / I''m With Her'
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Banjo
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=205s'
   soundcloud_link: ~
 - title: Both Sides Now
   artist: Joni Mitchell
-  tuning: Open D (DADF#AD)
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: Open D (DADF#AD)
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: Carey
   artist: Joni Mitchell
-  tuning: C#C#C#C#G#C# (Stills guitar part)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: C#C#C#C#G#C# (Stills guitar part)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Conversation
   artist: Joni Mitchell
-  tuning: Open D (DADF#AD)
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: Open D (DADF#AD)
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: This Flight Tonight
   artist: Joni Mitchell
-  tuning: Open G with low G (GGDGBD)
-  capo: 1
+  instruments:
+    - name: Guitar
+      tuning: Open G with low G (GGDGBD)
+      capo: 1
   youtube_link: ~
   soundcloud_link: ~
 - title: William and Davy
   instrument: mandolin
   artist: Kate Rusby
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: 'https://youtu.be/tlYO5shY4dk?si=5OVlV8gsNGcibSxo'
   soundcloud_link: ~
 - title: The Cave
   artist: Mumford and Sons
-  tuning: Open D (DADF#AD)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Open D (DADF#AD)
+      capo: 2
   youtube_link: 'https://www.youtube.com/watch?v=VwCpdeWSgdI&t=322s'
   soundcloud_link: ~
 - title: Bonny Light Horseman
@@ -289,192 +397,260 @@
   soundcloud_link: ~
 - title: Canadee IO
   artist: Nic Jones
-  tuning: CGCGCD down a whole step (BbFBbFBbC)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: CGCGCD down a whole step (BbFBbFBbC)
+      capo: 0
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/untitled-song?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Clyde Water (Guitar)
   instrument: guitar
   artist: Nic Jones
-  tuning: Open G down a whole step (CFCFAC)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Open G down a whole step (CFCFAC)
+      capo: 0
   youtube_link: 'https://youtu.be/hFHqbJ4IeAE'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/clyde-water-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Farewell to the Gold
   instrument: guitar
   artist: Nic Jones
-  tuning: Open G down a whole step (CFCFAC)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Open G down a whole step (CFCFAC)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Humpback Whale
   artist: Nic Jones
-  tuning: Open C (CGCGCE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Open C (CGCGCE)
+      capo: 0
+      unverified: true
   youtube_link: 'https://youtu.be/hdvohiRdips'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/the-humpback-whale-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Little Pot Stove
   instrument: guitar
   artist: Nic Jones
-  tuning: Open G down a whole step (CFCFAC)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Open G down a whole step (CFCFAC)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Ploughman Lads
   artist: Nic Jones
-  tuning: Standard (EADGBE)
-  capo: 5
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 5
+      unverified: true
   youtube_link: 'https://youtu.be/0SYvUWQqR1s?si=H8Xnw24ZyMxyeyhn'
   soundcloud_link: ~
 - title: One of These Things First
   artist: Nick Drake
-  tuning: Open D (DADF#AD)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Open D (DADF#AD)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Pink Moon
   artist: Nick Drake
-  tuning: CGCFCE
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: CGCFCE
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Place to Be
   artist: Nick Drake
-  tuning: CGCFGE
-  capo: 5
+  instruments:
+    - name: Guitar
+      tuning: CGCFGE
+      capo: 5
   youtube_link: ~
   soundcloud_link: ~
 - title: Blacksmith
   instrument: mandolin
   artist: Paul Brady / Andy Irvine
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: 'https://youtu.be/zZNjqG9OB3M'
   soundcloud_link: ~
 - title: Lakes of Ponchartrain
   instrument: mandolin
   artist: Paul Brady / Andy Irvine
-  tuning: Standard (EADGBE)
-  capo: 4
-  tuning_unverified: true
+  instruments:
+    - name: Mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
+      unverified: true
   youtube_link: 'https://youtu.be/9jeKgnaACLk'
   soundcloud_link: ~
 - title: Mary and the Soldier
   instrument: mandolin
   artist: Paul Brady / Andy Irvine
-  tuning: Standard (EADGBE)
-  capo: 1
+  instruments:
+    - name: Mandolin
+      tuning: GDAE
+      capo: 0
+      unverified: true
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
   youtube_link: 'https://youtu.be/jsB3VxWVYsc?si=Rwn37hmLFHU4Lx9w&t=96'
   soundcloud_link: ~
 - title: Wondrous Love
   instrument: banjo
   artist: Red Tail Ring
-  tuning: Banjo Sawmill (gDGCD)
-  capo: 0
+  instruments:
+    - name: Banjo
+      tuning: Banjo Sawmill (gDGCD)
+      capo: 0
   youtube_link: 'https://youtu.be/H_tzmPxSyM0?si=bXjP8RyK10KP5esc&t=69'
   soundcloud_link: ~
 - title: Yarrow
   instrument: banjo
   artist: Red Tail Ring
-  tuning: Standard (EADGBE)
-  capo: 3
-  tuning_unverified: true
+  instruments:
+    - name: Banjo
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
   youtube_link: 'https://youtu.be/cwZbt_5JI0Y?si=3sou0SfrvyggL8X3&t=18'
   soundcloud_link: ~
 - title: Mockingbird
   instrument: guitar
   artist: Ruston Kelly
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Who Knows Where the Time Goes
   artist: Sandy Denny
-  tuning: Standard (EADGBE)
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: Anabelle Lee
   instrument: banjo
   artist: Sarah Jarosz
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Banjo
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: 'https://studio.youtube.com/video/sjDa4spV9-8/edit'
   soundcloud_link: ~
 - title: Green Lights
   artist: Sarah Jarosz
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Hometown
   instrument: guitar
   artist: Sarah Jarosz
-  tuning: Standard (EADGBE)
-  capo: 2
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Little River
   artist: Tallest Man on Earth
-  tuning: CFCFCF
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: CFCFCF
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: Love Is All
   instrument: guitar
   artist: Tallest Man on Earth
-  tuning: EADGBD
-  capo: 7
+  instruments:
+    - name: Guitar
+      tuning: EADGBD
+      capo: 7
   youtube_link: ~
   soundcloud_link: ~
 - title: My Dear (Banjo)
   instrument: banjo
   artist: Tallest Man on Earth
-  tuning: Banjo Double C (gCGCD)
-  capo: 3
+  instruments:
+    - name: Banjo
+      tuning: Banjo Double C (gCGCD)
+      capo: 3
   youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1204s'
   soundcloud_link: ~
 - title: The Gardener
   artist: Tallest Man on Earth
-  tuning: DADEAD
-  capo: 6
+  instruments:
+    - name: Guitar
+      tuning: DADEAD
+      capo: 6
   youtube_link: 'https://youtu.be/_sD9O-mdNAQ'
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/the-gardener-tallest-man-on-earth?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: The Wild Hunt
   artist: Tallest Man on Earth
-  tuning: CFCFCF
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: CFCFCF
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: Waiting For My Ghost (Banjo)
   instrument: banjo
   artist: Tallest Man on Earth
-  tuning: Open G (DGDGBD)
-  capo: 9
+  instruments:
+    - name: Banjo
+      tuning: Open G (DGDGBD)
+      capo: 9
   youtube_link: 'https://youtu.be/1AbTqUTDW-A?si=8V5mYrF-Z4pKHwXq'
   soundcloud_link: ~
 - title: 'What I''ve Been Kicking Around'
   artist: Tallest Man on Earth
-  tuning: Standard (EADGBE)
-  capo: 7
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
   youtube_link: ~
   soundcloud_link: ~
 - title: Where Do My Bluebird Fly
   artist: Tallest Man on Earth
-  tuning: Open G minor (DGDGBbD)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Open G minor (DGDGBbD)
+      capo: 0
   youtube_link: ~
   soundcloud_link: 'https://soundcloud.com/dhruv-rajan/where-do-my-bluebird-fly?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Wind and Walls
   artist: Tallest Man on Earth
-  tuning: CGCGCD
-  capo: 6
+  instruments:
+    - name: Guitar
+      tuning: CGCGCD
+      capo: 6
   youtube_link: ~
   soundcloud_link: ~
 - title: Pretenders
@@ -485,99 +661,129 @@
 - title: Church Street Blues
   instrument: guitar
   artist: Tony Rice
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Loretta
   instrument: guitar
   artist: Townes Van Zandt
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Jesse James / Julianne Johnson / Goodbye Liza Jane
   instrument: banjo
   artist: Traditional
-  tuning: Banjo Open G (gDGBD)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Banjo
+      tuning: Banjo Open G (gDGBD)
+      capo: 0
+      unverified: true
   youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=GCBwPQHd8kUj_bXb&t=256'
   soundcloud_link: ~
 - title: 'Sary Darlin'' Say'
   instrument: banjo
   artist: Traditional
-  tuning: Banjo Double C (gCGCD)
-  capo: 0
+  instruments:
+    - name: Banjo
+      tuning: Banjo Double C (gCGCD)
+      capo: 0
   youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=q5KlX9PreJnS2qtY&t=12'
   soundcloud_link: ~
 - title: Acres Wild
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 5
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 5
   youtube_link: ~
   soundcloud_link: ~
 - title: Arthur McBride
   artist: Traditional (arr. Paul Brady)
-  tuning: Open G (DGDGBD)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Open G (DGDGBD)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Back Home Again
   artist: John Denver
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Bad Bad Leroy Brown
   artist: Jim Croce
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Baker Street Muse
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Bitterblue
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Broadford Bazaar
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 7
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
   youtube_link: ~
   soundcloud_link: ~
 - title: Carolina in My Mind
   artist: James Taylor
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Cheap Day Return
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 7
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
   youtube_link: ~
   soundcloud_link: ~
 - title: Childish Things
   artist: James McMurtry
-  tuning: Drop D (DADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Drop D (DADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Choctaw Hayride
   instrument: banjo
   artist: 'Alison Krauss & Union Station (Jerry Douglas tune)'
-  tuning: Dobro Open G (GBDGBD)
-  capo: 0
+  instruments:
+    - name: Banjo
+      tuning: Dobro Open G (GBDGBD)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Clyde Water (Banjo)
@@ -587,216 +793,284 @@
   soundcloud_link: ~
 - title: Coat of Many Colors
   artist: Dolly Parton
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Come by the Highway Home
   artist: Caitlin Canty
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Crazy Man Michael
   artist: Fairport Convention
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Daylight Watchhouse
   artist: Watchhouse
-  tuning: Standard (EADGBE)
-  capo: 5
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 5
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: 'Don''t Mess Around with Jim'
   artist: Jim Croce
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Dun Ringill
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Every Little Heart
   artist: Tallest Man on Earth
-  tuning: Standard (EADGBE)
-  capo: 1
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Every Time You Say Goodbye
   artist: 'Alison Krauss & Union Station'
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Fire at Midnight
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: First Snow on Brooklyn
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: For Emily Wherever I May Find Her
   artist: 'Simon & Garfunkel'
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Fotheringay
   artist: Fairport Convention
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Girl from the North Country
   artist: Bob Dylan
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Give Me Novocaine
   artist: Green Day
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Golden Embers
   artist: Watchhouse
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Helplessly Hoping
   artist: 'Crosby, Stills & Nash'
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Here Comes the Sun
   artist: The Beatles
-  tuning: Standard (EADGBE)
-  capo: 7
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
   youtube_link: ~
   soundcloud_link: ~
 - title: In My Life
   artist: The Beatles
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: 'It Ain''t Me Babe'
   artist: Bob Dylan
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Jack Frost and the Hooded Crow
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 5
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 5
   youtube_link: ~
   soundcloud_link: ~
 - title: Jambalaya
   artist: Hank Williams
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Julio Down by the Schoolyard
   artist: Paul Simon
-  tuning: Standard (EADGBE)
-  capo: 2
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: 'Kathy''s Song'
   artist: 'Simon & Garfunkel'
-  tuning: Half step down (EbAbDbGbBbEb)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Half step down (EbAbDbGbBbEb)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Lady Darbanville
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Longer Boats
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Love at the Five and Dime
   artist: Nanci Griffith
-  tuning: Open G (DGDGBD)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Open G (DGDGBD)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Lowlands Away
   artist: Traditional
-  tuning: Standard (EADGBE)
-  capo: 3
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Morning Has Broken
   artist: Cat Stevens
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Moths
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Musgrave
   artist: Traditional (arr. Nic Jones)
-  tuning: DGDGCD
-  capo: 3
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: DGDGCD
+      capo: 3
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Needle and the Damage Done
   artist: Neil Young
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: New Star Watchhouse
   artist: Watchhouse
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Nightbird
   artist: Watchhouse
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Old Man
   artist: Neil Young
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Old Ties and Companions
@@ -805,174 +1079,228 @@
   soundcloud_link: ~
 - title: Olympia
   artist: Rancid
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Orion
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Our Town
   artist: Iris DeMent
-  tuning: Standard (EADGBE)
-  capo: 4
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
   youtube_link: ~
   soundcloud_link: ~
 - title: Ring Them Bells
   artist: Bob Dylan
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Rocky Mountain High
   artist: John Denver
-  tuning: Drop D (DADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Drop D (DADGBE)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Runaway Train
   artist: Sarah Jarosz
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Shelter from the Storm
   artist: Bob Dylan
-  tuning: Open D (DADF#AD)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Open D (DADF#AD)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: 'Shove That Pig''s Foot a Little Further into the Fire / St. Anne''s Reel'
   instrument: banjo
   artist: Traditional
-  tuning: Banjo Open G (gDGBD)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Banjo
+      tuning: Banjo Open G (gDGBD)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Solsbury Hill
   artist: Peter Gabriel
-  tuning: Standard (EADGBE)
-  capo: 2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
   youtube_link: ~
   soundcloud_link: ~
 - title: Somewhere in the Mountains
   artist: Tallest Man on Earth
-  tuning: CFCFCF
-  capo: 10
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: CFCFCF
+      capo: 10
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Speed of the Sound of Loneliness
   artist: John Prine
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Tambourine Man
   artist: Bob Dylan
-  tuning: Drop D (DADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Drop D (DADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: The Boxer
   artist: 'Simon & Garfunkel'
-  tuning: Half step down (EbAbDbGbBbEb)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Half step down (EbAbDbGbBbEb)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: The Obvious Child
   artist: Paul Simon
-  tuning: Standard (EADGBE)
-  capo: 1
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
   youtube_link: ~
   soundcloud_link: ~
 - title: The Wolves
   artist: Watchhouse
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: 'There''s a Girl'
   artist: Tallest Man on Earth
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Thick as a Brick
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Velvet Green
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Wandring Again
   artist: Jethro Tull
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Whatsername
   artist: Green Day
-  tuning: Drop D (DADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Drop D (DADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: White Cockade
   artist: Traditional (arr. Kate Rusby)
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Wildflowers
   artist: Tom Petty
-  tuning: Standard (EADGBE)
-  capo: 3
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
   youtube_link: ~
   soundcloud_link: ~
 - title: Wish I Was a Mole in the Ground
   artist: Traditional (arr. Bascom Lamar Lunsford)
-  tuning: Banjo Double C (gCGCD)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Banjo Double C (gCGCD)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Wonderful Tonight
   artist: Eric Clapton
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Yesterday
   artist: The Beatles
-  tuning: Whole step down (DGCFAD)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Whole step down (DGCFAD)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~
 - title: Happy
   artist: Carpenters
-  tuning: Standard (EADGBE)
-  capo: 0
-  tuning_unverified: true
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Close to You
   artist: Carpenters
-  tuning: Standard (EADGBE)
-  capo: 0
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
   youtube_link: ~
   soundcloud_link: ~

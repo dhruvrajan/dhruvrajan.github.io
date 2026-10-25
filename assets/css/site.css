@@ -807,6 +807,14 @@ ol.song-list li::marker {
   font-weight: 600;
 }
 
+.song-detail__setup-line {
+  margin: 0 0 0.2rem;
+}
+
+.song-detail__setup-name {
+  font-weight: 700;
+}
+
 .song-detail__unverified {
   margin-left: 0.1em;
   font-weight: 500;

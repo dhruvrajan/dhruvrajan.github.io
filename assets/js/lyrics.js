@@ -238,6 +238,67 @@
     return a;
   }
 
+  function normalizeInstrumentName(name) {
+    var s = String(name || "").trim();
+    if (!s) return "";
+    var lower = s.toLowerCase();
+    if (lower === "guitar") return "Guitar";
+    if (lower === "octave mandolin" || lower === "octave-mandolin")
+      return "Octave mandolin";
+    if (lower === "mandolin") return "Mandolin";
+    if (lower === "banjo") return "Banjo";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function normalizeInstrumentEntry(inst) {
+    if (!inst || typeof inst !== "object") return null;
+    var out = { name: normalizeInstrumentName(inst.name) || "Guitar" };
+    if (inst.tuning != null && String(inst.tuning).trim() !== "") {
+      out.tuning = String(inst.tuning).trim();
+    }
+    if (inst.capo != null && inst.capo !== "") {
+      var capoNum = Number(inst.capo);
+      if (!isNaN(capoNum)) out.capo = capoNum;
+    }
+    if (inst.unverified || inst.tuning_unverified) out.unverified = true;
+    if (!out.tuning && out.capo == null) return null;
+    return out;
+  }
+
+  /** Prefer instruments[]; fall back to flat tuning/capo/tuning_unverified. */
+  function instrumentsFromEntry(entry) {
+    var list = [];
+    if (entry && Array.isArray(entry.instruments)) {
+      entry.instruments.forEach(function (inst) {
+        var n = normalizeInstrumentEntry(inst);
+        if (n) list.push(n);
+      });
+    }
+    if (!list.length && entry) {
+      var flat = normalizeInstrumentEntry({
+        name: entry.instrument || "Guitar",
+        tuning: entry.tuning,
+        capo: entry.capo,
+        unverified: entry.tuning_unverified || entry.unverified,
+      });
+      if (flat) list.push(flat);
+    }
+    return list;
+  }
+
+  function orderInstruments(instruments, preferredRaw) {
+    var preferred = normalizeInstrumentName(preferredRaw);
+    if (!preferred || !instruments.length) return instruments.slice();
+    var preferredLower = preferred.toLowerCase();
+    var head = [];
+    var rest = [];
+    instruments.forEach(function (inst) {
+      if (String(inst.name).toLowerCase() === preferredLower) head.push(inst);
+      else rest.push(inst);
+    });
+    return head.concat(rest);
+  }
+
   function loadSongsMeta() {
     state.songsMetaBySlug = Object.create(null);
     var el = document.getElementById("songs-meta-json");
@@ -253,15 +314,20 @@
       if (!entry || !entry.title) return;
       var slug = titleSlug(entry.title);
       if (!slug) return;
-      var meta = {};
-      if (entry.tuning != null && String(entry.tuning).trim() !== "") {
-        meta.tuning = String(entry.tuning).trim();
+      var instruments = orderInstruments(
+        instrumentsFromEntry(entry),
+        entry.instrument
+      );
+      var meta = {
+        instrument: entry.instrument || "",
+        instruments: instruments,
+      };
+      // Legacy flat fields for older callers / other PRs
+      if (instruments.length) {
+        meta.tuning = instruments[0].tuning;
+        meta.capo = instruments[0].capo;
+        meta.tuning_unverified = !!instruments[0].unverified;
       }
-      if (entry.capo != null && entry.capo !== "") {
-        var capoNum = Number(entry.capo);
-        if (!isNaN(capoNum)) meta.capo = capoNum;
-      }
-      if (entry.tuning_unverified) meta.tuning_unverified = true;
       state.songsMetaBySlug[slug] = meta;
     });
   }
@@ -271,17 +337,38 @@
     var bySlug = state.songsMetaBySlug[slug];
     if (bySlug) return bySlug;
     var byTitle = state.songsMetaBySlug[titleSlug(song.title)];
-    return byTitle || {};
+    return byTitle || { instruments: [] };
+  }
+
+  function formatInstrumentLine(inst) {
+    if (!inst) return "";
+    var bits = [];
+    if (inst.tuning) {
+      bits.push(inst.tuning + (inst.unverified ? "?" : ""));
+    }
+    if (inst.capo != null && Number(inst.capo) !== 0) {
+      bits.push("Capo " + Number(inst.capo));
+    }
+    if (!bits.length) return "";
+    return inst.name + ": " + bits.join(" · ");
   }
 
   function formatTuningCapo(meta) {
+    // Legacy single-line helper (preferred instrument first already ordered)
+    if (!meta) return "";
+    if (meta.instruments && meta.instruments.length) {
+      return meta.instruments
+        .map(formatInstrumentLine)
+        .filter(Boolean)
+        .join("\n");
+    }
     var parts = [];
-    if (meta && meta.tuning) {
+    if (meta.tuning) {
       var tuning = meta.tuning;
       if (meta.tuning_unverified) tuning += "?";
       parts.push("Tuning: " + tuning);
     }
-    if (meta && meta.capo != null && Number(meta.capo) !== 0) {
+    if (meta.capo != null && Number(meta.capo) !== 0) {
       parts.push("Capo " + Number(meta.capo));
     }
     return parts.join(" · ");
@@ -289,22 +376,32 @@
 
   function tuningCapoHtml(song) {
     var meta = metaForSong(song);
-    if (!meta || (!meta.tuning && !(meta.capo != null && Number(meta.capo) !== 0))) {
-      return "";
-    }
-    var html = '<p class="song-detail__setup">';
-    if (meta.tuning) {
-      html += "Tuning: " + escapeHtml(meta.tuning);
-      if (meta.tuning_unverified) {
-        html +=
-          '<span class="song-detail__unverified" title="Tuning needs a double-check">?</span>';
+    var instruments =
+      meta && meta.instruments && meta.instruments.length
+        ? meta.instruments
+        : instrumentsFromEntry(meta);
+    if (!instruments.length) return "";
+
+    var html = '<div class="song-detail__setup">';
+    instruments.forEach(function (inst) {
+      html += '<p class="song-detail__setup-line">';
+      html += '<span class="song-detail__setup-name">' + escapeHtml(inst.name) + ":</span> ";
+      var parts = [];
+      if (inst.tuning) {
+        var t =
+          escapeHtml(inst.tuning) +
+          (inst.unverified
+            ? '<span class="song-detail__unverified" title="Tuning needs a double-check">?</span>'
+            : "");
+        parts.push(t);
       }
-    }
-    if (meta.capo != null && Number(meta.capo) !== 0) {
-      if (meta.tuning) html += " · ";
-      html += "Capo " + Number(meta.capo);
-    }
-    html += "</p>";
+      if (inst.capo != null && Number(inst.capo) !== 0) {
+        parts.push("Capo " + Number(inst.capo));
+      }
+      html += parts.join(" · ");
+      html += "</p>";
+    });
+    html += "</div>";
     return html;
   }
 
@@ -722,12 +819,16 @@
 
   function enrichForSongbook(details) {
     var meta = metaForSong(details);
+    var instruments = (meta.instruments || []).slice();
     return {
       slug: details.slug,
       title: details.title,
       artist: details.artist,
       lyrics: details.lyrics,
       source: details.source,
+      instrument: meta.instrument || "",
+      instruments: instruments,
+      // Legacy flat fields (preferred / first instrument)
       tuning: meta.tuning,
       capo: meta.capo,
       tuning_unverified: !!meta.tuning_unverified,
