@@ -7,8 +7,7 @@
       <a href="{{ '/pages/events.html' | relative_url }}"{% if path contains '/pages/events' %} aria-current="page"{% endif %}>Past Performances</a>
       <a href="{{ '/pages/setlists.html' | relative_url }}"{% if path contains '/pages/setlists' %} aria-current="page"{% endif %}>Setlists</a>
       <a href="{{ '/pages/songs_by_artist.html' | relative_url }}"{% if path contains '/pages/songs_by_artist' %} aria-current="page"{% endif %}>Songs by Artist</a>
-      {%- comment -%} Future Lyrics page — enable when /pages/lyrics is added {%- endcomment -%}
-      <a class="is-future" href="{{ '/pages/lyrics.html' | relative_url }}" aria-disabled="true" tabindex="-1" title="Coming soon">Lyrics</a>
+      <a href="{{ '/pages/lyrics.html' | relative_url }}"{% if path contains '/pages/lyrics' %} aria-current="page"{% endif %}>Lyrics</a>
     </nav>
   </div>
 </header>

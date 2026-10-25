@@ -1,0 +1,624 @@
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "lyrics_cache_key_v1";
+  var STORAGE_REMEMBER = "lyrics_cache_remember_v1";
+  function dataUrl() {
+    return (
+      (document.body && document.body.getAttribute("data-lyrics-url")) ||
+      "/assets/data/lyrics.enc.json"
+    );
+  }
+
+  var state = {
+    songs: [],
+    envelope: null,
+    cryptoKey: null,
+    largeText: false,
+  };
+
+  var els = {
+    unlockGate: document.getElementById("unlock-gate"),
+    unlockForm: document.getElementById("unlock-form"),
+    passphraseInput: document.getElementById("passphrase-input"),
+    rememberCheck: document.getElementById("remember-check"),
+    unlockStatus: document.getElementById("unlock-status"),
+    browser: document.getElementById("lyrics-browser"),
+    searchForm: document.getElementById("search-form"),
+    searchInput: document.getElementById("search-input"),
+    status: document.getElementById("search-status"),
+    results: document.getElementById("search-results"),
+    detail: document.getElementById("song-detail"),
+    artistList: document.getElementById("artist-browse"),
+    lockBtn: document.getElementById("lock-btn"),
+    forgetBtn: document.getElementById("forget-btn"),
+    largeTextBtn: document.getElementById("large-text-btn"),
+    printBtn: document.getElementById("print-lyrics-btn"),
+  };
+
+  function b64ToBytes(b64) {
+    var bin = atob(b64);
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function bytesToB64(bytes) {
+    var bin = "";
+    var arr = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+    for (var i = 0; i < arr.length; i++) bin += String.fromCharCode(arr[i]);
+    return btoa(bin);
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  /** Match Jekyll `| slugify` default: non-alnum → hyphen, collapse, lower. */
+  function slugify(title, artist) {
+    var raw = String(title || "") + "-" + String(artist || "");
+    return raw
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function songSlug(song) {
+    return song.slug || slugify(song.title, song.artist);
+  }
+
+  function setUnlockStatus(message, kind) {
+    if (!els.unlockStatus) return;
+    els.unlockStatus.textContent = message || "";
+    els.unlockStatus.className =
+      "lyrics-status" + (kind ? " lyrics-status--" + kind : "");
+    els.unlockStatus.hidden = !message;
+  }
+
+  function setStatus(message, kind) {
+    if (!els.status) return;
+    els.status.textContent = message || "";
+    els.status.className =
+      "lyrics-status" + (kind ? " lyrics-status--" + kind : "");
+    els.status.hidden = !message;
+  }
+
+  function showUnlocked(unlocked) {
+    if (els.unlockGate) els.unlockGate.hidden = unlocked;
+    if (els.browser) els.browser.hidden = !unlocked;
+  }
+
+  function readRememberedKey() {
+    try {
+      if (localStorage.getItem(STORAGE_REMEMBER) !== "1") return null;
+      return localStorage.getItem(STORAGE_KEY) || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function clearRemembered() {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_REMEMBER);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  async function rememberKey(cryptoKey) {
+    try {
+      var raw = await crypto.subtle.exportKey("raw", cryptoKey);
+      localStorage.setItem(STORAGE_KEY, bytesToB64(raw));
+      localStorage.setItem(STORAGE_REMEMBER, "1");
+    } catch (e) {
+      throw new Error("Could not save the key in this browser (storage blocked).");
+    }
+  }
+
+  async function importRawKey(b64) {
+    return crypto.subtle.importKey(
+      "raw",
+      b64ToBytes(b64),
+      { name: "AES-GCM" },
+      true,
+      ["decrypt"]
+    );
+  }
+
+  async function deriveKey(passphrase, salt, iterations) {
+    var enc = new TextEncoder();
+    var baseKey = await crypto.subtle.importKey(
+      "raw",
+      enc.encode(passphrase),
+      "PBKDF2",
+      false,
+      ["deriveKey"]
+    );
+    return crypto.subtle.deriveKey(
+      {
+        name: "PBKDF2",
+        salt: salt,
+        iterations: iterations,
+        hash: "SHA-256",
+      },
+      baseKey,
+      { name: "AES-GCM", length: 256 },
+      true,
+      ["decrypt"]
+    );
+  }
+
+  async function loadEnvelope() {
+    if (state.envelope) return state.envelope;
+    var url = dataUrl();
+    var res = await fetch(url, { cache: "no-cache" });
+    if (!res.ok) {
+      throw new Error(
+        "Could not load lyrics cache (" +
+          res.status +
+          "). Expected file at " +
+          url +
+          "."
+      );
+    }
+    var data = await res.json();
+    if (!data || data.v !== 1 || !data.salt || !data.iv || !data.ciphertext) {
+      throw new Error("Lyrics cache file is missing required fields.");
+    }
+    state.envelope = data;
+    return data;
+  }
+
+  async function decryptWithKey(cryptoKey, envelope) {
+    var iv = b64ToBytes(envelope.iv);
+    var combined = b64ToBytes(envelope.ciphertext);
+    var plainBuf = await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: iv },
+      cryptoKey,
+      combined
+    );
+    var text = new TextDecoder().decode(plainBuf);
+    var payload = JSON.parse(text);
+    if (!payload || !Array.isArray(payload.songs)) {
+      throw new Error("Decrypted data is not a valid lyrics payload.");
+    }
+    return payload.songs.map(function (song) {
+      var title = song.title || "Untitled";
+      var artist = normalizeArtist(song.artist);
+      return {
+        title: title,
+        artist: artist,
+        lyrics: song.lyrics || "",
+        source: song.source || "",
+        lyrics_copyright: song.lyrics_copyright || "",
+        track_id: song.track_id || "",
+        slug: slugify(title, artist),
+      };
+    });
+  }
+
+  /** Blank / Unknown artists share the "Other" bucket (matches songs-by-artist deep links). */
+  function normalizeArtist(artist) {
+    var a = String(artist == null ? "" : artist).trim();
+    if (!a || /^unknown$/i.test(a)) return "Other";
+    return a;
+  }
+
+  async function unlockWithPassphrase(passphrase, remember) {
+    var envelope = await loadEnvelope();
+    var iterations = Number(envelope.iterations) || 310000;
+    var salt = b64ToBytes(envelope.salt);
+    var key = await deriveKey(passphrase, salt, iterations);
+    var songs;
+    try {
+      songs = await decryptWithKey(key, envelope);
+    } catch (err) {
+      var bad = new Error("WRONG_PASSPHRASE");
+      bad.cause = err;
+      throw bad;
+    }
+    state.cryptoKey = key;
+    state.songs = songs;
+    if (remember) {
+      await rememberKey(key);
+    } else {
+      clearRemembered();
+    }
+    return songs;
+  }
+
+  async function unlockWithStoredKey() {
+    var b64 = readRememberedKey();
+    if (!b64) return false;
+    var envelope = await loadEnvelope();
+    var key = await importRawKey(b64);
+    try {
+      state.songs = await decryptWithKey(key, envelope);
+      state.cryptoKey = key;
+      return true;
+    } catch (err) {
+      clearRemembered();
+      return false;
+    }
+  }
+
+  function uniqueArtists(songs) {
+    var map = {};
+    songs.forEach(function (s) {
+      map[s.artist] = true;
+    });
+    return Object.keys(map).sort(function (a, b) {
+      if (a === "Other") return 1;
+      if (b === "Other") return -1;
+      return a.localeCompare(b);
+    });
+  }
+
+  function filterSongs(query) {
+    var q = (query || "").trim().toLowerCase();
+    if (!q) return state.songs.slice();
+    return state.songs.filter(function (s) {
+      return (
+        s.title.toLowerCase().indexOf(q) !== -1 ||
+        s.artist.toLowerCase().indexOf(q) !== -1
+      );
+    });
+  }
+
+  function renderArtistBrowse() {
+    if (!els.artistList) return;
+    els.artistList.innerHTML = "";
+    var artists = uniqueArtists(state.songs);
+    if (!artists.length) {
+      els.artistList.innerHTML =
+        '<p class="lyrics-empty">No songs in the unlocked cache.</p>';
+      return;
+    }
+
+    artists.forEach(function (artist) {
+      var section = document.createElement("section");
+      section.className = "group repertoire-group";
+      section.setAttribute("aria-label", artist);
+
+      var h = document.createElement("h3");
+      h.className = "subheading";
+      h.textContent = artist;
+      section.appendChild(h);
+
+      var ul = document.createElement("ul");
+      ul.className = "song-list repertoire-songs";
+
+      state.songs
+        .filter(function (s) {
+          return s.artist === artist;
+        })
+        .forEach(function (song) {
+          var li = document.createElement("li");
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "repertoire-song linkish";
+          btn.textContent = song.title;
+          btn.setAttribute("data-slug", songSlug(song));
+          btn.addEventListener("click", function () {
+            openSong(song, true);
+          });
+          li.appendChild(btn);
+          ul.appendChild(li);
+        });
+
+      section.appendChild(ul);
+      els.artistList.appendChild(section);
+    });
+  }
+
+  function renderResults(songs) {
+    if (!els.results) return;
+    els.results.innerHTML = "";
+    if (!songs.length) {
+      els.results.innerHTML =
+        '<p class="lyrics-empty">No songs matched that search.</p>';
+      return;
+    }
+
+    var list = document.createElement("ul");
+    list.className = "lyrics-results";
+    list.setAttribute("role", "listbox");
+    list.setAttribute("aria-label", "Search results");
+
+    songs.forEach(function (song) {
+      var li = document.createElement("li");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "lyrics-result";
+      btn.setAttribute("role", "option");
+      btn.innerHTML =
+        '<span class="lyrics-result__text">' +
+        '<span class="lyrics-result__title">' +
+        escapeHtml(song.title) +
+        "</span>" +
+        '<span class="lyrics-result__artist">' +
+        escapeHtml(song.artist) +
+        "</span>" +
+        "</span>";
+      btn.addEventListener("click", function () {
+        openSong(song, true);
+      });
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+
+    els.results.appendChild(list);
+  }
+
+  function findSongBySlug(slug) {
+    if (!slug) return null;
+    var target = String(slug).toLowerCase();
+    for (var i = 0; i < state.songs.length; i++) {
+      if (songSlug(state.songs[i]) === target) return state.songs[i];
+    }
+    return null;
+  }
+
+  function setHashForSong(song) {
+    var slug = songSlug(song);
+    var next = "#song=" + encodeURIComponent(slug);
+    if (window.location.hash !== next) {
+      history.replaceState(null, "", window.location.pathname + window.location.search + next);
+    }
+  }
+
+  function parseSongHash() {
+    var hash = window.location.hash || "";
+    if (hash.charAt(0) === "#") hash = hash.slice(1);
+    var params = new URLSearchParams(hash);
+    var song = params.get("song");
+    if (song) return decodeURIComponent(song);
+    // Support plain #song=slug without URLSearchParams quirks
+    var m = /(?:^|&)song=([^&]+)/.exec(hash);
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+
+  function openSong(song, updateHash) {
+    if (!song || !els.detail) return;
+    if (updateHash) setHashForSong(song);
+
+    els.detail.hidden = false;
+    els.detail.classList.toggle("song-detail--large", state.largeText);
+
+    var copyright = song.lyrics_copyright
+      ? '<p class="song-detail__copyright">' +
+        escapeHtml(song.lyrics_copyright) +
+        "</p>"
+      : "";
+
+    els.detail.innerHTML =
+      '<div class="song-detail__header">' +
+      '<div class="song-detail__meta">' +
+      '<h2 class="song-detail__title">' +
+      escapeHtml(song.title) +
+      "</h2>" +
+      '<p class="song-detail__artist">' +
+      escapeHtml(song.artist) +
+      "</p>" +
+      '<p class="song-detail__actions">' +
+      '<button type="button" class="linkish" id="back-to-browse">Back to browse</button>' +
+      "</p>" +
+      "</div></div>" +
+      '<pre class="song-lyrics">' +
+      escapeHtml(song.lyrics) +
+      "</pre>" +
+      copyright;
+
+    var back = document.getElementById("back-to-browse");
+    if (back) {
+      back.addEventListener("click", function () {
+        els.detail.hidden = true;
+        els.detail.innerHTML = "";
+        if (window.location.hash) {
+          history.replaceState(null, "", window.location.pathname + window.location.search);
+        }
+        if (els.searchInput) els.searchInput.focus();
+      });
+    }
+
+    els.detail.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function runFilter(query) {
+    var songs = filterSongs(query);
+    var q = (query || "").trim();
+    if (q) {
+      setStatus(
+        songs.length
+          ? songs.length + " match" + (songs.length === 1 ? "" : "es")
+          : "No matches",
+        songs.length ? "ok" : "info"
+      );
+      renderResults(songs);
+    } else {
+      setStatus("");
+      if (els.results) els.results.innerHTML = "";
+    }
+  }
+
+  function afterUnlock() {
+    showUnlocked(true);
+    setUnlockStatus("");
+    renderArtistBrowse();
+    setStatus(
+      state.songs.length +
+        " song" +
+        (state.songs.length === 1 ? "" : "s") +
+        " unlocked",
+      "ok"
+    );
+
+    var slug = parseSongHash();
+    if (slug) {
+      var song = findSongBySlug(slug);
+      if (song) {
+        openSong(song, false);
+      } else {
+        setStatus("No song matched that link in the unlocked cache.", "info");
+      }
+    }
+
+    if (els.searchInput) {
+      var pendingQ = new URLSearchParams(window.location.search).get("q");
+      if (pendingQ) {
+        els.searchInput.value = pendingQ;
+        runFilter(pendingQ);
+      }
+    }
+  }
+
+  function lockSession(forget) {
+    state.songs = [];
+    state.cryptoKey = null;
+    if (forget) clearRemembered();
+    if (els.results) els.results.innerHTML = "";
+    if (els.artistList) els.artistList.innerHTML = "";
+    if (els.detail) {
+      els.detail.hidden = true;
+      els.detail.innerHTML = "";
+    }
+    setStatus("");
+    showUnlocked(false);
+    if (els.passphraseInput) {
+      els.passphraseInput.value = "";
+      els.passphraseInput.focus();
+    }
+    setUnlockStatus(
+      forget
+        ? "Forgotten on this device. Enter the passphrase to unlock again."
+        : "Locked. Enter the passphrase to unlock again.",
+      "info"
+    );
+  }
+
+  function humanError(err) {
+    if (!err) return "Something went wrong.";
+    if (err.message === "WRONG_PASSPHRASE")
+      return "Wrong passphrase. Check it and try again.";
+    return err.message || "Something went wrong.";
+  }
+
+  function bind() {
+    if (els.unlockForm) {
+      els.unlockForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var passphrase = (els.passphraseInput && els.passphraseInput.value) || "";
+        if (!passphrase) {
+          setUnlockStatus("Enter the passphrase.", "error");
+          if (els.passphraseInput) els.passphraseInput.focus();
+          return;
+        }
+        var remember = !!(els.rememberCheck && els.rememberCheck.checked);
+        setUnlockStatus("Unlocking…", "info");
+        unlockWithPassphrase(passphrase, remember)
+          .then(function () {
+            if (els.passphraseInput) els.passphraseInput.value = "";
+            afterUnlock();
+          })
+          .catch(function (err) {
+            setUnlockStatus(humanError(err), "error");
+          });
+      });
+    }
+
+    if (els.searchForm) {
+      els.searchForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        runFilter(els.searchInput ? els.searchInput.value : "");
+      });
+    }
+
+    if (els.searchInput) {
+      els.searchInput.addEventListener("input", function () {
+        runFilter(els.searchInput.value);
+      });
+    }
+
+    if (els.lockBtn) {
+      els.lockBtn.addEventListener("click", function () {
+        lockSession(false);
+      });
+    }
+
+    if (els.forgetBtn) {
+      els.forgetBtn.addEventListener("click", function () {
+        if (
+          window.confirm(
+            "Forget the saved unlock on this device? You will need the passphrase next time."
+          )
+        ) {
+          lockSession(true);
+        }
+      });
+    }
+
+    if (els.largeTextBtn) {
+      els.largeTextBtn.addEventListener("click", function () {
+        state.largeText = !state.largeText;
+        els.largeTextBtn.setAttribute(
+          "aria-pressed",
+          state.largeText ? "true" : "false"
+        );
+        els.largeTextBtn.textContent = state.largeText
+          ? "Normal text"
+          : "Large text";
+        if (els.detail && !els.detail.hidden) {
+          els.detail.classList.toggle("song-detail--large", state.largeText);
+        }
+      });
+    }
+
+    if (els.printBtn) {
+      els.printBtn.addEventListener("click", function () {
+        window.print();
+      });
+    }
+
+    window.addEventListener("hashchange", function () {
+      if (!state.songs.length) return;
+      var slug = parseSongHash();
+      if (!slug) return;
+      var song = findSongBySlug(slug);
+      if (song) openSong(song, false);
+    });
+  }
+
+  async function init() {
+    bind();
+    showUnlocked(false);
+    setUnlockStatus("Loading lyrics cache…", "info");
+
+    try {
+      await loadEnvelope();
+      setUnlockStatus("Enter the passphrase to unlock the lyrics cache.", "info");
+      var ok = await unlockWithStoredKey();
+      if (ok) {
+        afterUnlock();
+        return;
+      }
+    } catch (err) {
+      setUnlockStatus(humanError(err), "error");
+    }
+
+    if (els.passphraseInput) els.passphraseInput.focus();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
