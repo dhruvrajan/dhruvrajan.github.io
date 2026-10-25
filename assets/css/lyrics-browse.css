@@ -1082,3 +1082,66 @@ body.lyrics-text--lg .lb-layout-desktop .lb-lyrics {
     display: none !important;
   }
 }
+
+/* Songs listed from songs.yaml that have no lyrics yet */
+.lb-song--no-lyrics .lb-song__title {
+  opacity: 0.7;
+}
+.lb-lyrics-empty {
+  margin: 1rem 0;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* Per-song notes block: print only, above the lyrics */
+.lb-print-notes {
+  display: none;
+}
+
+.lb-menu__orient select {
+  margin-left: 0.4rem;
+  font: inherit;
+}
+
+@media print {
+  .lb-print-notes {
+    display: block;
+    margin: 0.35rem 0 0.6rem;
+    padding: 0.3rem 0 0.35rem;
+    border-top: 0.5pt solid #bbb;
+    border-bottom: 0.5pt solid #bbb;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 9pt;
+    line-height: 1.3;
+    color: #444;
+    break-inside: avoid;
+  }
+  .lb-print-notes__label {
+    margin: 0 0 0.1rem;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #777;
+  }
+  .lb-print-notes__text {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  /* Two-column lyrics, compact so most songs fit on one page */
+  .lb-lyrics,
+  body .lb-layout-desktop .lb-lyrics,
+  body.lyrics-text--sm .lb-lyrics,
+  body.lyrics-text--md .lb-lyrics,
+  body.lyrics-text--lg .lb-lyrics {
+    column-count: 2;
+    column-gap: 1.5rem;
+    font-size: 10.5pt !important;
+    line-height: 1.3 !important;
+    white-space: pre-wrap;
+    margin: 0;
+  }
+  body[data-print-orientation="landscape"] .lb-lyrics {
+    font-size: 11.5pt !important;
+  }
+}

@@ -1,13 +1,38 @@
 (function (root) {
   "use strict";
 
-  var MARGIN = 54;
-  var PAGE = { w: 612, h: 792 };
-  var FOOTER_Y = PAGE.h - 28;
-  var HEADER_Y = 36;
-  var CONTENT_TOP = 72;
-  var CONTENT_BOTTOM = PAGE.h - 54;
-  var CONTENT_WIDTH = PAGE.w - MARGIN * 2;
+  // Page geometry (points). Set per build by setGeometry(orientation).
+  var ORIENTATION = "portrait";
+  var MARGIN, PAGE, FOOTER_Y, HEADER_Y, CONTENT_TOP, CONTENT_BOTTOM, CONTENT_WIDTH;
+  // Lyrics are set in two columns. Sizes are tried in order; the first that
+  // fits the song on one page wins (else the first size is used).
+  var LYRIC_SIZES;
+  var COL_GAP = 24;
+
+  function setGeometry(orientation) {
+    ORIENTATION = orientation === "landscape" ? "landscape" : "portrait";
+    PAGE =
+      ORIENTATION === "landscape" ? { w: 792, h: 612 } : { w: 612, h: 792 };
+    MARGIN = 36;
+    HEADER_Y = 26;
+    FOOTER_Y = PAGE.h - 16;
+    CONTENT_TOP = 52;
+    CONTENT_BOTTOM = PAGE.h - 34;
+    CONTENT_WIDTH = PAGE.w - MARGIN * 2;
+    LYRIC_SIZES =
+      ORIENTATION === "landscape"
+        ? [
+            { size: 11.5, lineH: 15 },
+            { size: 10.5, lineH: 13.5 },
+            { size: 9.5, lineH: 12.25 },
+          ]
+        : [
+            { size: 11, lineH: 14.25 },
+            { size: 10, lineH: 13 },
+            { size: 9.5, lineH: 12.25 },
+          ];
+  }
+  setGeometry("portrait");
 
   function pad2(n) {
     return n < 10 ? "0" + n : String(n);
@@ -202,26 +227,161 @@
     return "#";
   }
 
-  function measureSongPages(doc, song) {
+  function notesText(song) {
+    var n = song && song.notes;
+    if (n == null) return "";
+    n = String(n).replace(/\r\n?/g, "\n").replace(/\s+$/, "");
+    return n.trim() ? n : "";
+  }
+
+  function stanzasOf(body) {
+    return String(body)
+      .split(/\n[ \t]*\n+/)
+      .map(function (st) {
+        return st.replace(/^\n+|\n+$/g, "");
+      })
+      .filter(function (st) {
+        return st.trim() !== "";
+      });
+  }
+
+  /**
+   * Lay out one song: header (title, artist, setup, notes) across the full
+   * width, then lyrics in two columns, stanzas kept together when they fit.
+   * With hooks it draws; without, it only measures. Returns { pages }.
+   */
+  function layoutSong(doc, song, size, hooks) {
+    var draw = !!hooks;
     var setups = setupLines(song);
     var body = lyricsLines(song);
-    var y = CONTENT_TOP + 26 + 18;
-    if (setups.length) y += setups.length * 16;
-    y += 10;
-    if (!body) return 1;
-    doc.setFont("times", "normal");
-    doc.setFontSize(16);
-    var lineH = 22;
-    var wrapped = doc.splitTextToSize(body, CONTENT_WIDTH);
+    var notes = notesText(song);
+    var colW = (CONTENT_WIDTH - COL_GAP) / 2;
     var pages = 1;
-    for (var i = 0; i < wrapped.length; i++) {
-      if (y + lineH > CONTENT_BOTTOM) {
-        pages += 1;
-        y = CONTENT_TOP + 20;
+
+    function header(continued) {
+      var yy = CONTENT_TOP;
+      doc.setFont("times", "bold");
+      doc.setFontSize(continued ? 13 : 18);
+      if (draw) {
+        doc.text(continued ? song.title + " (cont.)" : song.title, MARGIN, yy);
       }
-      y += lineH;
+      if (continued) return yy + 20;
+      yy += 17;
+      doc.setFont("times", "normal");
+      doc.setFontSize(11);
+      if (draw) doc.text(String(song.artist || ""), MARGIN, yy);
+      yy += 14;
+      if (setups.length) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9.5);
+        setups.forEach(function (line) {
+          if (draw) doc.text(line, MARGIN, yy);
+          yy += 12;
+        });
+      }
+      if (notes) {
+        yy += 2;
+        if (draw) {
+          doc.setDrawColor(200);
+          doc.setLineWidth(0.5);
+          doc.line(MARGIN, yy - 8, PAGE.w - MARGIN, yy - 8);
+        }
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        if (draw) {
+          doc.setTextColor(120);
+          doc.text("NOTES", MARGIN, yy + 2);
+        }
+        yy += 11;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        var nl = doc.splitTextToSize(notes, CONTENT_WIDTH);
+        var maxLines = Math.max(
+          1,
+          Math.floor(((CONTENT_BOTTOM - CONTENT_TOP) * 0.4) / 11.5)
+        );
+        if (nl.length > maxLines) {
+          nl = nl.slice(0, maxLines);
+          nl[maxLines - 1] = String(nl[maxLines - 1]).replace(/\s*$/, "") + " …";
+        }
+        if (draw) doc.setTextColor(60);
+        nl.forEach(function (line) {
+          if (draw) doc.text(line, MARGIN, yy);
+          yy += 11.5;
+        });
+        if (draw) {
+          doc.setTextColor(0);
+          doc.line(MARGIN, yy - 5, PAGE.w - MARGIN, yy - 5);
+        }
+        yy += 4;
+      }
+      return yy + 12;
     }
-    return pages;
+
+    var colTop = header(false);
+    if (!body) {
+      if (draw) {
+        doc.setFont("times", "italic");
+        doc.setFontSize(12);
+        doc.text("Instrumental / no lyrics", MARGIN, colTop);
+      }
+      return { pages: 1 };
+    }
+
+    function lyricFont() {
+      doc.setFont("times", "normal");
+      doc.setFontSize(size.size);
+    }
+    lyricFont();
+    var stanzas = stanzasOf(body).map(function (st) {
+      return doc.splitTextToSize(st, colW);
+    });
+    var gap = Math.round(size.lineH * 0.55 * 100) / 100;
+    var col = 0;
+    var y = colTop;
+
+    function nextColumn() {
+      if (col === 0) {
+        col = 1;
+        y = colTop;
+        return;
+      }
+      pages += 1;
+      if (draw) hooks.newPage();
+      colTop = header(true);
+      col = 0;
+      y = colTop;
+      lyricFont();
+    }
+
+    stanzas.forEach(function (lines) {
+      var h = lines.length * size.lineH;
+      // Keep a stanza together: move it to a fresh column if it fits there.
+      if (y > colTop && y + h > CONTENT_BOTTOM && h <= CONTENT_BOTTOM - colTop) {
+        nextColumn();
+      }
+      lines.forEach(function (line) {
+        if (y + size.lineH > CONTENT_BOTTOM) nextColumn();
+        if (draw) doc.text(line, MARGIN + col * (colW + COL_GAP), y);
+        y += size.lineH;
+      });
+      y += gap;
+    });
+    return { pages: pages };
+  }
+
+  /** Largest lyric size that fits the song on one page (else the default). */
+  function pickSize(doc, song) {
+    for (var i = 0; i < LYRIC_SIZES.length; i++) {
+      if (layoutSong(doc, song, LYRIC_SIZES[i], null).pages === 1) {
+        return LYRIC_SIZES[i];
+      }
+    }
+    return LYRIC_SIZES[0];
+  }
+
+  function measureSongPages(doc, song) {
+    return layoutSong(doc, song, pickSize(doc, song), null).pages;
   }
 
   function estimateTocPages(doc, artists, songsByArtist) {
@@ -280,7 +440,12 @@
     options = options || {};
     var onProgress = options.onProgress || function () {};
     var JsPDF = getJsPDF();
-    var doc = new JsPDF({ unit: "pt", format: "letter", compress: true });
+    var doc = new JsPDF({
+      unit: "pt",
+      format: "letter",
+      orientation: ORIENTATION === "landscape" ? "l" : "p",
+      compress: true,
+    });
     var list = sortedSongs(songs || []);
     var grouped = groupSongs(list);
     var artists = grouped.artists;
@@ -449,69 +614,17 @@
         pageNumber: start,
       });
 
-      var setups = setupLines(song);
-      var body = lyricsLines(song);
       var pageNum = start;
-      var first = true;
-
-      function startSongPage(continued) {
-        if (!first) {
+      drawIndexLink(doc, tocStart);
+      layoutSong(doc, song, pickSize(doc, song), {
+        newPage: function () {
           drawFooter(doc, pageNum, totalPages);
           pageNum += 1;
           while (doc.getNumberOfPages() < pageNum) doc.addPage();
           doc.setPage(pageNum);
-        }
-        first = false;
-        drawIndexLink(doc, tocStart);
-        var yy = CONTENT_TOP;
-        doc.setFont("times", "bold");
-        doc.setFontSize(continued ? 16 : 22);
-        doc.text(
-          continued ? song.title + " (cont.)" : song.title,
-          MARGIN,
-          yy
-        );
-        yy += continued ? 20 : 26;
-        if (!continued) {
-          doc.setFont("times", "normal");
-          doc.setFontSize(13);
-          doc.text(String(song.artist || ""), MARGIN, yy);
-          yy += 18;
-          if (setups.length) {
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(12);
-            setups.forEach(function (line) {
-              doc.text(line, MARGIN, yy);
-              yy += 16;
-            });
-          }
-        }
-        yy += 8;
-        return yy;
-      }
-
-      var yPos = startSongPage(false);
-      if (!body) {
-        doc.setFont("times", "italic");
-        doc.setFontSize(14);
-        doc.text("Instrumental / no lyrics", MARGIN, yPos);
-        drawFooter(doc, pageNum, totalPages);
-        return;
-      }
-
-      doc.setFont("times", "normal");
-      doc.setFontSize(16);
-      var lineH = 22;
-      var wrapped = doc.splitTextToSize(body, CONTENT_WIDTH);
-      for (var li = 0; li < wrapped.length; li++) {
-        if (yPos + lineH > CONTENT_BOTTOM) {
-          yPos = startSongPage(true);
-          doc.setFont("times", "normal");
-          doc.setFontSize(16);
-        }
-        doc.text(wrapped[li], MARGIN, yPos);
-        yPos += lineH;
-      }
+          drawIndexLink(doc, tocStart);
+        },
+      });
       drawFooter(doc, pageNum, totalPages);
     });
 
@@ -526,6 +639,7 @@
       pages: doc.getNumberOfPages(),
       songs: list.length,
       tocPage: tocStart,
+      orientation: ORIENTATION,
       arrayBuffer: ab,
     };
   }
@@ -533,7 +647,12 @@
   function build(songs, options) {
     options = options || {};
     var JsPDF = getJsPDF();
-    var probe = new JsPDF({ unit: "pt", format: "letter" });
+    setGeometry(options.orientation);
+    var probe = new JsPDF({
+      unit: "pt",
+      format: "letter",
+      orientation: ORIENTATION === "landscape" ? "l" : "p",
+    });
     var list = sortedSongs(songs || []);
     var grouped = groupSongs(list);
     var tocPages = estimateTocPages(
@@ -548,5 +667,16 @@
     build: build,
     todayStamp: todayStamp,
     formatSetup: formatSetup,
+    measureSongPages: function (song, orientation) {
+      setGeometry(orientation);
+      var JsPDF = getJsPDF();
+      var doc = new JsPDF({
+        unit: "pt",
+        format: "letter",
+        orientation: ORIENTATION === "landscape" ? "l" : "p",
+      });
+      var size = pickSize(doc, song);
+      return { pages: layoutSong(doc, song, size, null).pages, size: size.size };
+    },
   };
 })(typeof window !== "undefined" ? window : globalThis);

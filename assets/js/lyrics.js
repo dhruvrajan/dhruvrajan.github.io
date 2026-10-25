@@ -4,6 +4,7 @@
   var STORAGE_KEY = "lyrics_cache_key_v2";
   var STORAGE_REMEMBER = "lyrics_cache_remember_v2";
   var STORAGE_TEXT_SIZE = "lyrics_text_size_v1";
+  var STORAGE_ORIENTATION = "lyrics_songbook_orientation_v1";
   var DECRYPT_CONCURRENCY = 6;
 
   function baseUrl() {
@@ -328,6 +329,7 @@
 
   function loadSongsMeta() {
     state.songsMetaBySlug = Object.create(null);
+    state.songsMetaList = [];
     var el = document.getElementById("songs-meta-json");
     if (!el) return;
     var list;
@@ -356,7 +358,42 @@
         meta.tuning_unverified = !!instruments[0].unverified;
       }
       state.songsMetaBySlug[slug] = meta;
+      state.songsMetaList.push({
+        slug: slug,
+        title: String(entry.title),
+        artist: entry.artist || "",
+      });
     });
+  }
+
+  /**
+   * Show everything: songs listed in songs.yaml but absent from the encrypted
+   * index are appended as lyric-less entries (same title-slug join key as
+   * metaForSong), so the list is the union of index and songs.yaml.
+   */
+  function withMetaOnlySongs(indexSongs) {
+    var seen = Object.create(null);
+    var out = indexSongs.slice();
+    indexSongs.forEach(function (s) {
+      seen[songSlug(s)] = true;
+      seen[titleSlug(s.title)] = true;
+    });
+    (state.songsMetaList || []).forEach(function (m) {
+      if (seen[m.slug]) return;
+      seen[m.slug] = true;
+      out.push({
+        slug: m.slug,
+        title: m.title,
+        artist: normalizeArtist(m.artist),
+        source: "none",
+        noLyrics: true,
+      });
+    });
+    return out;
+  }
+
+  function hasLyricsFile(song) {
+    return !!song && !song.noLyrics;
   }
 
   function metaForSong(song) {
@@ -465,7 +502,7 @@
     var iterations = Number(saltInfo.iterations) || 310000;
     var salt = b64ToBytes(saltInfo.salt);
     var key = await deriveKey(passphrase, salt, iterations);
-    var songs = await decryptIndex(key);
+    var songs = withMetaOnlySongs(await decryptIndex(key));
     state.cryptoKey = key;
     state.songs = songs;
     state.songCache = Object.create(null);
@@ -483,7 +520,7 @@
     await loadSalt();
     var key = await importRawKey(b64);
     try {
-      state.songs = await decryptIndex(key);
+      state.songs = withMetaOnlySongs(await decryptIndex(key));
       state.cryptoKey = key;
       state.songCache = Object.create(null);
       return true;
@@ -496,6 +533,18 @@
   async function loadSongDetails(meta) {
     var slug = songSlug(meta);
     if (state.songCache[slug]) return state.songCache[slug];
+    if (meta && meta.noLyrics) {
+      // In songs.yaml only: nothing to fetch or decrypt.
+      return {
+        slug: slug,
+        title: meta.title || "Untitled",
+        artist: normalizeArtist(meta.artist),
+        source: "none",
+        lyrics: null,
+        doc_name: "",
+        noLyrics: true,
+      };
+    }
     if (!state.cryptoKey) {
       throw new Error("Lyrics are locked. Enter the passphrase again.");
     }
@@ -747,6 +796,7 @@
   }
 
   function attributionHtml(song) {
+    if (song.noLyrics) return "";
     var source = String(song.source || "missing").toLowerCase();
     if (source === "web") {
       return "";
@@ -761,6 +811,9 @@
 
   function lyricsBodyHtml(song) {
     var source = String(song.source || "missing").toLowerCase();
+    if (song.noLyrics) {
+      return '<p class="lyrics-empty">Lyrics not added yet</p>';
+    }
     if (song.lyrics == null || song.lyrics === "") {
       if (source === "missing") {
         return (
@@ -864,10 +917,52 @@
   }
 
 
+  function songNotes(slug) {
+    var N = window.LyricsNotes;
+    if (!N || typeof N.getNote !== "function") return "";
+    var entry = N.getNote(slug);
+    var text = entry && entry.notes != null ? String(entry.notes) : "";
+    return text.trim() ? text : "";
+  }
+
+  function getOrientation() {
+    try {
+      return localStorage.getItem(STORAGE_ORIENTATION) === "landscape"
+        ? "landscape"
+        : "portrait";
+    } catch (e) {
+      return "portrait";
+    }
+  }
+
+  /** Page orientation for the songbook PDF and for printing (@page size). */
+  function setOrientation(value) {
+    var o = value === "landscape" ? "landscape" : "portrait";
+    try {
+      localStorage.setItem(STORAGE_ORIENTATION, o);
+    } catch (e) {
+      /* ignore */
+    }
+    var style = document.getElementById("print-orientation-style");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "print-orientation-style";
+      document.head.appendChild(style);
+    }
+    style.textContent = "@page { size: letter " + o + "; }";
+    document.body.setAttribute("data-print-orientation", o);
+    var selects = document.querySelectorAll("[data-songbook-orientation]");
+    for (var i = 0; i < selects.length; i++) {
+      if (selects[i].value !== o) selects[i].value = o;
+    }
+    return o;
+  }
+
   function enrichForSongbook(details) {
     var meta = metaForSong(details);
     var instruments = (meta.instruments || []).slice();
     return {
+      notes: songNotes(details.slug),
       slug: details.slug,
       title: details.title,
       artist: details.artist,
@@ -884,7 +979,8 @@
 
   async function downloadSongbookPdf() {
     if (state.songbookBusy) return;
-    if (!state.cryptoKey || !state.songs.length) {
+    var lyricSongs = state.songs.filter(hasLyricsFile);
+    if (!state.cryptoKey || !lyricSongs.length) {
       setSongbookProgress(
         "Unlock lyrics before downloading the songbook.",
         "error"
@@ -898,13 +994,13 @@
     state.songbookBusy = true;
     if (els.downloadSongbookBtn) els.downloadSongbookBtn.disabled = true;
     setSongbookProgress(
-      "Preparing songbook (0/" + state.songs.length + ")…",
+      "Preparing songbook (0/" + lyricSongs.length + ")…",
       "info"
     );
 
     try {
       var details = await mapPool(
-        state.songs,
+        lyricSongs,
         DECRYPT_CONCURRENCY,
         function (meta) {
           return loadSongDetails(meta);
@@ -919,6 +1015,7 @@
       var enriched = details.map(enrichForSongbook);
       setSongbookProgress("Building PDF…", "info");
       var result = window.DhruvSongbookPdf.build(enriched, {
+        orientation: getOrientation(),
         onProgress: function (msg) {
           setSongbookProgress(msg, "info");
         },
@@ -944,6 +1041,10 @@
       getSongs: function () {
         return state.songs.slice();
       },
+      getLyricSongs: function () {
+        return state.songs.filter(hasLyricsFile);
+      },
+      hasLyrics: hasLyricsFile,
       loadSongDetails: loadSongDetails,
       songSlug: songSlug,
       titleSlug: titleSlug,
@@ -956,6 +1057,8 @@
       },
       setTextSize: setTextSize,
       setHashForSong: setHashForSong,
+      getOrientation: getOrientation,
+      setOrientation: setOrientation,
       parseSongHash: parseSongHash,
       clearSongHash: function () {
         if (window.location.hash) {
@@ -984,11 +1087,14 @@
   function afterUnlock() {
     showUnlocked(true);
     setUnlockStatus("");
+    var withLyrics = state.songs.filter(hasLyricsFile).length;
     setStatus(
       state.songs.length +
         " song" +
         (state.songs.length === 1 ? "" : "s") +
-        " unlocked",
+        " unlocked (" +
+        withLyrics +
+        " with lyrics)",
       "ok"
     );
 
@@ -1135,6 +1241,13 @@
       });
     }
 
+    document.addEventListener("change", function (e) {
+      var t = e.target;
+      if (t && t.hasAttribute && t.hasAttribute("data-songbook-orientation")) {
+        setOrientation(t.value);
+      }
+    });
+
     window.addEventListener("hashchange", function () {
       if (!state.songs.length) return;
       if (
@@ -1157,6 +1270,7 @@
 
   async function init() {
     loadSongsMeta();
+    setOrientation(getOrientation());
     try {
       var savedSize = localStorage.getItem(STORAGE_TEXT_SIZE);
       if (savedSize === "sm" || savedSize === "md" || savedSize === "lg") {
