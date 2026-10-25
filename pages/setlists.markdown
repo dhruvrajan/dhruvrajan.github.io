@@ -1,10 +1,12 @@
 ---
 layout: default
-title: Setlists
+title: Setlists & Recordings
+narrow: true
 ---
 
-<h1>Setlists</h1>
+<h1 class="page-title">Setlists &amp; Recordings</h1>
 
-[Songs by Artist](/pages/songs_by_artist.html)
-
+<div class="content">
+<p class="page-links"><a href="{{ '/pages/songs_by_artist.html' | relative_url }}">Songs by Artist</a></p>
 {% include setlists.markdown %}
+</div>

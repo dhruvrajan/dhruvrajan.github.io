@@ -1,0 +1,14 @@
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-logo" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <nav class="site-nav" aria-label="Primary">
+      {% assign path = page.url %}
+      <a href="{{ '/' | relative_url }}"{% if path == '/' %} aria-current="page"{% endif %}>Home</a>
+      <a href="{{ '/pages/events.html' | relative_url }}"{% if path contains '/pages/events' %} aria-current="page"{% endif %}>Past Performances</a>
+      <a href="{{ '/pages/setlists.html' | relative_url }}"{% if path contains '/pages/setlists' %} aria-current="page"{% endif %}>Setlists</a>
+      <a href="{{ '/pages/songs_by_artist.html' | relative_url }}"{% if path contains '/pages/songs_by_artist' %} aria-current="page"{% endif %}>Songs by Artist</a>
+      {%- comment -%} Future Lyrics page — enable when /pages/lyrics is added {%- endcomment -%}
+      <a class="is-future" href="{{ '/pages/lyrics.html' | relative_url }}" aria-disabled="true" tabindex="-1" title="Coming soon">Lyrics</a>
+    </nav>
+  </div>
+</header>
