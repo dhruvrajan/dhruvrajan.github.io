@@ -65,7 +65,8 @@ narrow: true
     "title": {{ s.title | jsonify }},
     "artist": {{ s.artist | jsonify }}{% if s.tuning %},
     "tuning": {{ s.tuning | jsonify }}{% endif %}{% if s.capo != nil %},
-    "capo": {{ s.capo }}{% endif %}
+    "capo": {{ s.capo }}{% endif %}{% if s.tuning_unverified %},
+    "tuning_unverified": true{% endif %}
   }{% unless forloop.last %},{% endunless %}
 {% endfor %}
 ]

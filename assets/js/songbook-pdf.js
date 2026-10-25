@@ -59,7 +59,11 @@
 
   function formatSetup(song) {
     var parts = [];
-    if (song.tuning) parts.push("Tuning: " + song.tuning);
+    if (song.tuning) {
+      var tuning = song.tuning;
+      if (song.tuning_unverified) tuning += "?";
+      parts.push("Tuning: " + tuning);
+    }
     if (song.capo != null && Number(song.capo) !== 0) {
       parts.push("Capo " + Number(song.capo));
     }

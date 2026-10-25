@@ -261,6 +261,7 @@
         var capoNum = Number(entry.capo);
         if (!isNaN(capoNum)) meta.capo = capoNum;
       }
+      if (entry.tuning_unverified) meta.tuning_unverified = true;
       state.songsMetaBySlug[slug] = meta;
     });
   }
@@ -275,7 +276,11 @@
 
   function formatTuningCapo(meta) {
     var parts = [];
-    if (meta && meta.tuning) parts.push("Tuning: " + meta.tuning);
+    if (meta && meta.tuning) {
+      var tuning = meta.tuning;
+      if (meta.tuning_unverified) tuning += "?";
+      parts.push("Tuning: " + tuning);
+    }
     if (meta && meta.capo != null && Number(meta.capo) !== 0) {
       parts.push("Capo " + Number(meta.capo));
     }
@@ -283,11 +288,24 @@
   }
 
   function tuningCapoHtml(song) {
-    var line = formatTuningCapo(metaForSong(song));
-    if (!line) return "";
-    return (
-      '<p class="song-detail__setup">' + escapeHtml(line) + "</p>"
-    );
+    var meta = metaForSong(song);
+    if (!meta || (!meta.tuning && !(meta.capo != null && Number(meta.capo) !== 0))) {
+      return "";
+    }
+    var html = '<p class="song-detail__setup">';
+    if (meta.tuning) {
+      html += "Tuning: " + escapeHtml(meta.tuning);
+      if (meta.tuning_unverified) {
+        html +=
+          '<span class="song-detail__unverified" title="Tuning needs a double-check">?</span>';
+      }
+    }
+    if (meta.capo != null && Number(meta.capo) !== 0) {
+      if (meta.tuning) html += " · ";
+      html += "Capo " + Number(meta.capo);
+    }
+    html += "</p>";
+    return html;
   }
 
   function normalizeIndexEntry(entry) {
@@ -712,6 +730,7 @@
       source: details.source,
       tuning: meta.tuning,
       capo: meta.capo,
+      tuning_unverified: !!meta.tuning_unverified,
     };
   }
 
