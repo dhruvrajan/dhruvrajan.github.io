@@ -76,8 +76,6 @@
   instruments:
     - Guitar
   songs:
-    - title: One Brown Mouse
-    - title: Love Is All
     - title: This Flight Tonight
     - title: Wind and Walls
     - title: Cello Song
@@ -87,12 +85,14 @@
     - title: Somewhere in the Mountains
     - title: Place to Be
     - title: Where Do My Bluebird Fly
+    - title: One Brown Mouse
     - title: Salamander
     - title: Magpie's Nest
     - title: One of These Things First
     - title: There's a Girl
     - title: Both Sides Now
     - title: Conversation
+    - title: Love Is All
     - title: The Gardener
     - title: Carey
 

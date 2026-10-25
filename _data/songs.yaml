@@ -253,9 +253,8 @@
   artist: Jethro Tull
   instruments:
     - name: Guitar
-      tuning: Open E (EBEG#BE)
+      tuning: DADGAD
       capo: 0
-      unverified: true
   youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1610s'
   soundcloud_link: ~
 - title: One White Duck / 0^10 = Nothing at All
