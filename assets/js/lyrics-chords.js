@@ -1,6 +1,8 @@
-/* Songbook content option: "Lyrics" (default) or "Chords".
+/* Songbook content option: "Lyrics" (default), "Chords" or "Both".
  * With Chords, each song uses its encrypted chord sheet (assets/data/chords/)
- * when one exists and falls back to its lyrics otherwise. Chord sheets are
+ * when one exists and falls back to its lyrics otherwise. With Both, songs
+ * with a chord sheet get it right after their lyrics, linked both ways
+ * (songbook-pdf.js reads song.chordsText). Chord sheets are
  * rendered monospace so chords stay aligned above the lyric lines.
  * Isolated: wraps DhruvSongbookPdf.build and adds one control to the menu. */
 (function () {
@@ -13,7 +15,8 @@
 
   function getMode() {
     try {
-      return localStorage.getItem(STORAGE) === "chords" ? "chords" : "lyrics";
+      var m = localStorage.getItem(STORAGE);
+      return m === "chords" || m === "both" ? m : "lyrics";
     } catch (e) {
       return "lyrics";
     }
@@ -56,7 +59,7 @@
     return p;
   }
 
-  async function withChords(songs) {
+  async function withChords(songs, both) {
     var a = api();
     if (!a || typeof a.decryptJson !== "function") return songs;
     var idx;
@@ -78,11 +81,13 @@
         try {
           var sheet = await loadSheet(a, job[1]);
           if (sheet && sheet.chords_text && String(sheet.chords_text).trim()) {
-            out[job[0]] = Object.assign({}, out[job[0]], {
-              lyrics: String(sheet.chords_text),
-              monospace: true,
-              chordSheet: true,
-            });
+            out[job[0]] = Object.assign(
+              {},
+              out[job[0]],
+              both
+                ? { chordsText: String(sheet.chords_text) }
+                : { lyrics: String(sheet.chords_text), monospace: true, chordSheet: true }
+            );
           }
         } catch (e) {
           /* keep lyrics for this song */
@@ -100,9 +105,10 @@
     if (!pdf || pdf.__chordsWrapped) return;
     var original = pdf.build;
     pdf.build = function (songs, options) {
-      if (getMode() !== "chords") return original.call(pdf, songs, options);
+      var mode = getMode();
+      if (mode === "lyrics") return original.call(pdf, songs, options);
       if (options && options.onProgress) options.onProgress("Adding chord sheets…");
-      return withChords(songs || []).then(function (list) {
+      return withChords(songs || [], mode === "both").then(function (list) {
         return original.call(pdf, list, options);
       });
     };
@@ -114,6 +120,7 @@
       '<div class="' + cls + '" role="group" aria-label="Songbook content">' +
       '<button type="button" class="lb-btn lb-btn--subtle" data-songbook-content="lyrics">Lyrics</button>' +
       '<button type="button" class="lb-btn lb-btn--subtle" data-songbook-content="chords">Chords</button>' +
+      '<button type="button" class="lb-btn lb-btn--subtle" data-songbook-content="both">Both</button>' +
       "</div>"
     );
   }
