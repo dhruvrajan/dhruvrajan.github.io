@@ -714,3 +714,56 @@ ol.song-list li::marker {
 .song-list li .lyrics-quick {
   flex-shrink: 0;
 }
+
+/* Songs-by-artist filter (longer repertoire) */
+
+.songs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.25rem;
+  margin: 0 0 1rem;
+}
+
+.songs-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1 1 16rem;
+  max-width: 28rem;
+}
+
+.songs-filter__label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.songs-filter input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: #fff;
+}
+
+.songs-filter input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.songs-filter__status {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.artist-group[hidden],
+.song-item[hidden],
+.jump-nav a[hidden] {
+  display: none !important;
+}
