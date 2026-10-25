@@ -1,19 +1,33 @@
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "lyrics_cache_key_v1";
-  var STORAGE_REMEMBER = "lyrics_cache_remember_v1";
-  function dataUrl() {
-    return (
-      (document.body && document.body.getAttribute("data-lyrics-url")) ||
-      "/assets/data/lyrics.enc.json"
-    );
+  var STORAGE_KEY = "lyrics_cache_key_v2";
+  var STORAGE_REMEMBER = "lyrics_cache_remember_v2";
+
+  function baseUrl() {
+    var fromDom =
+      document.body && document.body.getAttribute("data-lyrics-base");
+    if (fromDom) return fromDom.replace(/\/?$/, "/");
+    return "/assets/data/lyrics/";
+  }
+
+  function saltUrl() {
+    return baseUrl() + "salt.json";
+  }
+
+  function indexUrl() {
+    return baseUrl() + "index.enc.json";
+  }
+
+  function songUrl(slug) {
+    return baseUrl() + "songs/" + encodeURIComponent(slug) + ".enc.json";
   }
 
   var state = {
     songs: [],
-    envelope: null,
+    salt: null,
     cryptoKey: null,
+    songCache: Object.create(null),
     largeText: false,
   };
 
@@ -156,28 +170,36 @@
     );
   }
 
-  async function loadEnvelope() {
-    if (state.envelope) return state.envelope;
-    var url = dataUrl();
+  async function fetchJson(url) {
     var res = await fetch(url, { cache: "no-cache" });
     if (!res.ok) {
       throw new Error(
-        "Could not load lyrics cache (" +
-          res.status +
-          "). Expected file at " +
-          url +
-          "."
+        "Could not load " + url + " (" + res.status + ")."
       );
     }
-    var data = await res.json();
-    if (!data || data.v !== 1 || !data.salt || !data.iv || !data.ciphertext) {
-      throw new Error("Lyrics cache file is missing required fields.");
+    return res.json();
+  }
+
+  async function loadSalt() {
+    if (state.salt) return state.salt;
+    var data = await fetchJson(saltUrl());
+    if (
+      !data ||
+      data.v !== 2 ||
+      data.kdf !== "PBKDF2-SHA256" ||
+      !data.salt ||
+      !data.iterations
+    ) {
+      throw new Error("Lyrics salt file is missing required fields.");
     }
-    state.envelope = data;
+    state.salt = data;
     return data;
   }
 
-  async function decryptWithKey(cryptoKey, envelope) {
+  async function decryptPayload(cryptoKey, envelope) {
+    if (!envelope || !envelope.iv || !envelope.ciphertext) {
+      throw new Error("Encrypted payload is missing iv or ciphertext.");
+    }
     var iv = b64ToBytes(envelope.iv);
     var combined = b64ToBytes(envelope.ciphertext);
     var plainBuf = await crypto.subtle.decrypt(
@@ -185,24 +207,7 @@
       cryptoKey,
       combined
     );
-    var text = new TextDecoder().decode(plainBuf);
-    var payload = JSON.parse(text);
-    if (!payload || !Array.isArray(payload.songs)) {
-      throw new Error("Decrypted data is not a valid lyrics payload.");
-    }
-    return payload.songs.map(function (song) {
-      var title = song.title || "Untitled";
-      var artist = normalizeArtist(song.artist);
-      return {
-        title: title,
-        artist: artist,
-        lyrics: song.lyrics || "",
-        source: song.source || "",
-        lyrics_copyright: song.lyrics_copyright || "",
-        track_id: song.track_id || "",
-        slug: slugify(title, artist),
-      };
-    });
+    return JSON.parse(new TextDecoder().decode(plainBuf));
   }
 
   /** Blank / Unknown artists share the "Other" bucket (matches songs-by-artist deep links). */
@@ -212,21 +217,44 @@
     return a;
   }
 
-  async function unlockWithPassphrase(passphrase, remember) {
-    var envelope = await loadEnvelope();
-    var iterations = Number(envelope.iterations) || 310000;
-    var salt = b64ToBytes(envelope.salt);
-    var key = await deriveKey(passphrase, salt, iterations);
-    var songs;
+  function normalizeIndexEntry(entry) {
+    var title = (entry && entry.title) || "Untitled";
+    var artist = normalizeArtist(entry && entry.artist);
+    var slug =
+      (entry && entry.slug) || slugify(title, artist);
+    return {
+      slug: slug,
+      title: title,
+      artist: artist,
+      source: (entry && entry.source) || "missing",
+    };
+  }
+
+  async function decryptIndex(cryptoKey) {
+    var envelope = await fetchJson(indexUrl());
+    var payload;
     try {
-      songs = await decryptWithKey(key, envelope);
+      payload = await decryptPayload(cryptoKey, envelope);
     } catch (err) {
       var bad = new Error("WRONG_PASSPHRASE");
       bad.cause = err;
       throw bad;
     }
+    if (!Array.isArray(payload)) {
+      throw new Error("Decrypted index is not a song list.");
+    }
+    return payload.map(normalizeIndexEntry);
+  }
+
+  async function unlockWithPassphrase(passphrase, remember) {
+    var saltInfo = await loadSalt();
+    var iterations = Number(saltInfo.iterations) || 310000;
+    var salt = b64ToBytes(saltInfo.salt);
+    var key = await deriveKey(passphrase, salt, iterations);
+    var songs = await decryptIndex(key);
     state.cryptoKey = key;
     state.songs = songs;
+    state.songCache = Object.create(null);
     if (remember) {
       await rememberKey(key);
     } else {
@@ -238,16 +266,49 @@
   async function unlockWithStoredKey() {
     var b64 = readRememberedKey();
     if (!b64) return false;
-    var envelope = await loadEnvelope();
+    await loadSalt();
     var key = await importRawKey(b64);
     try {
-      state.songs = await decryptWithKey(key, envelope);
+      state.songs = await decryptIndex(key);
       state.cryptoKey = key;
+      state.songCache = Object.create(null);
       return true;
     } catch (err) {
       clearRemembered();
       return false;
     }
+  }
+
+  async function loadSongDetails(meta) {
+    var slug = songSlug(meta);
+    if (state.songCache[slug]) return state.songCache[slug];
+    if (!state.cryptoKey) {
+      throw new Error("Lyrics are locked. Enter the passphrase again.");
+    }
+    var envelope = await fetchJson(songUrl(slug));
+    var payload;
+    try {
+      payload = await decryptPayload(state.cryptoKey, envelope);
+    } catch (err) {
+      throw new Error("Could not decrypt lyrics for this song.");
+    }
+    var details = {
+      slug: slug,
+      title: payload.title || meta.title || "Untitled",
+      artist: normalizeArtist(
+        payload.artist != null ? payload.artist : meta.artist
+      ),
+      source: payload.source || meta.source || "missing",
+      lyrics: payload.lyrics == null ? null : String(payload.lyrics),
+      lyrics_copyright: payload.lyrics_copyright || "",
+      track_id: payload.track_id || "",
+      track_name: payload.track_name || "",
+      web_artist: payload.web_artist || "",
+      source_url: payload.source_url || "",
+      doc_name: payload.doc_name || "",
+    };
+    state.songCache[slug] = details;
+    return details;
   }
 
   function uniqueArtists(songs) {
@@ -371,7 +432,11 @@
     var slug = songSlug(song);
     var next = "#song=" + encodeURIComponent(slug);
     if (window.location.hash !== next) {
-      history.replaceState(null, "", window.location.pathname + window.location.search + next);
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search + next
+      );
     }
   }
 
@@ -381,23 +446,51 @@
     var params = new URLSearchParams(hash);
     var song = params.get("song");
     if (song) return decodeURIComponent(song);
-    // Support plain #song=slug without URLSearchParams quirks
     var m = /(?:^|&)song=([^&]+)/.exec(hash);
     return m ? decodeURIComponent(m[1]) : "";
   }
 
-  function openSong(song, updateHash) {
-    if (!song || !els.detail) return;
-    if (updateHash) setHashForSong(song);
+  function attributionHtml(song) {
+    var source = String(song.source || "missing").toLowerCase();
+    if (source === "web") {
+      if (song.lyrics_copyright) {
+        return (
+          '<p class="song-detail__copyright">' +
+          escapeHtml(song.lyrics_copyright) +
+          "</p>"
+        );
+      }
+      return "";
+    }
+    if (source === "docs") {
+      return (
+        '<p class="song-detail__copyright">From my lyric docs</p>'
+      );
+    }
+    return (
+      '<p class="song-detail__copyright">No lyrics (instrumental or unavailable)</p>'
+    );
+  }
 
+  function lyricsBodyHtml(song) {
+    var source = String(song.source || "missing").toLowerCase();
+    if (song.lyrics == null || song.lyrics === "") {
+      if (source === "missing") {
+        return (
+          '<p class="lyrics-empty">No lyrics (instrumental or unavailable)</p>'
+        );
+      }
+      return '<p class="lyrics-empty">No lyrics available for this song.</p>';
+    }
+    return (
+      '<pre class="song-lyrics">' + escapeHtml(song.lyrics) + "</pre>"
+    );
+  }
+
+  function renderSongDetail(song) {
+    if (!els.detail) return;
     els.detail.hidden = false;
     els.detail.classList.toggle("song-detail--large", state.largeText);
-
-    var copyright = song.lyrics_copyright
-      ? '<p class="song-detail__copyright">' +
-        escapeHtml(song.lyrics_copyright) +
-        "</p>"
-      : "";
 
     els.detail.innerHTML =
       '<div class="song-detail__header">' +
@@ -412,10 +505,8 @@
       '<button type="button" class="linkish" id="back-to-browse">Back to browse</button>' +
       "</p>" +
       "</div></div>" +
-      '<pre class="song-lyrics">' +
-      escapeHtml(song.lyrics) +
-      "</pre>" +
-      copyright;
+      lyricsBodyHtml(song) +
+      attributionHtml(song);
 
     var back = document.getElementById("back-to-browse");
     if (back) {
@@ -423,13 +514,48 @@
         els.detail.hidden = true;
         els.detail.innerHTML = "";
         if (window.location.hash) {
-          history.replaceState(null, "", window.location.pathname + window.location.search);
+          history.replaceState(
+            null,
+            "",
+            window.location.pathname + window.location.search
+          );
         }
         if (els.searchInput) els.searchInput.focus();
       });
     }
 
     els.detail.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function openSong(meta, updateHash) {
+    if (!meta || !els.detail) return;
+    if (updateHash) setHashForSong(meta);
+
+    els.detail.hidden = false;
+    els.detail.classList.toggle("song-detail--large", state.largeText);
+    els.detail.innerHTML =
+      '<p class="lyrics-status lyrics-status--info">Loading lyrics…</p>';
+
+    loadSongDetails(meta)
+      .then(function (details) {
+        renderSongDetail(details);
+      })
+      .catch(function (err) {
+        els.detail.innerHTML =
+          '<p class="lyrics-status lyrics-status--error">' +
+          escapeHtml(humanError(err)) +
+          "</p>" +
+          '<p class="song-detail__actions">' +
+          '<button type="button" class="linkish" id="back-to-browse">Back to browse</button>' +
+          "</p>";
+        var back = document.getElementById("back-to-browse");
+        if (back) {
+          back.addEventListener("click", function () {
+            els.detail.hidden = true;
+            els.detail.innerHTML = "";
+          });
+        }
+      });
   }
 
   function runFilter(query) {
@@ -483,6 +609,7 @@
   function lockSession(forget) {
     state.songs = [];
     state.cryptoKey = null;
+    state.songCache = Object.create(null);
     if (forget) clearRemembered();
     if (els.results) els.results.innerHTML = "";
     if (els.artistList) els.artistList.innerHTML = "";
@@ -515,7 +642,8 @@
     if (els.unlockForm) {
       els.unlockForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        var passphrase = (els.passphraseInput && els.passphraseInput.value) || "";
+        var passphrase =
+          (els.passphraseInput && els.passphraseInput.value) || "";
         if (!passphrase) {
           setUnlockStatus("Enter the passphrase.", "error");
           if (els.passphraseInput) els.passphraseInput.focus();
@@ -602,8 +730,11 @@
     setUnlockStatus("Loading lyrics cache…", "info");
 
     try {
-      await loadEnvelope();
-      setUnlockStatus("Enter the passphrase to unlock the lyrics cache.", "info");
+      await loadSalt();
+      setUnlockStatus(
+        "Enter the passphrase to unlock the lyrics cache.",
+        "info"
+      );
       var ok = await unlockWithStoredKey();
       if (ok) {
         afterUnlock();
