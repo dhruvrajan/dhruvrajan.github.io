@@ -10,7 +10,7 @@ narrow: true
 
 <section id="unlock-gate" class="lyrics-panel">
   <h2 class="group-heading">Unlock lyrics</h2>
-  <p class="item-meta">Loads <code>/assets/data/lyrics.enc.json</code>, derives a key with PBKDF2-SHA256, and decrypts with AES-256-GCM in this browser.</p>
+  <p class="item-meta">Loads salt and an encrypted index from <code>/assets/data/lyrics/</code>, derives a key with PBKDF2-SHA256, and decrypts songs on demand with AES-256-GCM in this browser.</p>
   <form id="unlock-form" class="token-form" autocomplete="off">
     <label for="passphrase-input">Passphrase</label>
     <input id="passphrase-input" name="passphrase" type="password" spellcheck="false" autocomplete="current-password" required placeholder="Enter passphrase">
@@ -56,8 +56,8 @@ narrow: true
 
 <script>
   document.body.setAttribute(
-    "data-lyrics-url",
-    "{{ '/assets/data/lyrics.enc.json' | relative_url }}"
+    "data-lyrics-base",
+    "{{ '/assets/data/lyrics/' | relative_url }}"
   );
 </script>
 <script src="{{ '/assets/js/lyrics.js' | relative_url }}" defer></script>
