@@ -67,7 +67,10 @@ body.lb-song-open.lb-layout-touch .site-main {
 body.lb-layout-desktop.lb-has-song .site-main,
 body.lb-layout-desktop.lb-has-song.page-narrow,
 body.lb-layout-desktop.lb-has-song .page-narrow {
-  max-width: 1100px;
+  max-width: none;
+  width: 100%;
+  padding-left: clamp(1.5rem, 3vw, 3rem);
+  padding-right: clamp(1.5rem, 3vw, 3rem);
 }
 
 #lyrics-browser.lb-active .lyrics-toolbar,
@@ -94,7 +97,7 @@ body.lb-layout-desktop.lb-has-song .page-narrow {
 }
 
 .lb-layout-desktop.lb-has-song .lb-shell {
-  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+  grid-template-columns: minmax(18rem, 26rem) minmax(0, 1fr);
   align-items: stretch;
   gap: 0;
   min-height: calc(100vh - 8rem);
