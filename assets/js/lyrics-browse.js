@@ -18,14 +18,14 @@
   var TEXT_SIZES = ["sm", "md", "lg"];
   var LAYOUT_MODES = ["auto", "desktop", "touch"];
   var INSTRUMENTS = ["Guitar", "Octave mandolin", "Banjo"];
-  var INSTRUMENT_KEY = "lyrics_browse_instrument_v1";
+  var INSTRUMENT_KEY = "lyrics_browse_instrument_v2";
 
   var api = null;
   var root = null;
   var state = {
     sort: "artist",
     query: "",
-    instrumentFilter: "Guitar",
+    instrumentFilter: "all",
     tuningFilter: "all",
     capoFilter: "all",
     artistFilter: "all",
@@ -117,9 +117,9 @@
   function loadPrefs() {
     state.stage = storageGet(STAGE_KEY, "0") === "1";
     state.sort = storageGet(SORT_KEY, "artist") || "artist";
-    var inst = storageGet(INSTRUMENT_KEY, "Guitar") || "Guitar";
+    var inst = storageGet(INSTRUMENT_KEY, "all") || "all";
     state.instrumentFilter =
-      INSTRUMENTS.indexOf(inst) !== -1 || inst === "all" ? inst : "Guitar";
+      INSTRUMENTS.indexOf(inst) !== -1 || inst === "all" ? inst : "all";
     var speed = Number(storageGet(SPEED_KEY, "35"));
     state.scrollSpeed = isNaN(speed) ? 35 : Math.min(120, Math.max(8, speed));
     state.filtersOpen = storageGet(FILTERS_OPEN_KEY, "0") === "1";
@@ -255,7 +255,7 @@
   }
 
   function activeInstrumentName() {
-    return state.instrumentFilter || "Guitar";
+    return state.instrumentFilter || "all";
   }
 
   function setupForSong(song) {
@@ -485,7 +485,7 @@
       (state.tuningFilter && state.tuningFilter !== "all") ||
       (state.capoFilter && state.capoFilter !== "all") ||
       (state.artistFilter && state.artistFilter !== "all") ||
-      (state.instrumentFilter && state.instrumentFilter !== "Guitar")
+      (state.instrumentFilter && state.instrumentFilter !== "all")
     );
   }
 
@@ -516,7 +516,7 @@
 
   function activeFilterCount() {
     var n = 0;
-    if (state.instrumentFilter && state.instrumentFilter !== "Guitar") n += 1;
+    if (state.instrumentFilter && state.instrumentFilter !== "all") n += 1;
     if (state.tuningFilter && state.tuningFilter !== "all") n += 1;
     if (state.capoFilter && state.capoFilter !== "all") n += 1;
     if (state.artistFilter && state.artistFilter !== "all") n += 1;
@@ -848,6 +848,10 @@
 
     var html = "";
     html += '<div class="lb-filter-row"><span class="lb-filter-label">Instrument</span>';
+    html +=
+      '<button type="button" class="lb-chip" data-instrument="all" aria-pressed="' +
+      (state.instrumentFilter === "all" ? "true" : "false") +
+      '">All</button>';
     INSTRUMENTS.forEach(function (name) {
       html +=
         '<button type="button" class="lb-chip" data-instrument="' +
