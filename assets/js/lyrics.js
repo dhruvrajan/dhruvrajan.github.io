@@ -3,6 +3,8 @@
 
   var STORAGE_KEY = "lyrics_cache_key_v2";
   var STORAGE_REMEMBER = "lyrics_cache_remember_v2";
+  var STORAGE_TEXT_SIZE = "lyrics_text_size_v1";
+  var DECRYPT_CONCURRENCY = 6;
 
   function baseUrl() {
     var fromDom =
@@ -28,7 +30,9 @@
     salt: null,
     cryptoKey: null,
     songCache: Object.create(null),
-    largeText: false,
+    songsMetaBySlug: Object.create(null),
+    textSize: "md",
+    songbookBusy: false,
   };
 
   var els = {
@@ -41,13 +45,17 @@
     searchForm: document.getElementById("search-form"),
     searchInput: document.getElementById("search-input"),
     status: document.getElementById("search-status"),
+    songbookProgress: document.getElementById("songbook-progress"),
     results: document.getElementById("search-results"),
     detail: document.getElementById("song-detail"),
     artistList: document.getElementById("artist-browse"),
     lockBtn: document.getElementById("lock-btn"),
     forgetBtn: document.getElementById("forget-btn"),
-    largeTextBtn: document.getElementById("large-text-btn"),
+    textSizeSm: document.getElementById("text-size-sm"),
+    textSizeMd: document.getElementById("text-size-md"),
+    textSizeLg: document.getElementById("text-size-lg"),
     printBtn: document.getElementById("print-lyrics-btn"),
+    downloadSongbookBtn: document.getElementById("download-songbook-btn"),
   };
 
   function b64ToBytes(b64) {
@@ -72,16 +80,24 @@
       .replace(/"/g, "&quot;");
   }
 
-  /** Match Jekyll `| slugify` default: non-alnum → hyphen, collapse, lower. */
-  function slugify(title, artist) {
-    var raw = String(title || "") + "-" + String(artist || "");
-    return raw
+  /**
+   * Title slug matching the lyrics index rule:
+   * strip accents, lowercase, runs of non [a-z0-9] → '-', trim, max 80 chars.
+   */
+  function titleSlug(title) {
+    return String(title || "")
       .normalize("NFKD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
-      .replace(/[^a-z0-9_-]+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-+|-+$/g, "");
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80);
+  }
+
+  /** Fallback when an index entry has no slug. */
+  function slugify(title, artist) {
+    var raw = String(title || "") + "-" + String(artist || "");
+    return titleSlug(raw);
   }
 
   function songSlug(song) {
@@ -102,6 +118,14 @@
     els.status.className =
       "lyrics-status" + (kind ? " lyrics-status--" + kind : "");
     els.status.hidden = !message;
+  }
+
+  function setSongbookProgress(message, kind) {
+    if (!els.songbookProgress) return;
+    els.songbookProgress.textContent = message || "";
+    els.songbookProgress.className =
+      "lyrics-status" + (kind ? " lyrics-status--" + kind : "");
+    els.songbookProgress.hidden = !message;
   }
 
   function showUnlocked(unlocked) {
@@ -208,11 +232,62 @@
     return JSON.parse(new TextDecoder().decode(plainBuf));
   }
 
-  /** Blank / Unknown artists share the "Other" bucket (matches songs-by-artist deep links). */
   function normalizeArtist(artist) {
     var a = String(artist == null ? "" : artist).trim();
     if (!a || /^unknown$/i.test(a)) return "Other";
     return a;
+  }
+
+  function loadSongsMeta() {
+    state.songsMetaBySlug = Object.create(null);
+    var el = document.getElementById("songs-meta-json");
+    if (!el) return;
+    var list;
+    try {
+      list = JSON.parse(el.textContent || "[]");
+    } catch (e) {
+      return;
+    }
+    if (!Array.isArray(list)) return;
+    list.forEach(function (entry) {
+      if (!entry || !entry.title) return;
+      var slug = titleSlug(entry.title);
+      if (!slug) return;
+      var meta = {};
+      if (entry.tuning != null && String(entry.tuning).trim() !== "") {
+        meta.tuning = String(entry.tuning).trim();
+      }
+      if (entry.capo != null && entry.capo !== "") {
+        var capoNum = Number(entry.capo);
+        if (!isNaN(capoNum)) meta.capo = capoNum;
+      }
+      state.songsMetaBySlug[slug] = meta;
+    });
+  }
+
+  function metaForSong(song) {
+    var slug = songSlug(song);
+    var bySlug = state.songsMetaBySlug[slug];
+    if (bySlug) return bySlug;
+    var byTitle = state.songsMetaBySlug[titleSlug(song.title)];
+    return byTitle || {};
+  }
+
+  function formatTuningCapo(meta) {
+    var parts = [];
+    if (meta && meta.tuning) parts.push("Tuning: " + meta.tuning);
+    if (meta && meta.capo != null && Number(meta.capo) !== 0) {
+      parts.push("Capo " + Number(meta.capo));
+    }
+    return parts.join(" · ");
+  }
+
+  function tuningCapoHtml(song) {
+    var line = formatTuningCapo(metaForSong(song));
+    if (!line) return "";
+    return (
+      '<p class="song-detail__setup">' + escapeHtml(line) + "</p>"
+    );
   }
 
   function normalizeIndexEntry(entry) {
@@ -303,6 +378,27 @@
     return details;
   }
 
+  async function mapPool(items, limit, worker, onProgress) {
+    var results = new Array(items.length);
+    var next = 0;
+    var done = 0;
+
+    async function run() {
+      while (next < items.length) {
+        var i = next++;
+        results[i] = await worker(items[i], i);
+        done++;
+        if (onProgress) onProgress(done, items.length);
+      }
+    }
+
+    var runners = [];
+    var n = Math.min(limit, items.length) || 1;
+    for (var r = 0; r < n; r++) runners.push(run());
+    await Promise.all(runners);
+    return results;
+  }
+
   function uniqueArtists(songs) {
     var map = {};
     songs.forEach(function (s) {
@@ -315,6 +411,16 @@
     });
   }
 
+  function sortedSongs(songs) {
+    return songs.slice().sort(function (a, b) {
+      var aa = a.artist === "Other" ? "\uffff" : a.artist;
+      var ba = b.artist === "Other" ? "\uffff" : b.artist;
+      var byArtist = aa.localeCompare(ba);
+      if (byArtist) return byArtist;
+      return a.title.localeCompare(b.title);
+    });
+  }
+
   function filterSongs(query) {
     var q = (query || "").trim().toLowerCase();
     if (!q) return state.songs.slice();
@@ -324,6 +430,42 @@
         s.artist.toLowerCase().indexOf(q) !== -1
       );
     });
+  }
+
+  function applyTextSize() {
+    var size = state.textSize || "md";
+    if (document.body) {
+      document.body.classList.remove(
+        "lyrics-text--sm",
+        "lyrics-text--md",
+        "lyrics-text--lg"
+      );
+      document.body.classList.add("lyrics-text--" + size);
+    }
+    if (els.detail) {
+      els.detail.classList.toggle("song-detail--large", size !== "sm");
+      els.detail.classList.toggle("song-detail--xlarge", size === "lg");
+    }
+    var map = {
+      sm: els.textSizeSm,
+      md: els.textSizeMd,
+      lg: els.textSizeLg,
+    };
+    Object.keys(map).forEach(function (key) {
+      var btn = map[key];
+      if (!btn) return;
+      btn.setAttribute("aria-pressed", key === size ? "true" : "false");
+    });
+    try {
+      localStorage.setItem(STORAGE_TEXT_SIZE, size);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function setTextSize(size) {
+    state.textSize = size;
+    applyTextSize();
   }
 
   function renderArtistBrowse() {
@@ -473,7 +615,7 @@
   function renderSongDetail(song) {
     if (!els.detail) return;
     els.detail.hidden = false;
-    els.detail.classList.toggle("song-detail--large", state.largeText);
+    applyTextSize();
 
     els.detail.innerHTML =
       '<div class="song-detail__header">' +
@@ -484,8 +626,9 @@
       '<p class="song-detail__artist">' +
       escapeHtml(song.artist) +
       "</p>" +
+      tuningCapoHtml(song) +
       '<p class="song-detail__actions">' +
-      '<button type="button" class="linkish" id="back-to-browse">Back to browse</button>' +
+      '<button type="button" class="btn btn--secondary" id="back-to-browse">Back to browse</button>' +
       "</p>" +
       "</div></div>" +
       lyricsBodyHtml(song) +
@@ -515,7 +658,7 @@
     if (updateHash) setHashForSong(meta);
 
     els.detail.hidden = false;
-    els.detail.classList.toggle("song-detail--large", state.largeText);
+    applyTextSize();
     els.detail.innerHTML =
       '<p class="lyrics-status lyrics-status--info">Loading lyrics…</p>';
 
@@ -529,7 +672,7 @@
           escapeHtml(humanError(err)) +
           "</p>" +
           '<p class="song-detail__actions">' +
-          '<button type="button" class="linkish" id="back-to-browse">Back to browse</button>' +
+          '<button type="button" class="btn btn--secondary" id="back-to-browse">Back to browse</button>' +
           "</p>";
         var back = document.getElementById("back-to-browse");
         if (back) {
@@ -555,6 +698,77 @@
     } else {
       setStatus("");
       if (els.results) els.results.innerHTML = "";
+    }
+  }
+
+
+  function enrichForSongbook(details) {
+    var meta = metaForSong(details);
+    return {
+      slug: details.slug,
+      title: details.title,
+      artist: details.artist,
+      lyrics: details.lyrics,
+      source: details.source,
+      tuning: meta.tuning,
+      capo: meta.capo,
+    };
+  }
+
+  async function downloadSongbookPdf() {
+    if (state.songbookBusy) return;
+    if (!state.cryptoKey || !state.songs.length) {
+      setSongbookProgress(
+        "Unlock lyrics before downloading the songbook.",
+        "error"
+      );
+      return;
+    }
+    if (!window.DhruvSongbookPdf || typeof window.DhruvSongbookPdf.build !== "function") {
+      setSongbookProgress("PDF library failed to load. Refresh and try again.", "error");
+      return;
+    }
+    state.songbookBusy = true;
+    if (els.downloadSongbookBtn) els.downloadSongbookBtn.disabled = true;
+    setSongbookProgress(
+      "Preparing songbook (0/" + state.songs.length + ")…",
+      "info"
+    );
+
+    try {
+      var details = await mapPool(
+        state.songs,
+        DECRYPT_CONCURRENCY,
+        function (meta) {
+          return loadSongDetails(meta);
+        },
+        function (done, total) {
+          setSongbookProgress(
+            "Decrypting songs (" + done + "/" + total + ")…",
+            "info"
+          );
+        }
+      );
+      var enriched = details.map(enrichForSongbook);
+      setSongbookProgress("Building PDF…", "info");
+      var result = window.DhruvSongbookPdf.build(enriched, {
+        onProgress: function (msg) {
+          setSongbookProgress(msg, "info");
+        },
+      });
+      setSongbookProgress(
+        "Downloaded " +
+          (result && result.filename ? result.filename : "songbook PDF") +
+          " (" +
+          (result && result.pages ? result.pages : "?") +
+          " pages).",
+        "ok"
+      );
+    } catch (err) {
+      setSongbookProgress(humanError(err), "error");
+    } finally {
+      state.songbookBusy = false;
+      if (els.downloadSongbookBtn) els.downloadSongbookBtn.disabled = false;
     }
   }
 
@@ -601,6 +815,7 @@
       els.detail.innerHTML = "";
     }
     setStatus("");
+    setSongbookProgress("");
     showUnlocked(false);
     if (els.passphraseInput) {
       els.passphraseInput.value = "";
@@ -676,25 +891,31 @@
       });
     }
 
-    if (els.largeTextBtn) {
-      els.largeTextBtn.addEventListener("click", function () {
-        state.largeText = !state.largeText;
-        els.largeTextBtn.setAttribute(
-          "aria-pressed",
-          state.largeText ? "true" : "false"
-        );
-        els.largeTextBtn.textContent = state.largeText
-          ? "Normal text"
-          : "Large text";
-        if (els.detail && !els.detail.hidden) {
-          els.detail.classList.toggle("song-detail--large", state.largeText);
-        }
+    if (els.textSizeSm) {
+      els.textSizeSm.addEventListener("click", function () {
+        setTextSize("sm");
+      });
+    }
+    if (els.textSizeMd) {
+      els.textSizeMd.addEventListener("click", function () {
+        setTextSize("md");
+      });
+    }
+    if (els.textSizeLg) {
+      els.textSizeLg.addEventListener("click", function () {
+        setTextSize("lg");
       });
     }
 
     if (els.printBtn) {
       els.printBtn.addEventListener("click", function () {
         window.print();
+      });
+    }
+
+    if (els.downloadSongbookBtn) {
+      els.downloadSongbookBtn.addEventListener("click", function () {
+        downloadSongbookPdf();
       });
     }
 
@@ -708,6 +929,16 @@
   }
 
   async function init() {
+    loadSongsMeta();
+    try {
+      var savedSize = localStorage.getItem(STORAGE_TEXT_SIZE);
+      if (savedSize === "sm" || savedSize === "md" || savedSize === "lg") {
+        state.textSize = savedSize;
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    applyTextSize();
     bind();
     showUnlocked(false);
     setUnlockStatus("Loading lyrics cache…", "info");

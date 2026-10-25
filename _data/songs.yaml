@@ -1,3 +1,6 @@
+# Optional per-song fields (used by the Lyrics page / songbook):
+#   tuning: string (e.g. DADGAD)
+#   capo: integer (0 = none; omit the field when unset)
 - title: Geordie
   instrument: guitar
   artist: 'Anais Mitchell & Jefferson Hamer'
@@ -632,5 +635,11 @@
   artist: The Beatles
   youtube_link: ~
   soundcloud_link: ~
-
-
+- title: Happy
+  artist: Carpenters
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Close to You
+  artist: Carpenters
+  youtube_link: ~
+  soundcloud_link: ~
