@@ -62,9 +62,15 @@
     if (!s) return "";
     var lower = s.toLowerCase();
     if (lower === "guitar") return "Guitar";
-    if (lower === "octave mandolin" || lower === "octave-mandolin")
+    // mandolin / OM / octave mandolin all map to Octave mandolin in this repertoire
+    if (
+      lower === "octave mandolin" ||
+      lower === "octave-mandolin" ||
+      lower === "mandolin" ||
+      lower === "om"
+    ) {
       return "Octave mandolin";
-    if (lower === "mandolin") return "Mandolin";
+    }
     if (lower === "banjo") return "Banjo";
     return s.charAt(0).toUpperCase() + s.slice(1);
   }

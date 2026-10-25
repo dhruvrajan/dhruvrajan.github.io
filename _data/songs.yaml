@@ -1,13 +1,14 @@
 # Song list with optional per-instrument setup for the Lyrics page / songbook.
 #
 # instruments:   # omit entirely when unknown
-#   - name: Guitar            # Guitar | Octave mandolin | Mandolin | Banjo | ...
+#   - name: Guitar            # Guitar | Octave mandolin | Banjo | ...
 #     tuning: DADGAD          # string as played
 #     capo: 2                 # integer; 0 = none
 #     unverified: true        # optional; show a subtle ? in the UI/PDF
 #
 # The top-level `instrument` field (when set) is the preferred instrument and
-# is listed first on the lyrics page. Source URLs: _data/tuning_sources.yaml.
+# is listed first on the lyrics page. Octave mandolin songs use GDAD (confirmed).
+# Source URLs: _data/tuning_sources.yaml.
 
 - title: Geordie
   instrument: guitar
@@ -151,10 +152,9 @@
   instrument: mandolin
   artist: Doiri Farell
   instruments:
-    - name: Mandolin
-      tuning: GDAE
+    - name: Octave mandolin
+      tuning: GDAD
       capo: 0
-      unverified: true
     - name: Guitar
       tuning: Standard (EADGBE)
       capo: 4
@@ -165,9 +165,8 @@
   artist: Doiri Farell
   instruments:
     - name: Octave mandolin
-      tuning: GDAE
+      tuning: GDAD
       capo: 0
-      unverified: true
     - name: Guitar
       tuning: Standard (EADGBE)
       capo: 0
@@ -179,9 +178,8 @@
   artist: Doiri Farell
   instruments:
     - name: Octave mandolin
-      tuning: GDAE
+      tuning: GDAD
       capo: 0
-      unverified: true
     - name: Guitar
       tuning: Standard (EADGBE)
       capo: 0
@@ -193,9 +191,8 @@
   artist: Doiri Farell
   instruments:
     - name: Octave mandolin
-      tuning: GDAE
+      tuning: GDAD
       capo: 0
-      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Blues Run the Game
@@ -373,10 +370,9 @@
   instrument: mandolin
   artist: Kate Rusby
   instruments:
-    - name: Mandolin
-      tuning: GDAE
+    - name: Octave mandolin
+      tuning: GDAD
       capo: 0
-      unverified: true
     - name: Guitar
       tuning: Standard (EADGBE)
       capo: 0
@@ -476,10 +472,9 @@
   instrument: mandolin
   artist: Paul Brady / Andy Irvine
   instruments:
-    - name: Mandolin
-      tuning: GDAE
+    - name: Octave mandolin
+      tuning: GDAD
       capo: 0
-      unverified: true
     - name: Guitar
       tuning: Standard (EADGBE)
       capo: 0
@@ -490,10 +485,9 @@
   instrument: mandolin
   artist: Paul Brady / Andy Irvine
   instruments:
-    - name: Mandolin
-      tuning: GDAE
+    - name: Octave mandolin
+      tuning: GDAD
       capo: 0
-      unverified: true
     - name: Guitar
       tuning: Standard (EADGBE)
       capo: 4
@@ -504,10 +498,9 @@
   instrument: mandolin
   artist: Paul Brady / Andy Irvine
   instruments:
-    - name: Mandolin
-      tuning: GDAE
+    - name: Octave mandolin
+      tuning: GDAD
       capo: 0
-      unverified: true
     - name: Guitar
       tuning: Standard (EADGBE)
       capo: 1
