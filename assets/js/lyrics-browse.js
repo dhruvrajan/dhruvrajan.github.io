@@ -1049,6 +1049,7 @@
         window.location.pathname + window.location.search
       );
     }
+    renderBrowse();
   }
 
   function bindSongGestures() {
