@@ -287,12 +287,23 @@
       doc.setFontSize(11);
       if (draw) doc.text(String(song.artist || ""), MARGIN, yy);
       yy += 14;
-      if (setups.length) {
+      if (song.retune) {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(9.5);
+        if (draw) {
+          doc.setTextColor(170, 40, 20);
+          doc.text(song.retune, MARGIN, yy);
+          doc.setTextColor(0);
+        }
+        yy += 13;
+      }
+      if (setups.length) {
+        var big = !!song.prominentSetup;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(big ? 13 : 9.5);
         setups.forEach(function (line) {
-          if (draw) doc.text(line, MARGIN, yy);
-          yy += 12;
+          if (draw) doc.text(big && song.setupLabel ? song.setupLabel + ": " + line : line, MARGIN, yy);
+          yy += big ? 16 : 12;
         });
       }
       if (notes) {
@@ -411,6 +422,53 @@
     });
   }
 
+  /**
+   * Extra sections from setlists marked for the songbook (_data/setlists.yaml,
+   * songbook: true), in setlist order, each song re-rendered with only the
+   * setlist's instrument and a "Retune" line wherever the tuning changes.
+   */
+  function readSections(options) {
+    if (options && Array.isArray(options.sections)) return options.sections;
+    try {
+      var el = root.document && root.document.getElementById("songbook-sections-json");
+      return el ? JSON.parse(el.textContent || "[]") : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function tuningOf(song) {
+    var inst = instrumentsForSong(song)[0];
+    return inst && inst.tuning ? String(inst.tuning) : "";
+  }
+
+  function sectionSongs(section, list) {
+    var byTitle = {};
+    list.forEach(function (s) {
+      if (!byTitle[s.title]) byTitle[s.title] = s;
+    });
+    var want = normalizeInstrumentName(section.instrument || "").toLowerCase();
+    var prev = want === "guitar" ? "Standard (EADGBE)" : null;
+    var out = [];
+    (section.titles || []).forEach(function (title) {
+      var song = byTitle[title];
+      if (!song) return;
+      var copy = Object.assign({}, song, { prominentSetup: true, retune: null });
+      if (want) {
+        copy.instrument = section.instrument;
+        copy.setupLabel = normalizeInstrumentName(section.instrument);
+        copy.instruments = (song.instruments || []).filter(function (i) {
+          return i && normalizeInstrumentName(i.name).toLowerCase() === want;
+        });
+      }
+      var t = tuningOf(copy);
+      if (prev !== null && t && t !== prev) copy.retune = "Retune: " + prev + " > " + t;
+      if (t) prev = t;
+      out.push(copy);
+    });
+    return out;
+  }
+
   /** Small tappable link at the top left, "Chords »" / "« Lyrics". */
   function drawJumpLink(doc, label, dest) {
     doc.setFont("helvetica", "bold");
@@ -516,12 +574,33 @@
         cursor += chordPageCounts[i];
       });
     }
+    var sections = readSections(options)
+      .map(function (sec) {
+        return { name: String(sec.name || "Section"), songs: sectionSongs(sec, list) };
+      })
+      .filter(function (sec) {
+        return sec.songs.length;
+      });
+    sections.forEach(function (sec) {
+      sec.page = cursor;
+      cursor += 1;
+      sec.starts = sec.songs.map(function (song) {
+        var at = cursor;
+        cursor += measureSongPages(doc, song);
+        return at;
+      });
+    });
     var totalPages = cursor - 1;
+    var sectionLinks = [];
+    if (chordsSectionPage) sectionLinks.push({ name: "Chords", page: chordsSectionPage });
+    sections.forEach(function (sec) {
+      sectionLinks.push({ name: sec.name, page: sec.page });
+    });
 
     var letterDestPage = {};
     var letters = [];
     (function prewalk() {
-      var py = CONTENT_TOP + 26 + 28;
+      var py = CONTENT_TOP + 26 + 28 + (sectionLinks.length ? 16 : 0);
       var pp = tocStart;
       artists.forEach(function (artist) {
         var block = 18 + songsByArtist[artist].length * 24 + 8;
@@ -592,10 +671,24 @@
         lx = MARGIN;
       }
     });
-    if (chordsSectionPage) {
+    if (sectionLinks.length) {
+      // One row of section links under the letters.
+      y += 16;
+      lx = MARGIN;
+      doc.setFontSize(10);
       doc.setTextColor(20, 70, 160);
-      doc.textWithLink("Chords \u00bb", lx + 6, y, { pageNumber: chordsSectionPage });
+      sectionLinks.forEach(function (sec) {
+        var label = sec.name + " \u00bb";
+        var w = doc.getTextWidth(label);
+        if (lx + w > PAGE.w - MARGIN) {
+          y += 13;
+          lx = MARGIN;
+        }
+        doc.textWithLink(label, lx, y, { pageNumber: sec.page });
+        lx += w + 16;
+      });
       doc.setTextColor(0);
+      doc.setFontSize(11);
     }
     y += 22;
 
@@ -717,6 +810,52 @@
         });
       });
     }
+
+    sections.forEach(function (sec) {
+      while (doc.getNumberOfPages() < sec.page) doc.addPage();
+      doc.setPage(sec.page);
+      drawIndexLink(doc, tocStart);
+      // Section title page doubles as its running order.
+      var yy = CONTENT_TOP + 10;
+      doc.setFont("times", "bold");
+      doc.setFontSize(26);
+      doc.text(sec.name, MARGIN, yy);
+      yy += 26;
+      var step = Math.min(15, (CONTENT_BOTTOM - yy) / sec.songs.length);
+      var fs = Math.max(6.5, Math.min(10.5, step * 0.72));
+      sec.songs.forEach(function (song, i) {
+        var label = String(sec.starts[i]);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(fs);
+        var pw = doc.getTextWidth(label);
+        var setup = formatSetup(song);
+        var line = i + 1 + ". " + song.title + " \u2014 " + song.artist;
+        var setW = setup ? doc.getTextWidth(setup) + 12 : 0;
+        line = doc.splitTextToSize(line, CONTENT_WIDTH - pw - setW - 12)[0];
+        doc.textWithLink(line, MARGIN, yy, { pageNumber: sec.starts[i] });
+        if (setup) {
+          doc.setTextColor(110);
+          doc.text(setup, PAGE.w - MARGIN - pw - setW, yy);
+          doc.setTextColor(0);
+        }
+        doc.text(label, PAGE.w - MARGIN - pw, yy);
+        yy += step;
+      });
+      drawFooter(doc, sec.page, totalPages);
+      var node = doc.outline.add(null, sec.name, { pageNumber: sec.page });
+      sec.songs.forEach(function (song, i) {
+        onProgress(sec.name + " (" + (i + 1) + "/" + sec.songs.length + ")…");
+        var at = sec.starts[i];
+        doc.outline.add(node, song.title, { pageNumber: at });
+        var pageNum = at;
+        while (doc.getNumberOfPages() < at) doc.addPage();
+        doc.setPage(at);
+        var chordStart = chordStartPage[songKey(song)];
+        writeSong(song, function () { return pageNum; }, function (n) { pageNum = n; }, chordStart
+          ? function () { drawJumpLink(doc, "Chords \u00bb", chordStart); }
+          : function () {});
+      });
+    });
 
     function writeSong(song, getPage, setPageNum, jump) {
       drawIndexLink(doc, tocStart);
