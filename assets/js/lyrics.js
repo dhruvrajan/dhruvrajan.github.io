@@ -24,6 +24,7 @@
     detail: document.getElementById("song-detail"),
     recentList: document.getElementById("recent-list"),
     favoritesList: document.getElementById("favorites-list"),
+    repertoire: document.getElementById("repertoire-list"),
   };
 
   function getToken() {
@@ -80,7 +81,6 @@
     if (els.tokenGate) els.tokenGate.hidden = !show;
     if (els.browser) els.browser.hidden = show;
     if (els.cancelToken) {
-      // Only offer cancel when a token is already saved.
       els.cancelToken.hidden = !(show && getToken());
     }
   }
@@ -102,14 +102,14 @@
   }
 
   /**
-   * Genius allows Authorization in CORS preflight (Access-Control-Allow-Headers).
-   * Prefer Bearer (documented). Fall back to access_token query param only when
-   * the Authorization request fails with a network/CORS TypeError — never on
-   * BAD_TOKEN / RATE_LIMIT / other API errors.
-   *
-   * Note: invalid-token 401 responses currently omit Access-Control-Allow-Origin,
-   * so browsers surface them as TypeError rather than readable 401s. When both
-   * Bearer and query fail that way, we raise CORS_OR_BAD_TOKEN.
+   * Genius browser CORS notes (verified):
+   * - OPTIONS preflight advertises Authorization + ACAO *, but returns HTTP 403,
+   *   so browsers reject Authorization Bearer requests before they run.
+   * - Missing-token 401s include ACAO *; invalid-token 401s omit ACAO (both
+   *   Bearer and access_token query), so browsers often surface them as TypeError.
+   * Therefore: use only the documented access_token query on a simple GET
+   * (no Authorization / custom headers — avoids preflight). Map CORS TypeErrors
+   * to CORS_OR_BAD_TOKEN so invalid tokens are still actionable.
    */
   async function geniusFetch(path, params) {
     var token = getToken();
@@ -118,36 +118,20 @@
     }
 
     var qs = new URLSearchParams(params || {});
-    var url = API_BASE + path + (qs.toString() ? "?" + qs.toString() : "");
+    qs.set("access_token", token);
+    var url = API_BASE + path + "?" + qs.toString();
 
     try {
-      var res = await fetch(url, {
-        headers: {
-          Authorization: "Bearer " + token,
-          Accept: "application/json",
-        },
-      });
+      // Default headers only — must stay a "simple" request (no preflight).
+      var res = await fetch(url);
       return await parseGeniusResponse(res);
     } catch (err) {
-      if (!isNetworkOrCorsFailure(err)) {
-        throw err;
+      if (isNetworkOrCorsFailure(err)) {
+        var cors = new Error("CORS_OR_BAD_TOKEN");
+        cors.cause = err;
+        throw cors;
       }
-
-      // Retry with query-param auth (also documented by Genius).
-      var qs2 = new URLSearchParams(params || {});
-      qs2.set("access_token", token);
-      var url2 = API_BASE + path + "?" + qs2.toString();
-      try {
-        var res2 = await fetch(url2, { headers: { Accept: "application/json" } });
-        return await parseGeniusResponse(res2);
-      } catch (err2) {
-        if (isNetworkOrCorsFailure(err2)) {
-          var cors = new Error("CORS_OR_BAD_TOKEN");
-          cors.cause = err2;
-          throw cors;
-        }
-        throw err2;
-      }
+      throw err;
     }
   }
 
@@ -187,11 +171,11 @@
     if (err.message === "BAD_TOKEN")
       return "That token was rejected. Update it with “Change token”, or generate a new client access token at genius.com/api-clients.";
     if (err.message === "CORS_OR_BAD_TOKEN")
-      return "Could not reach the Genius API from this browser (network/CORS), or the token may be invalid. Try “Change token”, generate a new client access token at genius.com/api-clients, then search again.";
+      return "Could not reach the Genius API from this browser (network), or the token may be invalid. Try “Change token”, generate a new client access token at genius.com/api-clients, then search again.";
     if (err.message === "RATE_LIMIT")
       return "Genius rate limit hit. Wait a minute and try again.";
     if (isNetworkOrCorsFailure(err))
-      return "Could not reach the Genius API from this browser (network or CORS). Try again, or open the song on Genius directly.";
+      return "Could not reach the Genius API from this browser (network). Try again, or open the song on Genius directly.";
     return err.message || "Something went wrong.";
   }
 
@@ -301,6 +285,11 @@
       renderResults(hits);
       pushRecent(q);
       renderRecent();
+
+      if (opts.autoOpenFirst && hits.length) {
+        var first = hitToSong(hits[0]);
+        if (first) openSong(first);
+      }
     } catch (err) {
       setStatus(humanError(err), "error");
     }
@@ -312,30 +301,29 @@
     favBtn.textContent = isFavorite(song.id) ? "Remove favorite" : "Save favorite";
   }
 
+  /**
+   * Genius embed.js uses document.write and breaks when loaded async after
+   * parse. Prefer the official iframe embed URL with a Genius.com fallback.
+   */
   function loadGeniusEmbed(songId, songUrl, songTitle) {
     var host = document.getElementById("genius-embed");
     if (!host) return;
 
+    var embedSrc = "https://genius.com/songs/" + songId + "/embed";
     host.innerHTML =
-      "<div id='rg_embed_link_" +
-      songId +
-      "' class='rg_embed_link' data-song-id='" +
-      songId +
-      "'>" +
-      'Read <a href="' +
+      '<iframe class="genius-embed-frame" src="' +
+      escapeAttr(embedSrc) +
+      '" title="Genius lyrics for ' +
+      escapeAttr(songTitle) +
+      '" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+      '<p class="item-meta genius-embed-fallback">' +
+      'If the embed does not load, ' +
+      '<a href="' +
       escapeAttr(songUrl) +
-      '" target="_blank" rel="noopener noreferrer">“' +
+      '" target="_blank" rel="noopener noreferrer">read “' +
       escapeHtml(songTitle) +
-      "” on Genius</a>" +
-      "</div>";
-
-    var script = document.createElement("script");
-    script.src = "https://genius.com/songs/" + songId + "/embed.js";
-    script.async = true;
-    script.onerror = function () {
-      /* Fallback link already in the embed host. */
-    };
-    host.appendChild(script);
+      '” on Genius</a>.' +
+      "</p>";
   }
 
   async function openSong(song) {
@@ -354,7 +342,6 @@
         meta = hitToSong(data.response.song) || song;
       }
     } catch (err) {
-      // Still show embed + link using search hit data.
       setStatus(humanError(err), "error");
     }
 
@@ -476,6 +463,32 @@
     });
   }
 
+  function repertoireQuery(btn) {
+    var title = (btn.getAttribute("data-title") || "").trim();
+    var artist = (btn.getAttribute("data-artist") || "").trim();
+    if (title && artist) return title + " " + artist;
+    return title || artist;
+  }
+
+  function bindRepertoire() {
+    if (!els.repertoire) return;
+    els.repertoire.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-lyrics-query], .repertoire-song");
+      if (!btn || !els.repertoire.contains(btn)) return;
+      e.preventDefault();
+      var q =
+        (btn.getAttribute("data-lyrics-query") || "").trim() ||
+        repertoireQuery(btn);
+      if (!q) return;
+      if (els.searchInput) els.searchInput.value = q;
+      if (!getToken()) {
+        showTokenGate(true);
+        return;
+      }
+      runSearch(q, { autoOpenFirst: true });
+    });
+  }
+
   function bind() {
     if (els.tokenForm) {
       els.tokenForm.addEventListener("submit", function (e) {
@@ -498,7 +511,7 @@
         var pending = new URLSearchParams(window.location.search).get("q");
         if (pending && els.searchInput) {
           els.searchInput.value = pending;
-          runSearch(pending);
+          runSearch(pending, { autoOpenFirst: true });
         }
       });
     }
@@ -545,6 +558,8 @@
         runSearch(els.searchInput ? els.searchInput.value : "");
       });
     }
+
+    bindRepertoire();
   }
 
   function init() {
@@ -556,7 +571,7 @@
     if (q && els.searchInput) {
       els.searchInput.value = q;
       if (getToken()) {
-        runSearch(q);
+        runSearch(q, { autoOpenFirst: true });
       }
     }
   }

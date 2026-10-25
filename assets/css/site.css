@@ -695,8 +695,40 @@ ol.song-list li::marker {
   overflow-x: auto;
 }
 
-.song-detail__embed iframe {
+.song-detail__embed iframe,
+.genius-embed-frame {
+  display: block;
+  width: 100%;
   max-width: 100%;
+  min-height: 22rem;
+  height: 28rem;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.genius-embed-fallback {
+  margin: 0.65rem 0 0;
+}
+
+.repertoire {
+  margin-bottom: 2rem;
+}
+
+.repertoire-group {
+  margin-bottom: 1.25rem;
+}
+
+.repertoire-songs .repertoire-song {
+  text-align: left;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.repertoire-songs .repertoire-song:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 .lyrics-quick {
