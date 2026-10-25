@@ -1210,9 +1210,8 @@
   artist: Tallest Man on Earth
   instruments:
     - name: Guitar
-      tuning: Standard (EADGBE)
+      tuning: Open D (DADF#AD)
       capo: 0
-      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Thick as a Brick
