@@ -63,7 +63,18 @@ narrow: true
 {% for s in site.data.songs %}
   {
     "title": {{ s.title | jsonify }},
-    "artist": {{ s.artist | jsonify }}{% if s.tuning %},
+    "artist": {{ s.artist | jsonify }}{% if s.instrument %},
+    "instrument": {{ s.instrument | jsonify }}{% endif %}{% if s.instruments %},
+    "instruments": [
+      {% for inst in s.instruments %}
+      {
+        "name": {{ inst.name | jsonify }}{% if inst.tuning %},
+        "tuning": {{ inst.tuning | jsonify }}{% endif %}{% if inst.capo != nil %},
+        "capo": {{ inst.capo }}{% endif %}{% if inst.unverified %},
+        "unverified": true{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]{% endif %}{% if s.tuning %},
     "tuning": {{ s.tuning | jsonify }}{% endif %}{% if s.capo != nil %},
     "capo": {{ s.capo }}{% endif %}{% if s.tuning_unverified %},
     "tuning_unverified": true{% endif %}
