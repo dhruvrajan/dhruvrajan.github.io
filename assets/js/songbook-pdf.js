@@ -257,6 +257,22 @@
     var notes = notesText(song);
     var colW = (CONTENT_WIDTH - COL_GAP) / 2;
     var pages = 1;
+    // Chord sheets (song.monospace): fixed-width font so chords stay over
+    // their syllables; one full-width column when lines are too long for two.
+    var mono = !!(song && song.monospace);
+    var fontSize = mono ? Math.round(size.size * 80) / 100 : size.size;
+    var lineH = mono ? Math.round(size.lineH * 85) / 100 : size.lineH;
+    var single = false;
+    if (mono && body) {
+      var longest = 0;
+      body.split("\n").forEach(function (l) {
+        longest = Math.max(longest, l.replace(/\s+$/, "").length);
+      });
+      if (longest * 0.6 * fontSize > colW) {
+        single = true;
+        colW = CONTENT_WIDTH;
+      }
+    }
 
     function header(continued) {
       var yy = CONTENT_TOP;
@@ -329,19 +345,19 @@
     }
 
     function lyricFont() {
-      doc.setFont("times", "normal");
-      doc.setFontSize(size.size);
+      doc.setFont(mono ? "courier" : "times", "normal");
+      doc.setFontSize(fontSize);
     }
     lyricFont();
     var stanzas = stanzasOf(body).map(function (st) {
       return doc.splitTextToSize(st, colW);
     });
-    var gap = Math.round(size.lineH * 0.55 * 100) / 100;
+    var gap = Math.round(lineH * 0.55 * 100) / 100;
     var col = 0;
     var y = colTop;
 
     function nextColumn() {
-      if (col === 0) {
+      if (col === 0 && !single) {
         col = 1;
         y = colTop;
         return;
@@ -355,15 +371,15 @@
     }
 
     stanzas.forEach(function (lines) {
-      var h = lines.length * size.lineH;
+      var h = lines.length * lineH;
       // Keep a stanza together: move it to a fresh column if it fits there.
       if (y > colTop && y + h > CONTENT_BOTTOM && h <= CONTENT_BOTTOM - colTop) {
         nextColumn();
       }
       lines.forEach(function (line) {
-        if (y + size.lineH > CONTENT_BOTTOM) nextColumn();
+        if (y + lineH > CONTENT_BOTTOM) nextColumn();
         if (draw) doc.text(line, MARGIN + col * (colW + COL_GAP), y);
-        y += size.lineH;
+        y += lineH;
       });
       y += gap;
     });
