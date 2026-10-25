@@ -1512,3 +1512,43 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Teach Your Children
+  instrument: guitar
+  artist: CSNY
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Ohio
+  instrument: guitar
+  artist: CSNY
+  instruments:
+    - name: Guitar
+      tuning: Double drop D (DADGBD)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Our House
+  instrument: guitar
+  artist: CSNY
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Pinball Wizard
+  instrument: guitar
+  artist: The Who
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
