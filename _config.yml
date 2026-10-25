@@ -1,2 +1,12 @@
-name: Dhruv's Music
-title: null
+title: Dhruv Rajan
+description: Solo acoustic and folk performer based in Newport Beach, CA
+url: ""
+baseurl: ""
+markdown: kramdown
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+  - README.md
+  - .bundle
