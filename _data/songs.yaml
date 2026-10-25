@@ -1542,3 +1542,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Pinball Wizard
+  instrument: guitar
+  artist: The Who
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
