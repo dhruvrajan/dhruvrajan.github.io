@@ -1,238 +1,57 @@
-- title: Don't Be Shy
-  artist: Cat Stevens
-  youtube_link: https://www.youtube.com/watch?v=dGa3_ZwVxq4&feature=youtu.be
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/dont-by-shy-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Moonshadow
-  artist: Cat Stevens
-  youtube_link: https://youtu.be/RCwpMf03KH4
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/moonshadow-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: How Can I Tell You
-  artist: Cat Stevens
-  youtube_link: https://youtu.be/vfmbufxg7tU
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/how-can-i-tell-you-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: The Wind
-  artist: Cat Stevens
-  youtube_link: https://youtu.be/cl2gq3OcME0
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/the-wind-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Sossity, You're a Woman
-  artist: Jethro Tull
-  youtube_link: https://youtu.be/OKuJxKBd_wU
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/sossity-youre-a-woman-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Skating Away on the Thin Ice of a New Day
-  artist: Jethro Tull
-  youtube_link: https://youtu.be/SZesABJoEpY
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/skating-away-on-the-thin-ice?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Summerday Sands
-  artist: Jethro Tull
-  youtube_link: https://youtu.be/OBK7vbtGDXg
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/summerday-sands-2-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: One Brown Mouse
-  artist: Jethro Tull
-  youtube_link: https://www.youtube.com/watch?v=RXL396jJ30k&t=1610s
-  soundcloud_link: ~
-- title: Salamander
-  artist: Jethro Tull
-  youtube_link: https://www.youtube.com/watch?v=RXL396jJ30k&t=1773s
-  soundcloud_link: ~
-- title: The Cave
-  artist: Mumford and Sons
-  youtube_link: https://www.youtube.com/watch?v=VwCpdeWSgdI&t=322s
-  soundcloud_link: ~
-- title: Canadee IO
-  artist: Nic Jones
-  youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/untitled-song?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Clyde Water (Guitar)
-  artist: Nic Jones
-  youtube_link: https://youtu.be/hFHqbJ4IeAE
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/clyde-water-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Humpback Whale
-  artist: Nic Jones
-  youtube_link: https://youtu.be/hdvohiRdips
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/the-humpback-whale-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Bonny Light Horseman
-  artist: Nic Jones
-  youtube_link: https://youtu.be/f9sNhNfpkbk?si=JI5Yq3o0b_-Q83JZ
-  soundcloud_link: ~
-- title: Ploughman Lads
-  artist: Nic Jones
-  youtube_link: https://youtu.be/0SYvUWQqR1s?si=H8Xnw24ZyMxyeyhn
-  soundcloud_link: ~  
-- title: Magpie's Nest
-  artist: Bonny Light Horseman
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Where Do my Bluebird Fly
-  artist: Tallest Man on Earth
-  youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/where-do-my-bluebird-fly?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: The Gardener
-  artist: Tallest Man on Earth
-  youtube_link: https://youtu.be/_sD9O-mdNAQ
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/the-gardener-tallest-man-on-earth?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: My Dear (Banjo)
-  instrument: banjo
-  artist: Tallest Man on Earth
-  youtube_link: https://www.youtube.com/watch?v=RXL396jJ30k&t=1204s
-  soundcloud_link: ~
-- title: Waiting For My Ghost (Banjo)
-  instrument: banjo
-  artist: Tallest Man on Earth
-  youtube_link: https://youtu.be/1AbTqUTDW-A?si=8V5mYrF-Z4pKHwXq
-  soundcloud_link: ~
-- title: Anabelle Lee
-  instrument: banjo
-  artist: Sarah Jarosz
-  youtube_link: https://studio.youtube.com/video/sjDa4spV9-8/edit
-  soundcloud_link: ~
-- title: Sary Darlin' Say
-  instrument: banjo
-  artist: Traditional
-  youtube_link: https://youtu.be/8GwRlCZ6Edw?si=q5KlX9PreJnS2qtY&t=12
-  soundcloud_link: ~
-- title: Jesse James / Julianne Johnson / Goodbye Liza Jane
-  instrument: banjo
-  artist: Traditional
-  youtube_link: https://youtu.be/8GwRlCZ6Edw?si=GCBwPQHd8kUj_bXb&t=256
-  soundcloud_link: ~
-- title: Jack-a-Lynn
-  instrument: guitar
-  artist: Jethro Tull
-  youtube_link: https://youtu.be/8GwRlCZ6Edw?si=jRFsJ70BuNJA8uHm
-  soundcloud_link: ~
-- title: Wond'ring Aloud
-  instrument: guitar
-  artist: Jethro Tull
-  youtube_link: https://youtu.be/8GwRlCZ6Edw?si=zzP1vRoyEXKZlW6w&t=1681
-  soundcloud_link: ~
-- title: Wondrous Love
-  instrument: banjo
-  artist: Red Tail Ring
-  youtube_link: https://youtu.be/H_tzmPxSyM0?si=bXjP8RyK10KP5esc&t=69
-  soundcloud_link: ~  
-- title: Yarrow
-  instrument: banjo
-  artist: Red Tail Ring
-  youtube_link: https://youtu.be/cwZbt_5JI0Y?si=3sou0SfrvyggL8X3&t=18
-  soundcloud_link: ~  
-- title: Mary and the Soldier
-  instrument: mandolin
-  artist: Paul Brady / Andy Irvine
-  youtube_link: https://youtu.be/jsB3VxWVYsc?si=Rwn37hmLFHU4Lx9w&t=96
-  soundcloud_link: ~
-- title: William and Davy
-  instrument: mandolin
-  artist: Kate Rusby
-  youtube_link: https://youtu.be/tlYO5shY4dk?si=5OVlV8gsNGcibSxo
-  soundcloud_link: ~
-- title: Creggan White Hare
-  instrument: mandolin
-  artist: Doiri Farell
-  youtube_link: https://youtu.be/3DIuH4BS8ds?si=WxsXZiVkGMUNeMXV
-  soundcloud_link: ~
-- title: Crossing Muddy Waters
-  instrument: banjo
-  artist: John Hiatt / I'm With Her
-  youtube_link: https://www.youtube.com/watch?v=RXL396jJ30k&t=205s
-  soundcloud_link: ~
-- title: Pretenders
-  instrument: banjo
-  artist: Taylor Ashton
-  youtube_link: https://www.youtube.com/watch?v=RXL396jJ30k&t=911s
-  soundcloud_link: ~
-- title: If You Want to Sing Out, Sing Out
-  instrument: guitar
-  artist: Cat Stevens
-  youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/if-you-want-to-sing-out-sing-out-by-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Tuesday's Dead
-  instrument: guitar
-  artist: Cat Stevens
-  youtube_link: https://youtu.be/tMmw27PHWzI
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/tuesdaysdead?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Blues Run the Game
-  instrument: guitar
-  artist: Jackson C. Frank
-  youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/blues-run-the-game-jason-c?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Nursie
-  instrument: guitar
-  artist: Jethro Tull
-  youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/nursie-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Mother Goose
-  instrument: guitar
-  artist: Jethro Tull
-  youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/mother-goose-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: One White Duck / 0^10 = Nothing at All
-  instrument: guitar
-  artist: Jethro Tull
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Little Pot Stove
-  instrument: guitar
-  artist: Nic Jones
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Farewell to the Gold
-  instrument: guitar
-  artist: Nic Jones
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Shankill Butchers
-  instrument: guitar
-  artist: Decemberists
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Annan Waters
-  instrument: guitar
-  artist: Decemberists
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Hometown
-  instrument: guitar
-  artist: Sarah Jarosz
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Love Is All
-  instrument: guitar
-  artist: Tallest Man on Earth
-  youtube_link: ~
-  soundcloud_link: ~
-- title: Life's a Long Song
-  instrument: guitar
-  artist: Jethro Tull
-  youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/lifes-a-long-song-jethro-1?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
-- title: Blacksmith
-  instrument: mandolin
-  artist: Paul Brady / Andy Irvine
-  youtube_link: https://youtu.be/zZNjqG9OB3M
-  soundcloud_link: ~
-- title: Lakes of Ponchartrain
-  instrument: mandolin
-  artist: Paul Brady / Andy Irvine
-  youtube_link: https://youtu.be/9jeKgnaACLk
-  soundcloud_link: ~
-- title: Clyde Water (Guitar)
-  instrument: guitar
-  artist: Nic Jones
-  youtube_link: https://youtu.be/hFHqbJ4IeAE?si=_U3Hk6bAmFIp6-gA
-  soundcloud_link: ~
 - title: Geordie
   instrument: guitar
-  artist: Anais Mitchell & Jefferson Hamer
+  artist: 'Anais Mitchell & Jefferson Hamer'
   youtube_link: ~
-  soundcloud_link: https://soundcloud.com/dhruv-rajan/geordie-anais-mitchell-jefferson-hamer?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/geordie-anais-mitchell-jefferson-hamer?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
 - title: Downeaster Alexa
   instrument: guitar
   artist: Billy Joel
   youtube_link: ~
   soundcloud_link: ~
-- title: Mockingbird
+- title: 'Magpie''s Nest'
+  artist: Bonny Light Horseman
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Feelin'' Satisfied'
+  artist: Boston
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Don''t Be Shy'
+  artist: Cat Stevens
+  youtube_link: 'https://www.youtube.com/watch?v=dGa3_ZwVxq4&feature=youtu.be'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/dont-by-shy-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Father and Son
+  artist: Cat Stevens
+  youtube_link: ~
+  soundcloud_link: ~
+- title: How Can I Tell You
+  artist: Cat Stevens
+  youtube_link: 'https://youtu.be/vfmbufxg7tU'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/how-can-i-tell-you-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: 'If You Want to Sing Out, Sing Out'
   instrument: guitar
-  artist: Ruston Kelly
+  artist: Cat Stevens
+  youtube_link: ~
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/if-you-want-to-sing-out-sing-out-by-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Moonshadow
+  artist: Cat Stevens
+  youtube_link: 'https://youtu.be/RCwpMf03KH4'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/moonshadow-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: The Wind
+  artist: Cat Stevens
+  youtube_link: 'https://youtu.be/cl2gq3OcME0'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/the-wind-cat-stevens?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: 'Tuesday''s Dead'
+  instrument: guitar
+  artist: Cat Stevens
+  youtube_link: 'https://youtu.be/tMmw27PHWzI'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/tuesdaysdead?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Where Do the Children Play
+  artist: Cat Stevens
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Wild World
+  artist: Cat Stevens
   youtube_link: ~
   soundcloud_link: ~
 - title: Southern Man
@@ -240,10 +59,20 @@
   artist: CSNY
   youtube_link: ~
   soundcloud_link: ~
-- title: Loretta
+- title: Annan Waters
   instrument: guitar
-  artist: Townes Van Zandt
+  artist: Decemberists
   youtube_link: ~
+  soundcloud_link: ~
+- title: Shankill Butchers
+  instrument: guitar
+  artist: Decemberists
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Creggan White Hare
+  instrument: mandolin
+  artist: Doiri Farell
+  youtube_link: 'https://youtu.be/3DIuH4BS8ds?si=WxsXZiVkGMUNeMXV'
   soundcloud_link: ~
 - title: Pat Rainey
   instrument: octave mandolin
@@ -260,8 +89,546 @@
   artist: Doiri Farell
   youtube_link: ~
   soundcloud_link: ~
+- title: Blues Run the Game
+  instrument: guitar
+  artist: Jackson C. Frank
+  youtube_link: ~
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/blues-run-the-game-jason-c?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: You Can Close Your Eyes
+  artist: James Taylor
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Jack-a-Lynn
+  instrument: guitar
+  artist: Jethro Tull
+  youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=jRFsJ70BuNJA8uHm'
+  soundcloud_link: ~
+- title: 'Life''s a Long Song'
+  instrument: guitar
+  artist: Jethro Tull
+  youtube_link: ~
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/lifes-a-long-song-jethro-1?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Mother Goose
+  instrument: guitar
+  artist: Jethro Tull
+  youtube_link: ~
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/mother-goose-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Nursie
+  instrument: guitar
+  artist: Jethro Tull
+  youtube_link: ~
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/nursie-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: One Brown Mouse
+  artist: Jethro Tull
+  youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1610s'
+  soundcloud_link: ~
+- title: One White Duck / 0^10 = Nothing at All
+  instrument: guitar
+  artist: Jethro Tull
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Salamander
+  artist: Jethro Tull
+  youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1773s'
+  soundcloud_link: ~
+- title: Skating Away on the Thin Ice of a New Day
+  artist: Jethro Tull
+  youtube_link: 'https://youtu.be/SZesABJoEpY'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/skating-away-on-the-thin-ice?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: 'Sossity, You''re a Woman'
+  artist: Jethro Tull
+  youtube_link: 'https://youtu.be/OKuJxKBd_wU'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/sossity-youre-a-woman-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Summerday Sands
+  artist: Jethro Tull
+  youtube_link: 'https://youtu.be/OBK7vbtGDXg'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/summerday-sands-2-jethro-tull?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: 'Wond''ring Aloud'
+  instrument: guitar
+  artist: Jethro Tull
+  youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=zzP1vRoyEXKZlW6w&t=1681'
+  soundcloud_link: ~
+- title: 'Annie''s Song'
+  artist: John Denver
+  youtube_link: ~
+  soundcloud_link: ~
+- title: This Old Guitar
+  artist: John Denver
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Crossing Muddy Waters
+  instrument: banjo
+  artist: 'John Hiatt / I''m With Her'
+  youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=205s'
+  soundcloud_link: ~
+- title: Both Sides Now
+  artist: Joni Mitchell
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Carey
+  artist: Joni Mitchell
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Conversation
+  artist: Joni Mitchell
+  youtube_link: ~
+  soundcloud_link: ~
+- title: This Flight Tonight
+  artist: Joni Mitchell
+  youtube_link: ~
+  soundcloud_link: ~
+- title: William and Davy
+  instrument: mandolin
+  artist: Kate Rusby
+  youtube_link: 'https://youtu.be/tlYO5shY4dk?si=5OVlV8gsNGcibSxo'
+  soundcloud_link: ~
+- title: The Cave
+  artist: Mumford and Sons
+  youtube_link: 'https://www.youtube.com/watch?v=VwCpdeWSgdI&t=322s'
+  soundcloud_link: ~
+- title: Bonny Light Horseman
+  artist: Nic Jones
+  youtube_link: 'https://youtu.be/f9sNhNfpkbk?si=JI5Yq3o0b_-Q83JZ'
+  soundcloud_link: ~
+- title: Canadee IO
+  artist: Nic Jones
+  youtube_link: ~
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/untitled-song?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Clyde Water (Guitar)
+  instrument: guitar
+  artist: Nic Jones
+  youtube_link: 'https://youtu.be/hFHqbJ4IeAE'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/clyde-water-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Farewell to the Gold
+  instrument: guitar
+  artist: Nic Jones
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Humpback Whale
+  artist: Nic Jones
+  youtube_link: 'https://youtu.be/hdvohiRdips'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/the-humpback-whale-nic-jones?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Little Pot Stove
+  instrument: guitar
+  artist: Nic Jones
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Ploughman Lads
+  artist: Nic Jones
+  youtube_link: 'https://youtu.be/0SYvUWQqR1s?si=H8Xnw24ZyMxyeyhn'
+  soundcloud_link: ~
+- title: One of These Things First
+  artist: Nick Drake
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Pink Moon
+  artist: Nick Drake
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Place to Be
+  artist: Nick Drake
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Blacksmith
+  instrument: mandolin
+  artist: Paul Brady / Andy Irvine
+  youtube_link: 'https://youtu.be/zZNjqG9OB3M'
+  soundcloud_link: ~
+- title: Lakes of Ponchartrain
+  instrument: mandolin
+  artist: Paul Brady / Andy Irvine
+  youtube_link: 'https://youtu.be/9jeKgnaACLk'
+  soundcloud_link: ~
+- title: Mary and the Soldier
+  instrument: mandolin
+  artist: Paul Brady / Andy Irvine
+  youtube_link: 'https://youtu.be/jsB3VxWVYsc?si=Rwn37hmLFHU4Lx9w&t=96'
+  soundcloud_link: ~
+- title: Wondrous Love
+  instrument: banjo
+  artist: Red Tail Ring
+  youtube_link: 'https://youtu.be/H_tzmPxSyM0?si=bXjP8RyK10KP5esc&t=69'
+  soundcloud_link: ~
+- title: Yarrow
+  instrument: banjo
+  artist: Red Tail Ring
+  youtube_link: 'https://youtu.be/cwZbt_5JI0Y?si=3sou0SfrvyggL8X3&t=18'
+  soundcloud_link: ~
+- title: Mockingbird
+  instrument: guitar
+  artist: Ruston Kelly
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Who Knows Where the Time Goes
+  artist: Sandy Denny
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Anabelle Lee
+  instrument: banjo
+  artist: Sarah Jarosz
+  youtube_link: 'https://studio.youtube.com/video/sjDa4spV9-8/edit'
+  soundcloud_link: ~
+- title: Green Lights
+  artist: Sarah Jarosz
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Hometown
+  instrument: guitar
+  artist: Sarah Jarosz
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Little River
+  artist: Tallest Man on Earth
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Love Is All
+  instrument: guitar
+  artist: Tallest Man on Earth
+  youtube_link: ~
+  soundcloud_link: ~
+- title: My Dear (Banjo)
+  instrument: banjo
+  artist: Tallest Man on Earth
+  youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=1204s'
+  soundcloud_link: ~
+- title: The Gardener
+  artist: Tallest Man on Earth
+  youtube_link: 'https://youtu.be/_sD9O-mdNAQ'
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/the-gardener-tallest-man-on-earth?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: The Wild Hunt
+  artist: Tallest Man on Earth
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Waiting For My Ghost (Banjo)
+  instrument: banjo
+  artist: Tallest Man on Earth
+  youtube_link: 'https://youtu.be/1AbTqUTDW-A?si=8V5mYrF-Z4pKHwXq'
+  soundcloud_link: ~
+- title: 'What I''ve Been Kicking Around'
+  artist: Tallest Man on Earth
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Where Do My Bluebird Fly
+  artist: Tallest Man on Earth
+  youtube_link: ~
+  soundcloud_link: 'https://soundcloud.com/dhruv-rajan/where-do-my-bluebird-fly?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+- title: Wind and Walls
+  artist: Tallest Man on Earth
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Pretenders
+  instrument: banjo
+  artist: Taylor Ashton
+  youtube_link: 'https://www.youtube.com/watch?v=RXL396jJ30k&t=911s'
+  soundcloud_link: ~
 - title: Church Street Blues
   instrument: guitar
   artist: Tony Rice
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Loretta
+  instrument: guitar
+  artist: Townes Van Zandt
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Jesse James / Julianne Johnson / Goodbye Liza Jane
+  instrument: banjo
+  artist: Traditional
+  youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=GCBwPQHd8kUj_bXb&t=256'
+  soundcloud_link: ~
+- title: 'Sary Darlin'' Say'
+  instrument: banjo
+  artist: Traditional
+  youtube_link: 'https://youtu.be/8GwRlCZ6Edw?si=q5KlX9PreJnS2qtY&t=12'
+  soundcloud_link: ~
+- title: Acres Wild
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Arthur McBride
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Back Home Again
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Bad Bad Leroy Brown
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Baker Street Muse
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Bitterblue
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Broadford Bazaar
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Carolina in My Mind
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Cheap Day Return
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Childish Things
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Choctaw Hayride
+  instrument: banjo
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Clyde Water (Banjo)
+  instrument: banjo
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Coat of Many Colors
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Come by the Highway Home
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Crazy Man Michael
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Daylight Watchhouse
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Don''t Mess Around with Jim'
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Dun Ringill
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Every Little Heart
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Every Time You Say Goodbye
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Fire at Midnight
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: First Snow on Brooklyn
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: For Emily Wherever I May Find Her
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Fotheringay
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Girl from the North Country
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Give Me Novocaine
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Golden Embers
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Helplessly Hoping
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Here Comes the Sun
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: In My Life
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'It Ain''t Me Babe'
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Jack Frost and the Hooded Crow
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Jambalaya
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Julio Down by the Schoolyard
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Kathy''s Song'
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Lady Darbanville
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Longer Boats
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Love at the Five and Dime
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Lowlands Away
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Morning Has Broken
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Moths
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Musgrave
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Needle and the Damage Done
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: New Star Watchhouse
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Nightbird
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Old Man
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Old Ties and Companies
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Olympia
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Orion
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Our Town
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Ring Them Bells
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Rocky Mountain High
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Runaway Train
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Shelter from the Storm
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Shove That Pig''s Foot a Little Further into the Fire / St. Anne''s Reel'
+  instrument: banjo
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Solsbury Hill
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Somewhere in the Mountains
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Speed of the Sound of Loneliness
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Tambourine Man
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Boxer
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Obvious Child
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Wolves
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'There''s a Girl'
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Thick as a Brick
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Velvet Green
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Wandring Again
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Whatsername
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: White Cockade
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Wildflowers
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Wish I Was a Mole in the Ground
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Wonderful Tonight
+  artist: Unknown
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Yesterday
+  artist: Unknown
   youtube_link: ~
   soundcloud_link: ~
