@@ -400,6 +400,26 @@
     return layoutSong(doc, song, pickSize(doc, song), null).pages;
   }
 
+  /** "Both" mode: a song may carry song.chordsText, set right after its lyrics. */
+  function chordPart(song) {
+    if (!song || song.chordsText == null || !String(song.chordsText).trim()) return null;
+    return Object.assign({}, song, {
+      title: song.title + " (chords)",
+      lyrics: String(song.chordsText),
+      monospace: true,
+      notes: null,
+    });
+  }
+
+  /** Small tappable link at the top left, "Chords »" / "« Lyrics". */
+  function drawJumpLink(doc, label, dest) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(20, 70, 160);
+    doc.textWithLink(label, MARGIN, HEADER_Y, { pageNumber: dest });
+    doc.setTextColor(0);
+  }
+
   function estimateTocPages(doc, artists, songsByArtist) {
     var y = CONTENT_TOP + 26 + 28;
     var pages = 1;
@@ -468,8 +488,12 @@
     var songsByArtist = grouped.songsByArtist;
 
     onProgress("Measuring layout…");
-    var songPageCounts = list.map(function (song) {
+    var lyricPageCounts = list.map(function (song) {
       return measureSongPages(doc, song);
+    });
+    var chordPageCounts = list.map(function (song) {
+      var part = chordPart(song);
+      return part ? measureSongPages(doc, part) : 0;
     });
 
     var tocStart = 2;
@@ -478,8 +502,20 @@
     var cursor = firstSongPage;
     list.forEach(function (song, i) {
       songStartPage[songKey(song)] = cursor;
-      cursor += songPageCounts[i];
+      cursor += lyricPageCounts[i];
     });
+    // "Both" mode: a Chords section after all the lyrics, same order.
+    var chordStartPage = {};
+    var chordsSectionPage = 0;
+    if (chordPageCounts.some(Boolean)) {
+      chordsSectionPage = cursor;
+      cursor += 1;
+      list.forEach(function (song, i) {
+        if (!chordPageCounts[i]) return;
+        chordStartPage[songKey(song)] = cursor;
+        cursor += chordPageCounts[i];
+      });
+    }
     var totalPages = cursor - 1;
 
     var letterDestPage = {};
@@ -556,6 +592,11 @@
         lx = MARGIN;
       }
     });
+    if (chordsSectionPage) {
+      doc.setTextColor(20, 70, 160);
+      doc.textWithLink("Chords \u00bb", lx + 6, y, { pageNumber: chordsSectionPage });
+      doc.setTextColor(0);
+    }
     y += 22;
 
     artists.forEach(function (artist) {
@@ -572,6 +613,18 @@
         doc.setFontSize(11);
         var pw = doc.getTextWidth(pageLabel);
         var maxTitleW = CONTENT_WIDTH - pw - 16;
+        if (chordPart(song)) {
+          // Mark songs that have chords; the mark jumps to the chord page.
+          doc.setFontSize(9);
+          doc.setTextColor(20, 70, 160);
+          var cw = doc.getTextWidth("chords");
+          doc.textWithLink("chords", PAGE.w - MARGIN - pw - 8 - cw, y, {
+            pageNumber: chordStartPage[songKey(song)],
+          });
+          doc.setTextColor(0);
+          doc.setFontSize(11);
+          maxTitleW -= cw + 8;
+        }
         var titleLines = doc.splitTextToSize(song.title, maxTitleW);
         var line = titleLines[0];
         if (titleLines.length > 1) line = line.replace(/\s+$/, "") + "…";
@@ -631,18 +684,55 @@
       });
 
       var pageNum = start;
+      var chordStart = chordStartPage[songKey(song)];
+      var jump = chordStart
+        ? function () { drawJumpLink(doc, "Chords \u00bb", chordStart); }
+        : function () {};
+      writeSong(song, function () { return pageNum; }, function (n) { pageNum = n; }, jump);
+    });
+
+    if (chordsSectionPage) {
+      while (doc.getNumberOfPages() < chordsSectionPage) doc.addPage();
+      doc.setPage(chordsSectionPage);
       drawIndexLink(doc, tocStart);
+      doc.setFont("times", "bold");
+      doc.setFontSize(36);
+      doc.text("Chords", MARGIN, PAGE.h / 2 - 20);
+      doc.setFont("times", "normal");
+      doc.setFontSize(14);
+      doc.text(Object.keys(chordStartPage).length + " songs", MARGIN, PAGE.h / 2 + 10);
+      drawFooter(doc, chordsSectionPage, totalPages);
+      var chordsOutline = doc.outline.add(null, "Chords", { pageNumber: chordsSectionPage });
+      list.forEach(function (song, idx) {
+        var cs = chordStartPage[songKey(song)];
+        if (!cs) return;
+        onProgress("Writing chords (" + (idx + 1) + "/" + list.length + ")…");
+        var lyricsStart = songStartPage[songKey(song)];
+        doc.outline.add(chordsOutline, song.title, { pageNumber: cs });
+        var pageNum = cs;
+        while (doc.getNumberOfPages() < cs) doc.addPage();
+        doc.setPage(cs);
+        writeSong(chordPart(song), function () { return pageNum; }, function (n) { pageNum = n; }, function () {
+          drawJumpLink(doc, "\u00ab Lyrics", lyricsStart);
+        });
+      });
+    }
+
+    function writeSong(song, getPage, setPageNum, jump) {
+      drawIndexLink(doc, tocStart);
+      jump();
       layoutSong(doc, song, pickSize(doc, song), {
         newPage: function () {
-          drawFooter(doc, pageNum, totalPages);
-          pageNum += 1;
-          while (doc.getNumberOfPages() < pageNum) doc.addPage();
-          doc.setPage(pageNum);
+          drawFooter(doc, getPage(), totalPages);
+          setPageNum(getPage() + 1);
+          while (doc.getNumberOfPages() < getPage()) doc.addPage();
+          doc.setPage(getPage());
           drawIndexLink(doc, tocStart);
+          jump();
         },
       });
-      drawFooter(doc, pageNum, totalPages);
-    });
+      drawFooter(doc, getPage(), totalPages);
+    }
 
     onProgress("Saving PDF…");
     var filename = "dhruv-songbook-" + todayStamp() + ".pdf";
