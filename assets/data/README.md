@@ -1,6 +1,6 @@
 # Encrypted lyrics cache
 
-The Lyrics page loads `/assets/data/lyrics.enc.json`.
+The Lyrics page loads `/assets/data/lyrics.enc.json` (production encrypted repertoire).
 
 ## Envelope (`v: 1`)
 - `kdf`: `PBKDF2-SHA256`
@@ -9,6 +9,6 @@ The Lyrics page loads `/assets/data/lyrics.enc.json`.
 - `iv`: base64 (12 bytes)
 - `ciphertext`: base64 of AES-256-GCM ciphertext with the 16-byte auth tag appended (WebCrypto layout)
 
-Decrypt with the site passphrase (never committed). Wrong passphrase fails AES-GCM auth.
+Browser decrypt matches Node WebCrypto: PBKDF2-SHA256 → AES-256-GCM. Wrong passphrase fails AES-GCM auth (clear UI error).
 
-`lyrics.enc.example.json` is a tiny dummy fixture for local UI checks (passphrase `test-passphrase`). Production uses `lyrics.enc.json`.
+`lyrics.enc.example.json` is a tiny dummy fixture for local UI checks only (not the production default). Do **not** commit real passphrases or API keys.
