@@ -335,7 +335,8 @@ body.lb-stage .lb-btn--subtle {
 
 .lb-menu {
   position: absolute;
-  right: 0;
+  left: 0;
+  right: auto;
   top: calc(100% + var(--lb-space));
   z-index: 30;
   width: min(18rem, calc(100vw - 1.5rem));
