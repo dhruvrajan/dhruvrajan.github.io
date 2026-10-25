@@ -64,9 +64,9 @@ body.lb-song-open.lb-layout-touch .site-main {
   padding: 0;
 }
 
-body.lb-layout-desktop.lb-has-song .site-main,
-body.lb-layout-desktop.lb-has-song.page-narrow,
-body.lb-layout-desktop.lb-has-song .page-narrow {
+body.lb-layout-desktop.lb-song-open .site-main,
+body.lb-layout-desktop.lb-song-open.page-narrow,
+body.lb-layout-desktop.lb-song-open .page-narrow {
   max-width: none;
   width: 100%;
   padding-left: clamp(1.5rem, 3vw, 3rem);
