@@ -1140,15 +1140,16 @@
       html +=
         '<p class="lb-setup-line">' + escapeHtml(setup) + "</p>";
     }
+    html += "</div>";
+
     html +=
-      '<div class="lb-notes" style="flex:1 1 100%;margin:0.5rem 0 0;padding:0;border:0">' +
+      '<div class="lb-notes">' +
       '<button type="button" class="lb-notes__toggle" id="lb-notes-toggle" aria-expanded="false" aria-controls="lb-notes-panel">Notes</button>' +
       '<div class="lb-notes__panel" id="lb-notes-panel" hidden>' +
       '<label class="visually-hidden" for="lb-notes-ta">Song notes</label>' +
       '<textarea class="lb-notes__ta" id="lb-notes-ta" rows="4" placeholder="Personal notes for this song…"></textarea>' +
       '<p class="lb-notes__hint">Saved on this device. Export from Settings.</p>' +
       "</div></div>";
-    html += "</div>";
 
     html += '<div id="lb-song-body">';
     if (!details) {

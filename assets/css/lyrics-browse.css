@@ -750,9 +750,9 @@ body.lyrics-text--lg .lb-lyrics {
 }
 
 .lb-notes {
-  margin: calc(var(--lb-space) * 3) 0;
-  padding-top: calc(var(--lb-space) * 2);
-  border-top: 1px solid var(--lb-border);
+  margin: 0 0 calc(var(--lb-space) * 2);
+  padding: calc(var(--lb-space) * 1.5) 0;
+  border-bottom: 1px solid var(--lb-border);
 }
 
 .lb-notes__toggle {
