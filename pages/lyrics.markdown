@@ -6,7 +6,7 @@ narrow: true
 ---
 
 <h1 class="page-title">Lyrics</h1>
-<p class="page-lead">Personal Genius search for set planning. Your access token stays in this browser only — it is never sent to this site’s server.</p>
+<p class="page-lead">Browse the setlist repertoire and look up lyrics on Genius. Your access token stays in this browser only — it is never sent to this site’s server.</p>
 
 <section id="token-gate" class="lyrics-panel" hidden>
   <h2 class="group-heading">Genius access token</h2>
@@ -40,6 +40,37 @@ narrow: true
 
   <div class="lyrics-columns">
     <div class="lyrics-main">
+      <section class="repertoire" aria-labelledby="repertoire-heading">
+        <h2 id="repertoire-heading" class="group-heading">Repertoire</h2>
+        <p class="item-meta">Click a song to search Genius and open the lyrics embed.</p>
+        <div id="repertoire-list">
+          {% assign songs = site.data.songs %}
+          {% assign artists = songs | map: "artist" | uniq | sort %}
+          {% for artist in artists %}
+            {% if artist and artist != "" %}
+            <section class="group repertoire-group" aria-labelledby="rep-artist-{{ forloop.index }}">
+              <h3 id="rep-artist-{{ forloop.index }}" class="subheading">{{ artist }}</h3>
+              <ul class="song-list repertoire-songs">
+              {% for song in songs %}
+                {% if song.artist == artist %}
+                <li>
+                  <button
+                    type="button"
+                    class="repertoire-song linkish"
+                    data-title="{{ song.title | escape }}"
+                    data-artist="{{ song.artist | escape }}"
+                    data-lyrics-query="{{ song.title | append: ' ' | append: song.artist | escape }}"
+                  >{{ song.title }}</button>
+                </li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            </section>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
       <div id="search-results"></div>
       <div id="song-detail" class="song-detail" hidden></div>
     </div>
