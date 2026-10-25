@@ -408,7 +408,7 @@
     if (!inst) return "";
     var bits = [];
     if (inst.tuning) {
-      bits.push(inst.tuning + (inst.unverified ? "?" : ""));
+      bits.push(inst.tuning + (inst.unverified && !/\?$/.test(String(inst.tuning)) ? "?" : ""));
     }
     if (inst.capo != null && Number(inst.capo) !== 0) {
       bits.push("Capo " + Number(inst.capo));
