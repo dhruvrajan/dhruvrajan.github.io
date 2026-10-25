@@ -351,6 +351,13 @@
     return api && typeof api.getSongs === "function" ? api.getSongs() : [];
   }
 
+  /** Songs that have an encrypted lyrics file (excludes songs.yaml-only entries). */
+  function lyricSongs() {
+    return songs().filter(function (s) {
+      return !s.noLyrics;
+    });
+  }
+
   function uniqueSorted(values) {
     var map = Object.create(null);
     values.forEach(function (v) {
@@ -723,7 +730,7 @@
 
   function startPrefetch() {
     if (!api || typeof api.loadSongDetails !== "function") return;
-    var list = songs();
+    var list = lyricSongs();
     state.prefetchAbort = false;
     state.prefetch = { done: 0, total: list.length, state: "loading", error: "" };
     updatePrefetchUi();
@@ -795,6 +802,11 @@
       '<div class="lb-menu__section">' +
       '<button type="button" class="lb-menu__item" id="lb-menu-print" role="menuitem">Print song</button>' +
       '<button type="button" class="lb-menu__item" id="lb-menu-songbook" role="menuitem">Download songbook PDF</button>' +
+      '<label class="lb-menu__item lb-menu__orient" for="lb-songbook-orientation">Page ' +
+      '<select id="lb-songbook-orientation" data-songbook-orientation>' +
+      '<option value="portrait">Portrait</option>' +
+      '<option value="landscape">Landscape</option>' +
+      "</select></label>" +
       '<button type="button" class="lb-menu__item" id="lb-lock" role="menuitem">Lock</button>' +
       "</div>" +
       "</div></div>" +
@@ -1009,7 +1021,9 @@
         var noted = songHasNotes(slug);
         var selected = state.currentSlug === slug;
         html +=
-          '<li role="none"><button type="button" class="lb-song" data-open-slug="' +
+          '<li role="none"><button type="button" class="lb-song' +
+          (song.noLyrics ? " lb-song--no-lyrics" : "") +
+          '" data-open-slug="' +
           escapeHtml(slug) +
           '" data-group-key="' +
           escapeHtml(group.key) +
@@ -1159,8 +1173,22 @@
       '<p class="lb-notes__hint">Saved on this device. Export from Settings.</p>' +
       "</div></div>";
 
+    var printNote =
+      notesApi() && notesApi().getNote ? notesApi().getNote(slug) : null;
+    var printNoteText =
+      printNote && printNote.notes != null ? String(printNote.notes) : "";
+    if (printNoteText.trim()) {
+      // Print-only copy of this song's notes, shown above the lyrics.
+      html +=
+        '<div class="lb-print-notes"><p class="lb-print-notes__label">Notes</p>' +
+        '<p class="lb-print-notes__text">' +
+        escapeHtml(printNoteText.replace(/\s+$/, "")) +
+        "</p></div>";
+    }
     html += '<div id="lb-song-body">';
-    if (!details) {
+    if (meta.noLyrics || (details && details.noLyrics)) {
+      html += '<p class="lb-lyrics-empty">Lyrics not added yet</p>';
+    } else if (!details) {
       html += '<p class="lb-loading">Loading lyrics…</p>';
     } else {
       html +=
@@ -1672,6 +1700,10 @@
       });
     }
 
+    var orientSel = $("#lb-songbook-orientation", root);
+    if (orientSel && api && typeof api.getOrientation === "function") {
+      orientSel.value = api.getOrientation();
+    }
     var menuPrint = $("#lb-menu-print", root);
     var menuSongbook = $("#lb-menu-songbook", root);
     if (menuPrint) {

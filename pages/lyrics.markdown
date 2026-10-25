@@ -38,6 +38,13 @@ narrow: true
       </div>
       <button type="button" class="btn btn--secondary" id="print-lyrics-btn">Print song</button>
       <button type="button" class="btn" id="download-songbook-btn">Download songbook PDF</button>
+      <label class="songbook-orientation" for="songbook-orientation">
+        <span class="visually-hidden">Page orientation</span>
+        <select id="songbook-orientation" data-songbook-orientation>
+          <option value="portrait">Portrait</option>
+          <option value="landscape">Landscape</option>
+        </select>
+      </label>
       <button type="button" class="btn btn--secondary" id="lock-btn">Lock</button>
       <button type="button" class="btn btn--ghost" id="forget-btn">Forget on this device</button>
     </div>
