@@ -315,7 +315,7 @@
     }
     var parts = [];
     var t = tuningOf(song);
-    if (t) parts.push(t + (tuningUnverified(song) ? "?" : ""));
+    if (t) parts.push(t + (tuningUnverified(song) && !/\?$/.test(String(t)) ? "?" : ""));
     var c = capoOf(song);
     if (c != null && c !== 0) parts.push("Capo " + c);
     return parts.join(" · ");

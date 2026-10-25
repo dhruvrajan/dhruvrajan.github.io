@@ -142,7 +142,7 @@
     if (!inst) return "";
     var bits = [];
     if (inst.tuning) {
-      bits.push(inst.tuning + (inst.unverified ? "?" : ""));
+      bits.push(inst.tuning + (inst.unverified && !/\?$/.test(String(inst.tuning)) ? "?" : ""));
     }
     if (inst.capo != null && Number(inst.capo) !== 0) {
       bits.push("Capo " + Number(inst.capo));
@@ -174,7 +174,7 @@
     if (instruments.length === 1) {
       var bits = [];
       var inst = instruments[0];
-      if (inst.tuning) bits.push(inst.tuning + (inst.unverified ? "?" : ""));
+      if (inst.tuning) bits.push(inst.tuning + (inst.unverified && !/\?$/.test(String(inst.tuning)) ? "?" : ""));
       if (inst.capo != null && Number(inst.capo) !== 0) {
         bits.push("Capo " + Number(inst.capo));
       }
@@ -184,7 +184,7 @@
       return instruments
         .map(function (row) {
           var parts = [];
-          if (row.tuning) parts.push(row.tuning + (row.unverified ? "?" : ""));
+          if (row.tuning) parts.push(row.tuning + (row.unverified && !/\?$/.test(String(row.tuning)) ? "?" : ""));
           if (row.capo != null && Number(row.capo) !== 0) {
             parts.push("Capo " + Number(row.capo));
           }
