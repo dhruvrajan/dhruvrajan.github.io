@@ -305,6 +305,27 @@
     return head.concat(rest);
   }
 
+  /** Browse-friendly alias over instrumentsFromEntry. */
+  function normalizeInstruments(meta) {
+    return instrumentsFromEntry(meta);
+  }
+
+  function instrumentEntry(meta, instrumentName) {
+    var list = normalizeInstruments(meta);
+    if (!list.length) return null;
+    var want = normalizeInstrumentName(instrumentName);
+    if (!want || want === "all" || instrumentName === "all") {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === "Guitar") return list[i];
+      }
+      return list[0];
+    }
+    for (var j = 0; j < list.length; j++) {
+      if (list[j].name === want) return list[j];
+    }
+    return null;
+  }
+
   function loadSongsMeta() {
     state.songsMetaBySlug = Object.create(null);
     var el = document.getElementById("songs-meta-json");
@@ -898,10 +919,51 @@
     }
   }
 
+  function browseApi() {
+    return {
+      getSongs: function () {
+        return state.songs.slice();
+      },
+      loadSongDetails: loadSongDetails,
+      songSlug: songSlug,
+      titleSlug: titleSlug,
+      findSongBySlug: findSongBySlug,
+      metaForSong: metaForSong,
+      normalizeInstruments: normalizeInstruments,
+      instrumentEntry: instrumentEntry,
+      getTextSize: function () {
+        return state.textSize || "md";
+      },
+      setTextSize: setTextSize,
+      setHashForSong: setHashForSong,
+      parseSongHash: parseSongHash,
+      clearSongHash: function () {
+        if (window.location.hash) {
+          history.replaceState(
+            null,
+            "",
+            window.location.pathname + window.location.search
+          );
+        }
+      },
+      lock: function () {
+        lockSession(false);
+      },
+      forget: function () {
+        lockSession(true);
+      },
+    };
+  }
+
+  function browseActive() {
+    return !!(
+      window.LyricsBrowse && typeof window.LyricsBrowse.onUnlock === "function"
+    );
+  }
+
   function afterUnlock() {
     showUnlocked(true);
     setUnlockStatus("");
-    renderArtistBrowse();
     setStatus(
       state.songs.length +
         " song" +
@@ -909,6 +971,13 @@
         " unlocked",
       "ok"
     );
+
+    if (browseActive()) {
+      window.LyricsBrowse.onUnlock(browseApi());
+      return;
+    }
+
+    renderArtistBrowse();
 
     var slug = parseSongHash();
     if (slug) {
@@ -930,6 +999,12 @@
   }
 
   function lockSession(forget) {
+    if (
+      window.LyricsBrowse &&
+      typeof window.LyricsBrowse.onLock === "function"
+    ) {
+      window.LyricsBrowse.onLock();
+    }
     state.songs = [];
     state.cryptoKey = null;
     state.songCache = Object.create(null);
@@ -947,18 +1022,13 @@
       els.passphraseInput.value = "";
       els.passphraseInput.focus();
     }
-    setUnlockStatus(
-      forget
-        ? "Forgotten on this device. Enter the passphrase to unlock again."
-        : "Locked. Enter the passphrase to unlock again.",
-      "info"
-    );
+    setUnlockStatus("");
   }
 
   function humanError(err) {
     if (!err) return "Something went wrong.";
     if (err.message === "WRONG_PASSPHRASE")
-      return "Wrong passphrase. Check it and try again.";
+      return "Wrong password. Try again.";
     return err.message || "Something went wrong.";
   }
 
@@ -969,7 +1039,7 @@
         var passphrase =
           (els.passphraseInput && els.passphraseInput.value) || "";
         if (!passphrase) {
-          setUnlockStatus("Enter the passphrase.", "error");
+          setUnlockStatus("Enter the password.", "error");
           if (els.passphraseInput) els.passphraseInput.focus();
           return;
         }
@@ -1047,12 +1117,23 @@
 
     window.addEventListener("hashchange", function () {
       if (!state.songs.length) return;
+      if (
+        window.LyricsBrowse &&
+        typeof window.LyricsBrowse.isActive === "function" &&
+        window.LyricsBrowse.isActive()
+      ) {
+        return;
+      }
       var slug = parseSongHash();
       if (!slug) return;
       var song = findSongBySlug(slug);
       if (song) openSong(song, false);
     });
   }
+
+  window.LyricsApp = {
+    browseApi: browseApi,
+  };
 
   async function init() {
     loadSongsMeta();
@@ -1067,14 +1148,11 @@
     applyTextSize();
     bind();
     showUnlocked(false);
-    setUnlockStatus("Loading lyrics cache…", "info");
+    setUnlockStatus("");
 
     try {
       await loadSalt();
-      setUnlockStatus(
-        "Enter the passphrase to unlock the lyrics cache.",
-        "info"
-      );
+      setUnlockStatus("");
       var ok = await unlockWithStoredKey();
       if (ok) {
         afterUnlock();

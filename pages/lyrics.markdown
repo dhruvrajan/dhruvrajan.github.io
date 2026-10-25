@@ -5,16 +5,15 @@ description: Personal lyrics browser unlocked from a local encrypted cache.
 narrow: true
 ---
 
-<h1 class="page-title">Lyrics</h1>
-<p class="page-lead">Unlock a local encrypted lyrics cache, then search and browse by artist. The passphrase never leaves this browser.</p>
+<link rel="stylesheet" href="{{ '/assets/css/lyrics-browse.css' | relative_url }}">
 
-<section id="unlock-gate" class="lyrics-panel">
-  <h2 class="group-heading">Unlock lyrics</h2>
-  <p class="item-meta">Loads salt and an encrypted index from <code>/assets/data/lyrics/</code>, derives a key with PBKDF2-SHA256, and decrypts songs on demand with AES-256-GCM in this browser.</p>
-  <form id="unlock-form" class="token-form" autocomplete="off">
-    <label for="passphrase-input">Passphrase</label>
-    <input id="passphrase-input" name="passphrase" type="password" spellcheck="false" autocomplete="current-password" required placeholder="Enter passphrase">
-    <button type="submit" class="btn">Unlock</button>
+<h1 class="page-title">Lyrics</h1>
+
+<section id="unlock-gate" class="lyrics-panel lyrics-unlock">
+  <form id="unlock-form" class="token-form lyrics-unlock__form" autocomplete="off">
+    <label for="passphrase-input" class="visually-hidden">Password</label>
+    <input id="passphrase-input" name="passphrase" type="password" spellcheck="false" autocomplete="current-password" required placeholder="Password">
+    <button type="submit" class="btn lyrics-unlock__submit">Unlock</button>
     <label class="remember-row" for="remember-check">
       <input id="remember-check" type="checkbox">
       Remember on this device
@@ -25,7 +24,7 @@ narrow: true
 
 <section id="lyrics-browser" hidden>
   <div class="lyrics-toolbar">
-    <form id="search-form" class="search-form" role="search">
+    <form id="search-form" class="search-form lyrics-legacy-search" role="search">
       <label for="search-input" class="visually-hidden">Filter songs</label>
       <input id="search-input" type="search" placeholder="Filter by title or artist" enterkeyhint="search" autocomplete="off">
       <button type="submit" class="btn">Filter</button>
@@ -46,6 +45,8 @@ narrow: true
 
   <p id="search-status" class="lyrics-status" hidden aria-live="polite"></p>
   <p id="songbook-progress" class="lyrics-status" hidden aria-live="polite"></p>
+
+  <div id="lyrics-browse-root"></div>
 
   <div id="search-results"></div>
 
@@ -87,7 +88,12 @@ narrow: true
     "data-lyrics-base",
     "{{ '/assets/data/lyrics/' | relative_url }}"
   );
+  document.body.setAttribute(
+    "data-lyrics-sw",
+    "{{ '/lyrics-sw.js' | relative_url }}"
+  );
 </script>
 <script src="{{ '/assets/js/vendor/jspdf.umd.min.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script src="{{ '/assets/js/songbook-pdf.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script src="{{ '/assets/js/lyrics-browse.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 <script src="{{ '/assets/js/lyrics.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
