@@ -18,7 +18,7 @@
       {% if event_year == year %}
       <li>
         <span class="item-title">{{ event.event_name }}</span>
-        <span class="item-meta">{{ event.location }} · {{ event.date | remove: year | remove: "," | strip }}</span>
+        <span class="item-meta">{% if event.location %}{{ event.location }} · {% endif %}{{ event.date | remove: year | remove: "," | strip }}</span>
       </li>
       {% endif %}
     {% endfor %}
