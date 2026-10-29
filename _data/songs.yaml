@@ -588,6 +588,154 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Odds of Getting Even
+  instrument: guitar
+  artist: Caitlin Canty
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Idaho
+  instrument: guitar
+  artist: Caitlin Canty
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 6
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Crash Into Me
+  instrument: guitar
+  artist: Dave Matthews Band
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Sea Captain
+  instrument: guitar
+  artist: Sandy Denny
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Fire and Rain
+  instrument: guitar
+  artist: James Taylor
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Walls of Red Wing
+  instrument: guitar
+  artist: Bob Dylan
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'It''s All Over Now, Baby Blue'
+  instrument: guitar
+  artist: Bob Dylan
+  instruments:
+    - name: Guitar
+      tuning: CADGBE
+      capo: 4
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Blowin'' in the Wind'
+  instrument: guitar
+  artist: Bob Dylan
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'The Times They Are a-Changin'''
+  instrument: guitar
+  artist: Bob Dylan
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Knockin'' on Heaven''s Door'
+  instrument: guitar
+  artist: Bob Dylan
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Like a Rolling Stone
+  instrument: guitar
+  artist: Bob Dylan
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Make You Feel My Love
+  instrument: guitar
+  artist: Bob Dylan
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Baby Driver
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: April Come She Will
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Roving Gambler
+  instrument: guitar
+  artist: The Everly Brothers
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Oh So Many Years
+  instrument: guitar
+  artist: The Everly Brothers
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: That Silver Haired Daddy of Mine
+  instrument: guitar
+  artist: The Everly Brothers
+  youtube_link: ~
+  soundcloud_link: ~
 - title: Bonny Light Horseman
   artist: Nic Jones
   youtube_link: 'https://youtu.be/f9sNhNfpkbk?si=JI5Yq3o0b_-Q83JZ'
