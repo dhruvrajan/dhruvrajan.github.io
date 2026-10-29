@@ -487,10 +487,6 @@
 - title: Fat Man
   instrument: guitar
   artist: Jethro Tull
-  instruments:
-    - name: Guitar
-      tuning: '?'
-      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Cup of Wonder
@@ -734,6 +730,53 @@
 - title: That Silver Haired Daddy of Mine
   instrument: guitar
   artist: The Everly Brothers
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Weathercock
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Rover
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Billy Don''t You Weep for Me'
+  instrument: guitar
+  artist: Nic Jones
+  instruments:
+    - name: Guitar
+      tuning: Open G minor (DGDGBbD)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Isle of France
+  instrument: guitar
+  artist: Nic Jones
+  instruments:
+    - name: Guitar
+      tuning: G modal (DGCGCD)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Lakes of Shillin
+  instrument: guitar
+  artist: Nic Jones
+  instruments:
+    - name: Guitar
+      tuning: Drop D (DADGBE)
+      unverified: true
   youtube_link: ~
   soundcloud_link: ~
 - title: Bonny Light Horseman
