@@ -396,6 +396,198 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Cecilia
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Mrs. Robinson
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Homeward Bound
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Scarborough Fair
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 7
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Sound of Silence
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 6
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Calypso
+  instrument: guitar
+  artist: John Denver
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Something in the Way She Moves
+  instrument: guitar
+  artist: James Taylor
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Jack in the Green
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Witch''s Promise'
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Fat Man
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: '?'
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Cup of Wonder
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Living in the Past
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Bourée
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Aqualung (Acoustic)
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Reasons for Waiting
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: A Christmas Song
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Ventura Highway
+  instrument: guitar
+  artist: America
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Sandman
+  instrument: guitar
+  artist: America
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Suite: Judy Blue Eyes'
+  instrument: guitar
+  artist: 'Crosby, Stills & Nash'
+  instruments:
+    - name: Guitar
+      tuning: EEEEBE
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Guinnevere
+  instrument: guitar
+  artist: 'Crosby, Stills & Nash'
+  instruments:
+    - name: Guitar
+      tuning: EBDGAD
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
 - title: Bonny Light Horseman
   artist: Nic Jones
   youtube_link: 'https://youtu.be/f9sNhNfpkbk?si=JI5Yq3o0b_-Q83JZ'
