@@ -2812,3 +2812,33 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Faithfully
+  instrument: guitar
+  artist: Journey
+  instruments:
+    - name: Guitar
+      tuning: Half step down (EbAbDbGbBbEb)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Separate Ways (Worlds Apart)'
+  instrument: guitar
+  artist: Journey
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Don''t Stop Believin'''
+  instrument: guitar
+  artist: Journey
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
