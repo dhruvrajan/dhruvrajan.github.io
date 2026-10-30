@@ -3172,3 +3172,83 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Oh Very Young
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Into White
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Another Saturday Night
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Can''t Keep It In'
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Peace Train
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: On the Road to Find Out
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Hard Headed Woman
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Rubylove
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Open E (EBEG#BE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
