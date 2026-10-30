@@ -2222,3 +2222,33 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Love of My Life
+  instrument: guitar
+  artist: Queen
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Too Much Love Will Kill You
+  instrument: guitar
+  artist: Queen
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Innuendo
+  instrument: guitar
+  artist: Queen
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
