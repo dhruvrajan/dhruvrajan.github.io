@@ -2022,3 +2022,33 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Wind-Up
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: To Cry You a Song
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'A Time for Everything?'
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
