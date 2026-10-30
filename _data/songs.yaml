@@ -2362,3 +2362,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Mama Tried
+  instrument: guitar
+  artist: Merle Haggard
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
