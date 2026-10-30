@@ -2512,3 +2512,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Wind of Change
+  instrument: guitar
+  artist: Scorpions
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
