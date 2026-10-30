@@ -2182,3 +2182,33 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Ramble On
+  instrument: guitar
+  artist: Led Zeppelin
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Over the Hills and Far Away
+  instrument: guitar
+  artist: Led Zeppelin
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Stairway to Heaven
+  instrument: guitar
+  artist: Led Zeppelin
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
