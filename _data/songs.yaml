@@ -2462,3 +2462,43 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Rhiannon
+  instrument: guitar
+  artist: Fleetwood Mac
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Dreams
+  instrument: guitar
+  artist: Fleetwood Mac
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Chain
+  instrument: guitar
+  artist: Fleetwood Mac
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Go Your Own Way
+  instrument: guitar
+  artist: Fleetwood Mac
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
