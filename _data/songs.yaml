@@ -2782,3 +2782,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Bus Stop
+  instrument: guitar
+  artist: The Hollies
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
