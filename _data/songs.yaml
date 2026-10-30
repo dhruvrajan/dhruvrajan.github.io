@@ -2452,3 +2452,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: More Than a Feeling
+  instrument: guitar
+  artist: Boston
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
