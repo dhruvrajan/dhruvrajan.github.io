@@ -2372,3 +2372,43 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Africa
+  instrument: guitar
+  artist: Toto
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Sister Golden Hair
+  instrument: guitar
+  artist: America
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Dust in the Wind
+  instrument: guitar
+  artist: Kansas
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Jolene
+  instrument: guitar
+  artist: Dolly Parton
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
