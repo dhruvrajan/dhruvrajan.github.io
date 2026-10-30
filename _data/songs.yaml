@@ -3022,3 +3022,33 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: A Hazy Shade of Winter
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: I Shall Sing
+  instrument: guitar
+  artist: Art Garfunkel
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'The 59th Street Bridge Song (Feelin'' Groovy)'
+  instrument: guitar
+  artist: 'Simon & Garfunkel'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
