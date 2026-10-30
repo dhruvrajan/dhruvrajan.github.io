@@ -2792,3 +2792,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Piano Man
+  instrument: guitar
+  artist: Billy Joel
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Wreck of the Edmund Fitzgerald
+  instrument: guitar
+  artist: Gordon Lightfoot
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
