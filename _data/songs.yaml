@@ -2212,3 +2212,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: 'Hey Hey, My My (Into the Black)'
+  instrument: guitar
+  artist: Neil Young
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
