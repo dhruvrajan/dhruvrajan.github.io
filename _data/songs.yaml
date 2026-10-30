@@ -3052,3 +3052,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: The Foot of Our Stairs
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
