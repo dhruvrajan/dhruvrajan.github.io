@@ -2842,3 +2842,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: 'Who''s Gonna Ride Your Wild Horses'
+  instrument: guitar
+  artist: U2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: With or Without You
+  instrument: guitar
+  artist: U2
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
