@@ -3252,3 +3252,63 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Yellow
+  instrument: guitar
+  artist: Coldplay
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Scientist
+  instrument: guitar
+  artist: Coldplay
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Fix You
+  instrument: guitar
+  artist: Coldplay
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Viva la Vida
+  instrument: guitar
+  artist: Coldplay
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Clocks
+  instrument: guitar
+  artist: Coldplay
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Speed of Sound
+  instrument: guitar
+  artist: Coldplay
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
