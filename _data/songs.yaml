@@ -2252,3 +2252,103 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Across the Universe
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Half step down (EbAbDbGbBbEb)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: I Want to Hold Your Hand
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Blackbird
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Norwegian Wood (This Bird Has Flown)'
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Hey Jude
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Nowhere Man
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: While My Guitar Gently Weeps
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Octopus''s Garden'
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Penny Lane
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Eleanor Rigby
+  instrument: guitar
+  artist: The Beatles
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
