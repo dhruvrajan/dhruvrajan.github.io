@@ -3122,3 +3122,33 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: The First Cut Is the Deepest
+  instrument: guitar
+  artist: Cat Stevens
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: When You Say Nothing at All
+  instrument: guitar
+  artist: Keith Whitley
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Don''t Know Why'
+  instrument: guitar
+  artist: Norah Jones
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
