@@ -3312,3 +3312,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: The Hardest Part
+  instrument: guitar
+  artist: Coldplay
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
