@@ -2652,3 +2652,133 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: 'Ring Out, Solstice Bells'
+  instrument: guitar
+  artist: Jethro Tull
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Christmas Song
+  instrument: guitar
+  artist: Nat King Cole
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Have Yourself a Merry Little Christmas
+  instrument: guitar
+  artist: Judy Garland
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Holly and the Ivy
+  instrument: guitar
+  artist: Kate Rusby
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Sweet Bells
+  instrument: guitar
+  artist: Kate Rusby
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: White Christmas
+  instrument: guitar
+  artist: Bing Crosby
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Let It Snow! Let It Snow! Let It Snow!'
+  instrument: guitar
+  artist: Dean Martin
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 1
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Winter Wonderland
+  instrument: guitar
+  artist: Bing Crosby
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'I''ll Be Home for Christmas'
+  instrument: guitar
+  artist: Bing Crosby
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Silver Bells
+  instrument: guitar
+  artist: Bing Crosby
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Christmas Time Is Here
+  instrument: guitar
+  artist: Vince Guaraldi
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Silent Night
+  instrument: guitar
+  artist: Traditional
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: O Holy Night
+  instrument: guitar
+  artist: Traditional
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
