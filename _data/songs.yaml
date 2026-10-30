@@ -3134,7 +3134,7 @@
   soundcloud_link: ~
 - title: When You Say Nothing at All
   instrument: guitar
-  artist: Keith Whitley
+  artist: 'Alison Krauss & Union Station'
   instruments:
     - name: Guitar
       tuning: Standard (EADGBE)
@@ -3142,13 +3142,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
-- title: 'Don''t Know Why'
+- title: 'I Don''t Know Why'
   instrument: guitar
-  artist: Norah Jones
+  artist: 'Alison Krauss & Union Station'
   instruments:
     - name: Guitar
       tuning: Standard (EADGBE)
-      capo: 3
+      capo: 0
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
