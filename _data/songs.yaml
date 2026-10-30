@@ -3342,3 +3342,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: 'Summer of ''69'
+  instrument: guitar
+  artist: Bryan Adams
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
