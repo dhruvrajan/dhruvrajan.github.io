@@ -2982,3 +2982,43 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Time in a Bottle
+  instrument: guitar
+  artist: Jim Croce
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'Operator (That''s Not the Way It Feels)'
+  instrument: guitar
+  artist: Jim Croce
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Southern Cross
+  instrument: guitar
+  artist: 'Crosby, Stills & Nash'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Circle Game
+  instrument: guitar
+  artist: Joni Mitchell
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
