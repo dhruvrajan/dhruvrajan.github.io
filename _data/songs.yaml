@@ -3062,3 +3062,63 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: People Are Strange
+  instrument: guitar
+  artist: The Doors
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Roadhouse Blues
+  instrument: guitar
+  artist: The Doors
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Spanish Caravan
+  instrument: guitar
+  artist: The Doors
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Riders on the Storm
+  instrument: guitar
+  artist: The Doors
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: These Are the Days of Our Lives
+  instrument: guitar
+  artist: Queen
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: '(Don''t Fear) The Reaper'
+  instrument: guitar
+  artist: Blue Öyster Cult
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
