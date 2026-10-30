@@ -2412,3 +2412,43 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Sultans of Swing
+  instrument: guitar
+  artist: Dire Straits
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Down to the Waterline
+  instrument: guitar
+  artist: Dire Straits
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Lady Writer
+  instrument: guitar
+  artist: Dire Straits
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Brothers in Arms
+  instrument: guitar
+  artist: Dire Straits
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
