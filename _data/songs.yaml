@@ -3152,3 +3152,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Need You Now
+  instrument: guitar
+  artist: Lady A
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 4
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Runaway
+  instrument: guitar
+  artist: Bon Jovi
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
