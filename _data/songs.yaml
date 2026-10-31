@@ -3352,3 +3352,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Englishman in New York
+  instrument: guitar
+  artist: Sting
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Walking on the Moon
+  instrument: guitar
+  artist: The Police
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
