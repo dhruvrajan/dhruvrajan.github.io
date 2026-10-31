@@ -3482,3 +3482,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Upside Down
+  instrument: guitar
+  artist: Jack Johnson
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Banana Pancakes
+  instrument: guitar
+  artist: Jack Johnson
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
