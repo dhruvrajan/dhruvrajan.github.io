@@ -3422,3 +3422,63 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Late November
+  instrument: guitar
+  artist: Sandy Denny
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Solo
+  instrument: guitar
+  artist: Sandy Denny
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'It''ll Take a Long Time'
+  instrument: guitar
+  artist: Sandy Denny
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: John the Gun
+  instrument: guitar
+  artist: Sandy Denny
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Nothing More
+  instrument: guitar
+  artist: Sandy Denny
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Matty Groves
+  instrument: guitar
+  artist: Fairport Convention
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
