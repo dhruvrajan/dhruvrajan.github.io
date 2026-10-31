@@ -3372,3 +3372,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Roxanne
+  instrument: guitar
+  artist: The Police
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 3
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Message in a Bottle
+  instrument: guitar
+  artist: The Police
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
