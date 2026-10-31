@@ -3402,3 +3402,13 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Hey There Delilah
+  instrument: guitar
+  artist: 'Plain White T''s'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
