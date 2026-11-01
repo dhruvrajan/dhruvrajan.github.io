@@ -3512,3 +3512,33 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Roundabout
+  instrument: guitar
+  artist: Yes
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: 'C''est la Vie'
+  instrument: guitar
+  artist: 'Emerson, Lake & Palmer'
+  instruments:
+    - name: Guitar
+      tuning: Drop D (DADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: From the Beginning
+  instrument: guitar
+  artist: 'Emerson, Lake & Palmer'
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
