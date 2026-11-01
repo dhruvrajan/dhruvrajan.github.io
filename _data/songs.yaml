@@ -3514,7 +3514,7 @@
   soundcloud_link: ~
 - title: Roundabout
   instrument: guitar
-  artist: Yes
+  artist: 'Yes'
   instruments:
     - name: Guitar
       tuning: Standard (EADGBE)
