@@ -3542,3 +3542,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: Burden of Tomorrow
+  instrument: guitar
+  artist: Tallest Man on Earth
+  instruments:
+    - name: Guitar
+      tuning: CGCFCE
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: Tangle in This Trampled Wheat
+  instrument: guitar
+  artist: Tallest Man on Earth
+  instruments:
+    - name: Guitar
+      tuning: Drop High D (EADGBD)
+      capo: 5
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
