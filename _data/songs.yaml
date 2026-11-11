@@ -3562,3 +3562,23 @@
       unverified: true
   youtube_link: ~
   soundcloud_link: ~
+- title: 'Summer''s End'
+  instrument: guitar
+  artist: John Prine
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 2
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
+- title: The Wild Rover
+  instrument: guitar
+  artist: Traditional
+  instruments:
+    - name: Guitar
+      tuning: Standard (EADGBE)
+      capo: 0
+      unverified: true
+  youtube_link: ~
+  soundcloud_link: ~
