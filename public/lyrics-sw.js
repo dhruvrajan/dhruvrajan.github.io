@@ -1,10 +1,10 @@
 /* Minimal offline shell for the Lyrics page.
- * Caches site chrome + encrypted lyrics blobs only — never plaintext lyrics. */
+ * Caches SPA chrome + lyrics scripts + encrypted lyrics blobs only — never plaintext lyrics. */
 /* eslint-disable no-restricted-globals */
 (function () {
   "use strict";
 
-  var CACHE = "lyrics-shell-v1";
+  var CACHE = "lyrics-shell-v2";
   var SHELL = [
     "/",
     "/lyrics",
@@ -29,6 +29,11 @@
     }
   }
 
+  function isAngularBuildAsset(pathname) {
+    // Hashed application builder outputs at site root (main-*.js, styles-*.css, chunk-*.js, …)
+    return /^\/(?:main|polyfills|styles|chunk|index)-[^/]+\.(?:js|css)$/i.test(pathname);
+  }
+
   function isShellAsset(url) {
     try {
       var u = new URL(url, self.location.origin);
@@ -40,6 +45,7 @@
       if (p.indexOf("/assets/js/") === 0) return true;
       if (p === "/assets/data/lyrics/salt.json") return true;
       if (p === "/assets/data/lyrics/index.enc.json") return true;
+      if (isAngularBuildAsset(p)) return true;
       return false;
     } catch (e) {
       return false;

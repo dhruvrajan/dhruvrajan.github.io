@@ -1,0 +1,161 @@
+/* Home intro, contact, and performance videos */
+
+.home-intro {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+}
+
+@media (min-width: 720px) {
+  .home-intro {
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 3rem;
+  }
+}
+
+.home-intro__text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0 0 0.75rem;
+}
+
+.home-intro__text .tagline {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+  font-size: 1.05rem;
+}
+
+.home-intro__text p {
+  margin: 0 0 1rem;
+  max-width: 38rem;
+}
+
+.home-intro__text p:last-child {
+  margin-bottom: 0;
+}
+
+.portrait {
+  width: 160px;
+  border-radius: 2px;
+}
+
+@media (min-width: 720px) {
+  .portrait {
+    width: 200px;
+  }
+}
+
+.contact-block {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.975rem;
+  color: var(--muted);
+}
+
+.contact-block p {
+  margin: 0 0 0.35rem;
+}
+
+.contact-block strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.contact-block a {
+  color: var(--accent);
+}
+
+/* Performance videos */
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0 0 1.25rem;
+}
+
+.subheading {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+
+.video-featured {
+  margin-bottom: 2rem;
+  max-width: 720px;
+}
+
+.video {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  background: var(--paper);
+}
+
+.video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.thumb-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .thumb-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .thumb-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.thumb {
+  display: block;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.thumb img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.thumb-label {
+  display: block;
+  margin-top: 0.35rem;
+}
+
+.thumb:hover .thumb-label {
+  color: var(--ink);
+}
+
+.section-more {
+  margin: 1.25rem 0 0;
+  font-size: 0.975rem;
+}
+

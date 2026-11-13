@@ -1,4 +1,4 @@
-/** Site data converted from Jekyll _data/setlists */
+/** Static setlists catalog for the site. */
 export const SETLISTS = [
   {
     "setlist_name": "Setlist 1 (Solo Guitar, ~1hr)",

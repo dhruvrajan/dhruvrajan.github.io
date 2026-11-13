@@ -1,0 +1,7 @@
+/* Angular router active states */
+
+.site-nav a.router-link-active,
+.site-nav a.is-active,
+.site-nav a[aria-current="page"] {
+  color: var(--ink);
+}

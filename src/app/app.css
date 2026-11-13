@@ -1,4 +1,1 @@
-.site-nav a.is-active,
-.site-nav a.router-link-active {
-  color: var(--ink);
-}
+/* Root shell — most chrome lives in src/styles/; keep component CSS minimal. */

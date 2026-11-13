@@ -1,4 +1,4 @@
-/** Site data converted from Jekyll _data/songs */
+/** Static songs catalog for the site. */
 export const SONGS = [
   {
     "title": "Geordie",
