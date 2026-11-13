@@ -2,7 +2,7 @@ name: Deploy Cloudflare Pages
 
 on:
   push:
-    branches: [cursor/angular-static-40c7]
+    branches: [angular]
   workflow_dispatch:
 
 jobs:
