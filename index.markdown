@@ -7,7 +7,7 @@ description: Solo acoustic and folk performer — guitar, clawhammer banjo, octa
 <section class="home-intro">
   <div class="home-intro__text">
     <h1>Dhruv Rajan</h1>
-    <p class="tagline">Solo acoustic &amp; folk · Newport Beach, CA</p>
+    <p class="tagline">Solo acoustic &amp; folk · Palo Alto, CA</p>
     <p>I'm a guitarist and multi-instrumentalist performing solo with guitar, clawhammer banjo, octave mandolin, and vocals — at coffee shops, farmers markets, and private events.</p>
     <p>My repertoire features classic acoustic rock and folk from the 70s—Cat Stevens, Jethro Tull, Nic Jones—alongside modern artists like Tallest Man on Earth and Mumford &amp; Sons.</p>
     <p>Browse my <a href="{{ '/pages/setlists.html' | relative_url }}">setlist recordings</a> to hear performances. Happy to tailor a setlist to your venue or event.</p>
