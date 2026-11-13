@@ -1,0 +1,70 @@
+<h1 class="page-title">Songs by Artist</h1>
+
+<div class="content">
+  <p class="page-links"><a routerLink="/setlists">Sample Setlists</a></p>
+
+  <div class="songs-toolbar">
+    <label class="songs-filter" for="songs-filter-input">
+      <span class="songs-filter__label">Filter</span>
+      <input
+        id="songs-filter-input"
+        type="search"
+        placeholder="Song or artist…"
+        autocomplete="off"
+        spellcheck="false"
+        [value]="filter()"
+        (input)="onFilter($any($event.target).value)"
+      />
+    </label>
+    <p class="songs-filter__status" id="songs-filter-status" aria-live="polite">
+      {{ filterStatus() }}
+    </p>
+  </div>
+
+  <nav class="jump-nav" aria-label="Artists" id="songs-jump-nav">
+    @for (group of groups(); track group.id) {
+      <a [href]="'#' + group.id" [attr.data-artist]="group.artist">{{ group.artist }}</a>
+    }
+  </nav>
+
+  <div id="songs-by-artist">
+    @for (group of groups(); track group.id) {
+      <section
+        class="group artist-group"
+        [id]="group.id"
+        [attr.data-artist]="group.artist"
+        [attr.aria-labelledby]="group.id + '-heading'"
+      >
+        <h2 [id]="group.id + '-heading'" class="group-heading">{{ group.artist }}</h2>
+        @if (group.artist === 'Unknown') {
+          <p class="item-meta">
+            Artist not listed in the source audit — left as Unknown rather than guessed.
+          </p>
+        }
+        <ul class="song-list">
+          @for (song of group.songs; track song.title + (song.artist || '')) {
+            <li
+              class="song-item"
+              [attr.data-title]="song.title"
+              [attr.data-artist]="song.artist || 'Unknown'"
+            >
+              <span class="song-item__main">
+                @if (href(song); as link) {
+                  <a [href]="link" target="_blank" rel="noopener noreferrer">{{ song.title }}</a>
+                } @else {
+                  {{ song.title }}
+                }
+                @if (setup(song); as bits) {
+                  <span class="song-setup">{{ bits }}</span>
+                }
+              </span>
+              <a class="lyrics-quick" routerLink="/lyrics" [fragment]="'song=' + lyricsSlug(song)"
+                >Lyrics</a
+              >
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<h1 class="page-title">Past Performances</h1>
+
+<div class="content event-list">
+  @for (group of groups; track group.year) {
+    <section class="group" [attr.aria-labelledby]="'year-' + group.year">
+      <h2 [id]="'year-' + group.year" class="group-heading">{{ group.year }}</h2>
+      <ul class="plain-list">
+        @for (item of group.items; track item.event.event_name + item.event.date) {
+          <li>
+            <span class="item-title">{{ item.event.event_name }}</span>
+            <span class="item-meta">
+              @if (item.event.location) {
+                {{ item.event.location }} ·
+              }
+              {{ item.dateLabel }}
+            </span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</div>

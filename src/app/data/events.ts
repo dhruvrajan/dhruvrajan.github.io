@@ -1,0 +1,116 @@
+/** Site data converted from Jekyll _data/events */
+export const EVENTS = [
+  {
+    "event_name": "Kings Mountain Winery",
+    "date": "October 25th, 2026",
+    "location": "Woodside"
+  },
+  {
+    "event_name": "Deer Hollow Farm Volunteer Potluck",
+    "date": "May 22nd, 2026"
+  },
+  {
+    "event_name": "Deer Hollow Farm Volunteer Potluck",
+    "date": "April 8th, 2026"
+  },
+  {
+    "event_name": "Evergreen Farmers Market",
+    "date": "March 29th, 2026",
+    "location": "Evergreen, San Jose"
+  },
+  {
+    "event_name": "Los Altos Holiday Stroll",
+    "date": "November 14th, 2025",
+    "location": "Los Altos"
+  },
+  {
+    "event_name": "Los Altos Farmers' Market",
+    "date": "August 28th, 2025",
+    "location": "Los Altos Downtown"
+  },
+  {
+    "event_name": "Los Altos Farmers' Market",
+    "date": "August 7th, 2025",
+    "location": "Los Altos Downtown"
+  },
+  {
+    "event_name": "St. Patty's Beer Stroll",
+    "date": "March 14th, 2025",
+    "location": "State Street Market, Los Altos"
+  },
+  {
+    "event_name": "Deer Hollow Volunteer Potluck",
+    "date": "November 14th, 2024",
+    "location": "Mountain View Center for Performing Arts"
+  },
+  {
+    "event_name": "Kings Mountain Winery Annual Member Event",
+    "date": "November 10th, 2024",
+    "location": "Kings Mountain Winery, Woodside"
+  },
+  {
+    "event_name": "Holiday Stroll",
+    "date": "November 8th, 2024",
+    "location": "State Street Market, Los Altos"
+  },
+  {
+    "event_name": "Los Altos Wine Stroll",
+    "date": "September 20th, 2024",
+    "location": "State Street Market, Los Altos"
+  },
+  {
+    "event_name": "Los Altos Farmers' Market",
+    "date": "June 27th, 2024",
+    "location": "Los Altos Downtown"
+  },
+  {
+    "event_name": "Stanford SIEPR EOY Sendoff",
+    "date": "June 5th, 2024",
+    "location": "Stanford SIEPR"
+  },
+  {
+    "event_name": "Spring Volunteer Potluck",
+    "date": "May 17th, 2024",
+    "location": "Deer Hollow Farm"
+  },
+  {
+    "event_name": "Los Altos Farmers' Market",
+    "date": "May 16th, 2024",
+    "location": "Los Altos"
+  },
+  {
+    "event_name": "Los Altos Farmers' Market",
+    "date": "May 9th, 2024",
+    "location": "Los Altos Downtown"
+  },
+  {
+    "event_name": "Wine Down Wednesday",
+    "date": "March 27th, 2024",
+    "location": "State Street Market, Los Altos"
+  },
+  {
+    "event_name": "St Paddy's Beer Stroll",
+    "date": "March 15th, 2024",
+    "location": "State Street Market, Los Altos"
+  },
+  {
+    "event_name": "Los Altos First Friday",
+    "date": "December 1st, 2024",
+    "location": "Rustic Oyster House, Los Altos"
+  },
+  {
+    "event_name": "Kings Mountain Winery Annual Member Event",
+    "date": "October 22, 2023",
+    "location": "Kings Mountain Winery, Woodside"
+  },
+  {
+    "event_name": "Kings Mountain Winery Annual Member Event",
+    "date": "November 21, 2022",
+    "location": "Kings Mountain Winery, Woodside"
+  },
+  {
+    "event_name": "Spring Volunteer Potluck",
+    "date": "June 1st, 2022",
+    "location": "Deer Hollow Farm"
+  }
+];

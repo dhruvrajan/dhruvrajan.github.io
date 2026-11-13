@@ -1,0 +1,28 @@
+<h1 class="page-title">Setlists &amp; Recordings</h1>
+
+<div class="content">
+  <p class="page-links"><a routerLink="/songs">Songs by Artist</a></p>
+
+  @for (setlist of resolved; track setlist.name; let i = $index) {
+    <section class="group" [attr.aria-labelledby]="'setlist-' + (i + 1)">
+      <h2 [id]="'setlist-' + (i + 1)" class="group-heading">{{ setlist.name }}</h2>
+      @if (setlist.instruments?.length) {
+        <p class="item-meta">{{ setlist.instruments!.join(', ') }}</p>
+      }
+      <ol class="song-list">
+        @for (entry of setlist.songs; track entry.title) {
+          <li>
+            @if (entry.href) {
+              <a [href]="entry.href" target="_blank" rel="noopener noreferrer">{{ entry.title }}</a>
+            } @else {
+              {{ entry.title }}
+            }
+            @if (entry.song?.artist) {
+              <span class="item-meta">{{ entry.song!.artist }}</span>
+            }
+          </li>
+        }
+      </ol>
+    </section>
+  }
+</div>

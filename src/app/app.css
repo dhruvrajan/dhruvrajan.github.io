@@ -1,0 +1,4 @@
+.site-nav a.is-active,
+.site-nav a.router-link-active {
+  color: var(--ink);
+}

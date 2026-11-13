@@ -1,0 +1,41 @@
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-logo" routerLink="/">Dhruv Rajan</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a
+        routerLink="/"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+        >Home</a
+      >
+      <a routerLink="/events" routerLinkActive="is-active" ariaCurrentWhenActive="page"
+        >Past Performances</a
+      >
+      <a routerLink="/setlists" routerLinkActive="is-active" ariaCurrentWhenActive="page"
+        >Setlists</a
+      >
+      <a routerLink="/songs" routerLinkActive="is-active" ariaCurrentWhenActive="page"
+        >Songs by Artist</a
+      >
+      <a routerLink="/lyrics" routerLinkActive="is-active" ariaCurrentWhenActive="page">Lyrics</a>
+    </nav>
+  </div>
+</header>
+
+<main class="site-main" [class.page-narrow]="narrow()" id="main">
+  <router-outlet />
+</main>
+
+<footer class="site-footer">
+  <p>
+    <a href="mailto:dhruv@krishnaprem.com">dhruv@krishnaprem.com</a>
+    ·
+    <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" rel="noopener noreferrer"
+      >YouTube</a
+    >
+    ·
+    <a href="https://soundcloud.com/dhruv-rajan" rel="noopener noreferrer">SoundCloud</a>
+  </p>
+  <p>&copy; {{ year }} Dhruv Rajan</p>
+</footer>
