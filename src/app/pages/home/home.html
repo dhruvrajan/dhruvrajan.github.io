@@ -34,48 +34,52 @@
 <section aria-labelledby="performances-heading">
   <h2 id="performances-heading" class="section-heading">Selected Performances</h2>
 
-  @if (featured && featuredEmbed) {
-    <div class="video-featured">
-      <div class="video">
-        <iframe
-          [src]="featuredEmbed"
-          title="Selected performance video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          loading="lazy"
-        ></iframe>
+  @if (featured(); as video) {
+    @if (featuredEmbed(); as embed) {
+      <div class="video-featured">
+        <div class="video">
+          <iframe
+            [src]="embed"
+            title="Selected performance video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
       </div>
-    </div>
+    }
   }
 
-  @if (moreVideos.length > 0) {
-    <h3 class="subheading">More recordings</h3>
-    <ul class="thumb-grid">
-      @for (video of moreVideos; track video.id) {
-        <li>
-          <a
-            class="thumb"
-            [href]="'https://www.youtube.com/watch?v=' + video.id"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              [src]="'https://img.youtube.com/vi/' + video.id + '/hqdefault.jpg'"
-              alt="Watch performance on YouTube"
-              width="480"
-              height="360"
-              loading="lazy"
-            />
-            <span class="thumb-label">Watch on YouTube</span>
-          </a>
-        </li>
-      }
-    </ul>
-    <p class="section-more">
-      <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" rel="noopener noreferrer"
-        >Full channel on YouTube →</a
-      >
-    </p>
+  @if (moreVideos(); as videos) {
+    @if (videos.length > 0) {
+      <h3 class="subheading">More recordings</h3>
+      <ul class="thumb-grid">
+        @for (video of videos; track video.id) {
+          <li>
+            <a
+              class="thumb"
+              [href]="'https://www.youtube.com/watch?v=' + video.id"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                [src]="'https://img.youtube.com/vi/' + video.id + '/hqdefault.jpg'"
+                alt="Watch performance on YouTube"
+                width="480"
+                height="360"
+                loading="lazy"
+              />
+              <span class="thumb-label">Watch on YouTube</span>
+            </a>
+          </li>
+        }
+      </ul>
+      <p class="section-more">
+        <a href="https://www.youtube.com/channel/UCa_LjjQKzbIQUqj-WOH1m7Q" rel="noopener noreferrer"
+          >Full channel on YouTube →</a
+        >
+      </p>
+    }
   }
 </section>

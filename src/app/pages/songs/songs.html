@@ -24,6 +24,8 @@
   <nav class="jump-nav" aria-label="Artists" id="songs-jump-nav">
     @for (group of groups(); track group.id) {
       <a [href]="'#' + group.id" [attr.data-artist]="group.artist">{{ group.artist }}</a>
+    } @empty {
+      <span class="item-meta">No artists to show.</span>
     }
   </nav>
 
@@ -65,6 +67,8 @@
           }
         </ul>
       </section>
+    } @empty {
+      <p class="item-meta">No matching songs.</p>
     }
   </div>
 </div>

@@ -1,0 +1,13 @@
+/* Design tokens — acoustic/folk palette & type */
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #5c5c5c;
+  --line: #e6e6e6;
+  --paper: #fafafa;
+  --accent: #2f4a3c;
+  --max: 720px;
+  --wide: 960px;
+  --font-display: "Libre Baskerville", Georgia, serif;
+  --font-body: "Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

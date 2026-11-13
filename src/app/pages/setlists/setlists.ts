@@ -1,31 +1,15 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { findSongByTitle, setlists } from '../../data';
-import { Song } from '../../models/site';
-import { songLink } from '../../utils/song-setup';
-
-interface ResolvedSetlist {
-  name: string;
-  instruments?: string[];
-  songs: { title: string; song?: Song; href: string | null }[];
-}
+import { RepertoireService } from '../../core/services/repertoire.service';
 
 @Component({
   selector: 'app-setlists',
   imports: [RouterLink],
   templateUrl: './setlists.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SetlistsPage {
-  readonly resolved: ResolvedSetlist[] = setlists.map((sl) => ({
-    name: sl.setlist_name,
-    instruments: sl.instruments,
-    songs: sl.songs.map((entry) => {
-      const song = findSongByTitle(entry.title);
-      return {
-        title: entry.title,
-        song,
-        href: songLink(song),
-      };
-    }),
-  }));
+  private readonly repertoire = inject(RepertoireService);
+
+  readonly resolved = this.repertoire.resolveSetlists();
 }

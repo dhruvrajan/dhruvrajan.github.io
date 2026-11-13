@@ -1,0 +1,14 @@
+/* 404 page */
+
+.not-found {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.not-found h1 {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 400;
+  margin: 0 0 0.5rem;
+}
+

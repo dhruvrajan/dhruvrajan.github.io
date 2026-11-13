@@ -1,4 +1,4 @@
-/** Site data converted from Jekyll _data/events */
+/** Static events catalog for the site. */
 export const EVENTS = [
   {
     "event_name": "Kings Mountain Winery",

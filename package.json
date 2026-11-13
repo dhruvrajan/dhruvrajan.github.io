@@ -29,5 +29,5 @@
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"
   },
-  "description": "Static Angular music site for dhruvrajan.com (not for merging into gh-pages Jekyll)"
+  "description": "Static Angular music site for dhruvrajan.com (Cloudflare Pages; do not merge into gh-pages)"
 }

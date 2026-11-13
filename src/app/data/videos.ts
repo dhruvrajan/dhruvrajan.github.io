@@ -1,4 +1,4 @@
-/** Site data converted from Jekyll _data/videos */
+/** Static videos catalog for the site. */
 export const VIDEOS = [
   {
     "id": "3JAcX3mY5e4"

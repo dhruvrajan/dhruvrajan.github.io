@@ -1,40 +1,13 @@
-import { Component } from '@angular/core';
-import { events } from '../../data';
-import { EventItem } from '../../models/site';
-
-interface YearGroup {
-  year: string;
-  items: { event: EventItem; dateLabel: string }[];
-}
-
-function eventYear(date: string): string {
-  const parts = date.split(',');
-  return (parts[parts.length - 1] || '').trim();
-}
-
-function dateWithoutYear(date: string, year: string): string {
-  return date.replace(year, '').replace(/,/g, '').trim();
-}
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RepertoireService } from '../../core/services/repertoire.service';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventsPage {
-  readonly groups: YearGroup[] = (() => {
-    const years: string[] = [];
-    for (const event of events) {
-      const y = eventYear(event.date);
-      if (y && !years.includes(y)) years.push(y);
-    }
-    return years.map((year) => ({
-      year,
-      items: events
-        .filter((e) => eventYear(e.date) === year)
-        .map((event) => ({
-          event,
-          dateLabel: dateWithoutYear(event.date, year),
-        })),
-    }));
-  })();
+  private readonly repertoire = inject(RepertoireService);
+
+  readonly groups = this.repertoire.groupEventsByYear();
 }
