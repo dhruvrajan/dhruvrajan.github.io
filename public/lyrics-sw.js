@@ -1,10 +1,11 @@
 /* Minimal offline shell for the Lyrics page.
- * Caches SPA chrome + lyrics scripts + encrypted lyrics blobs only — never plaintext lyrics. */
+ * Caches SPA chrome + lyrics scripts + encrypted lyrics blobs only — never plaintext lyrics.
+ * Navigations/HTML and Angular build assets are network-first (cache only when offline). */
 /* eslint-disable no-restricted-globals */
 (function () {
   "use strict";
 
-  var CACHE = "lyrics-shell-v2";
+  var CACHE = "lyrics-shell-v3";
   var SHELL = [
     "/",
     "/lyrics",
@@ -52,6 +53,52 @@
     }
   }
 
+  function isNetworkFirst(req, pathname) {
+    if (req.mode === "navigate") return true;
+    if (pathname === "/" || pathname === "/index.html") return true;
+    var accept = req.headers.get("accept") || "";
+    if (accept.indexOf("text/html") !== -1) return true;
+    if (isAngularBuildAsset(pathname)) return true;
+    return false;
+  }
+
+  function networkFirst(req, cache) {
+    return fetch(req)
+      .then(function (res) {
+        if (res && res.ok) {
+          cache.put(req, res.clone());
+        }
+        return res;
+      })
+      .catch(function () {
+        return cache.match(req).then(function (cached) {
+          if (cached) return cached;
+          if (req.mode === "navigate") {
+            return cache.match("/").then(function (fallback) {
+              return fallback || Response.error();
+            });
+          }
+          return Response.error();
+        });
+      });
+  }
+
+  function cacheFirst(req, cache) {
+    return cache.match(req).then(function (cached) {
+      var network = fetch(req)
+        .then(function (res) {
+          if (res && res.ok) {
+            cache.put(req, res.clone());
+          }
+          return res;
+        })
+        .catch(function () {
+          return cached || Response.error();
+        });
+      return cached || network;
+    });
+  }
+
   self.addEventListener("install", function (event) {
     event.waitUntil(
       caches
@@ -93,21 +140,19 @@
     var url = req.url;
     if (!isShellAsset(url) && !isEncSong(url)) return;
 
+    var pathname;
+    try {
+      pathname = new URL(url, self.location.origin).pathname;
+    } catch (e) {
+      return;
+    }
+
     event.respondWith(
       caches.open(CACHE).then(function (cache) {
-        return cache.match(req).then(function (cached) {
-          var network = fetch(req)
-            .then(function (res) {
-              if (res && res.ok) {
-                cache.put(req, res.clone());
-              }
-              return res;
-            })
-            .catch(function () {
-              return cached || Response.error();
-            });
-          return cached || network;
-        });
+        if (isNetworkFirst(req, pathname)) {
+          return networkFirst(req, cache);
+        }
+        return cacheFirst(req, cache);
       })
     );
   });

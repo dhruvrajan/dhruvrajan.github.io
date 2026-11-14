@@ -2,8 +2,9 @@
 
 .home-intro {
   display: grid;
-  gap: 2rem;
+  gap: 1.75rem;
   margin-bottom: 3.5rem;
+  justify-items: start;
 }
 
 @media (min-width: 720px) {
@@ -16,16 +17,18 @@
 
 .home-intro__text h1 {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-size: clamp(2.125rem, 4.5vw, 2.85rem);
   font-weight: 400;
-  line-height: 1.2;
-  margin: 0 0 0.75rem;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.5rem;
 }
 
 .home-intro__text .tagline {
   color: var(--muted);
-  margin: 0 0 1.5rem;
-  font-size: 1.05rem;
+  margin: 0 0 1.35rem;
+  font-size: 1.0625rem;
+  line-height: 1.45;
 }
 
 .home-intro__text p {
@@ -38,13 +41,15 @@
 }
 
 .portrait {
-  width: 160px;
+  width: min(200px, 55vw);
+  max-width: 100%;
   border-radius: 2px;
+  justify-self: start;
 }
 
 @media (min-width: 720px) {
   .portrait {
-    width: 200px;
+    width: 210px;
   }
 }
 
@@ -57,7 +62,11 @@
 }
 
 .contact-block p {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.5rem;
+}
+
+.contact-block p:last-child {
+  margin-bottom: 0;
 }
 
 .contact-block strong {
@@ -67,6 +76,14 @@
 
 .contact-block a {
   color: var(--accent);
+  display: inline-block;
+  padding: 0.35rem 0.1rem;
+  margin: -0.15rem 0;
+}
+
+.contact-block a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /* Performance videos */
@@ -76,6 +93,7 @@
   font-size: 1.5rem;
   font-weight: 400;
   margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
 }
 
 .subheading {
@@ -135,6 +153,12 @@
   text-decoration: none;
   color: var(--muted);
   font-size: 0.8rem;
+  border-radius: 2px;
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .thumb img {
@@ -148,6 +172,7 @@
 .thumb-label {
   display: block;
   margin-top: 0.35rem;
+  padding: 0.15rem 0;
 }
 
 .thumb:hover .thumb-label {
@@ -159,3 +184,9 @@
   font-size: 0.975rem;
 }
 
+.section-more a {
+  display: inline-block;
+  padding: 0.35rem 0;
+  min-height: 2.5rem;
+  line-height: 1.8;
+}
