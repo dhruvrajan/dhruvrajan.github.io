@@ -1,7 +1,44 @@
 <section class="home-intro">
-  <div class="home-intro__text">
+  <div class="home-intro__identity">
+    <p class="kicker">Palo Alto, CA · Live Music</p>
     <h1>Dhruv Rajan</h1>
-    <p class="tagline">Solo acoustic &amp; folk · Palo Alto, CA</p>
+    <hr class="rule" aria-hidden="true" />
+    <p class="tagline">Solo Acoustic &amp; Folk</p>
+    <p class="instruments">Guitar · Harmonica · Vocals</p>
+  </div>
+
+  <figure class="home-hero">
+    <div class="home-hero__frame">
+      <picture>
+        <source
+          type="image/webp"
+          srcset="
+            /images/woodcut-portrait-640.webp   640w,
+            /images/woodcut-portrait-960.webp   960w,
+            /images/woodcut-portrait-1050.webp 1050w
+          "
+          sizes="(min-width: 860px) 44vw, 92vw"
+        />
+        <img
+          class="portrait"
+          src="/images/woodcut-portrait.jpg"
+          srcset="
+            /images/woodcut-portrait-640.jpg  640w,
+            /images/woodcut-portrait-960.jpg  960w,
+            /images/woodcut-portrait.jpg     1050w
+          "
+          sizes="(min-width: 860px) 44vw, 92vw"
+          width="1050"
+          height="600"
+          alt="Woodcut-style illustration of Dhruv Rajan playing acoustic guitar"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
+    </div>
+  </figure>
+
+  <div class="home-intro__text">
     <p>
       I'm a guitarist and multi-instrumentalist performing solo with guitar, clawhammer banjo,
       octave mandolin, and vocals — at coffee shops, farmers markets, and private events.
@@ -28,7 +65,6 @@
       </p>
     </div>
   </div>
-  <img class="portrait" src="/images/portrait.jpg" alt="Dhruv Rajan performing with guitar" />
 </section>
 
 <section aria-labelledby="performances-heading">

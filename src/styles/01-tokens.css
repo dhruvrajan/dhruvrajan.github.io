@@ -1,13 +1,30 @@
-/* Design tokens — acoustic/folk palette & type */
+/* Design tokens — business-card / woodcut identity */
 
 :root {
-  --ink: #1a1a1a;
-  --muted: #5c5c5c;
-  --line: #e6e6e6;
-  --paper: #fafafa;
-  --accent: #2f4a3c;
+  /* Distressed cream paper & ink */
+  --paper: #f3eee4;
+  --paper-deep: #ebe3d4;
+  --ink: #1a1614;
+  --muted: #5c5248;
+  --line: #d6cbb8;
+  --line-strong: #1a1614;
+
+  /* Accents from the woodcut / card */
+  --accent: #9e3228;
+  --accent-warm: #a84a16;
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper));
+
   --max: 720px;
   --wide: 960px;
-  --font-display: "Libre Baskerville", Georgia, serif;
+
+  /* Type: slab display, clean body, letterspaced kicker */
+  --font-display: "Zilla Slab", "Roboto Slab", Georgia, "Times New Roman", serif;
   --font-body: "Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-kicker: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-italic: "Libre Baskerville", Georgia, serif;
+
+  --rule: 1px solid var(--accent);
+  --frame-outer: 1px solid var(--ink);
+  --frame-inner: 1px solid var(--accent);
+  --radius: 0;
 }

@@ -57,22 +57,22 @@
   min-width: 0;
   padding: 0.55rem 0.7rem;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--radius);
   font: inherit;
   color: var(--ink);
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
 }
 
 .btn {
   appearance: none;
   border: 1px solid var(--ink);
   background: var(--ink);
-  color: #fff;
+  color: var(--paper);
   font: inherit;
   font-size: 1rem;
   min-height: 2.75rem;
   padding: 0.65rem 1rem;
-  border-radius: 2px;
+  border-radius: var(--radius);
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -81,6 +81,7 @@
 .btn:active {
   background: var(--accent);
   border-color: var(--accent);
+  color: var(--paper);
 }
 
 .btn:disabled {
@@ -89,13 +90,13 @@
 }
 
 .btn--secondary {
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
   color: var(--ink);
 }
 
 .btn--secondary:hover,
 .btn--secondary:active {
-  background: var(--paper);
+  background: var(--accent-soft);
   color: var(--ink);
   border-color: var(--accent);
 }
@@ -173,12 +174,12 @@
 .toolbar-btn {
   appearance: none;
   border: 1px solid var(--line);
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
   color: var(--ink);
   min-width: 2.75rem;
   min-height: 2.75rem;
   padding: 0.35rem 0.55rem;
-  border-radius: 2px;
+  border-radius: var(--radius);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -196,7 +197,7 @@
 .toolbar-btn[aria-pressed="true"] {
   border-color: var(--ink);
   background: var(--ink);
-  color: #fff;
+  color: var(--paper);
 }
 
 .toolbar-btn:hover,

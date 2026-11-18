@@ -27,11 +27,11 @@
   min-width: 0;
   padding: 0.45rem 0.65rem;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--radius);
   font: inherit;
   font-size: 0.95rem;
   color: var(--ink);
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
 }
 
 .songs-filter input:focus {

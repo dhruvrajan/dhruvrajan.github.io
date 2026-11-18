@@ -1,22 +1,39 @@
 /* Generated mirror of src/styles/* (except lyrics-browse) for lyrics service worker shell */
 
 /* --- 01-tokens.css --- */
-/* Design tokens — acoustic/folk palette & type */
+/* Design tokens — business-card / woodcut identity */
 
 :root {
-  --ink: #1a1a1a;
-  --muted: #5c5c5c;
-  --line: #e6e6e6;
-  --paper: #fafafa;
-  --accent: #2f4a3c;
+  /* Distressed cream paper & ink */
+  --paper: #f3eee4;
+  --paper-deep: #ebe3d4;
+  --ink: #1a1614;
+  --muted: #5c5248;
+  --line: #d6cbb8;
+  --line-strong: #1a1614;
+
+  /* Accents from the woodcut / card */
+  --accent: #9e3228;
+  --accent-warm: #a84a16;
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper));
+
   --max: 720px;
   --wide: 960px;
-  --font-display: "Libre Baskerville", Georgia, serif;
+
+  /* Type: slab display, clean body, letterspaced kicker */
+  --font-display: "Zilla Slab", "Roboto Slab", Georgia, "Times New Roman", serif;
   --font-body: "Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-kicker: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-italic: "Libre Baskerville", Georgia, serif;
+
+  --rule: 1px solid var(--accent);
+  --frame-outer: 1px solid var(--ink);
+  --frame-inner: 1px solid var(--accent);
+  --radius: 0;
 }
 
 /* --- 02-base.css --- */
-/* Base reset, typography, and link defaults */
+/* Base reset, typography, paper texture, and link defaults */
 
 *,
 *::before,
@@ -34,7 +51,18 @@ body {
   font-size: 1.0625rem;
   line-height: 1.65;
   color: var(--ink);
-  background: #fff;
+  background-color: var(--paper);
+  /* Lightweight paper grain — CSS only, no image request */
+  background-image:
+    radial-gradient(ellipse at 12% 18%, rgb(26 22 20 / 0.028) 0 0.6px, transparent 1.2px),
+    radial-gradient(ellipse at 78% 42%, rgb(158 50 40 / 0.02) 0 0.7px, transparent 1.4px),
+    radial-gradient(ellipse at 36% 86%, rgb(26 22 20 / 0.022) 0 0.55px, transparent 1.1px),
+    linear-gradient(165deg, var(--paper) 0%, color-mix(in srgb, var(--paper-deep) 55%, var(--paper)) 100%);
+  background-size:
+    7px 9px,
+    9px 7px,
+    11px 10px,
+    100% 100%;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -69,33 +97,60 @@ a:focus:not(:focus-visible) {
   outline: none;
 }
 
+.kicker {
+  font-family: var(--font-kicker);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+  margin: 0 0 0.85rem;
+}
+
+.rule {
+  display: block;
+  width: 100%;
+  max-width: 12rem;
+  height: 0;
+  border: 0;
+  border-top: var(--rule);
+  margin: 0.85rem 0 1rem;
+}
+
+.frame {
+  border: var(--frame-outer);
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--accent);
+  background: color-mix(in srgb, var(--paper) 92%, white);
+}
 
 /* --- 03-layout-header.css --- */
 /* Site header & primary navigation */
 
 .site-header {
-  border-bottom: 1px solid var(--line);
-  background: #fff;
+  border-bottom: var(--frame-outer);
+  box-shadow: 0 1px 0 var(--accent);
+  background: color-mix(in srgb, var(--paper) 88%, white);
 }
 
 .site-header__inner {
   max-width: var(--wide);
   margin: 0 auto;
-  padding: 1.25rem 1.5rem;
+  padding: 1.15rem 1.5rem 1.05rem;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem 2rem;
+  gap: 0.85rem 2rem;
 }
 
 .site-logo {
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 400;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--ink);
   text-decoration: none;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .site-logo:hover {
@@ -106,25 +161,27 @@ a:focus:not(:focus-visible) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem 0.35rem;
+  gap: 0.2rem 0.15rem;
 }
 
 .site-nav a {
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--muted);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   min-height: 2.5rem;
   padding: 0.35rem 0.55rem;
-  margin: 0 -0.15rem;
-  border-radius: 2px;
+  margin: 0 -0.1rem;
+  border-bottom: 2px solid transparent;
 }
 
 .site-nav a:hover,
 .site-nav a[aria-current="page"],
 .site-nav a.is-active {
   color: var(--ink);
+  border-bottom-color: var(--accent);
 }
 
 .site-nav a:focus-visible {
@@ -137,7 +194,6 @@ a:focus:not(:focus-visible) {
   pointer-events: none;
   cursor: default;
 }
-
 
 /* --- 04-layout-main.css --- */
 /* Main content width & page chrome */
@@ -160,52 +216,66 @@ a:focus:not(:focus-visible) {
 
 .page-title {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  font-weight: 400;
-  line-height: 1.25;
-  margin: 0 0 1.5rem;
-  letter-spacing: -0.01em;
+  font-size: clamp(1.85rem, 3.2vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.35rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.page-title::after {
+  content: "";
+  display: block;
+  width: min(8rem, 40%);
+  border-top: var(--rule);
+  margin-top: 0.75rem;
 }
 
 .page-lead {
   color: var(--muted);
-  margin: -0.75rem 0 2rem;
+  margin: 0 0 2rem;
   font-size: 1.05rem;
+  font-family: var(--font-italic);
+  font-style: italic;
 }
 
-
 /* --- 05-page-home.css --- */
-/* Home intro, contact, and performance videos */
+/* Home intro, hero woodcut, contact, and performance videos */
 
 .home-intro {
   display: grid;
-  gap: 1.75rem;
+  gap: 1.5rem;
   margin-bottom: 3.5rem;
-  justify-items: start;
+  justify-items: stretch;
 }
 
-@media (min-width: 720px) {
-  .home-intro {
-    grid-template-columns: 1fr auto;
-    align-items: start;
-    gap: 3rem;
-  }
-}
-
-.home-intro__text h1 {
+.home-intro__identity h1 {
   font-family: var(--font-display);
-  font-size: clamp(2.125rem, 4.5vw, 2.85rem);
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  margin: 0 0 0.5rem;
+  font-size: clamp(2.35rem, 5.5vw, 3.35rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
-.home-intro__text .tagline {
-  color: var(--muted);
-  margin: 0 0 1.35rem;
-  font-size: 1.0625rem;
-  line-height: 1.45;
+.home-intro__identity .tagline {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.15rem;
+}
+
+.home-intro__identity .instruments {
+  font-family: var(--font-italic);
+  font-style: italic;
+  color: var(--ink);
+  margin: 0;
+  font-size: 1.02rem;
 }
 
 .home-intro__text p {
@@ -217,23 +287,81 @@ a:focus:not(:focus-visible) {
   margin-bottom: 0;
 }
 
-.portrait {
-  width: min(200px, 55vw);
-  max-width: 100%;
-  border-radius: 2px;
-  justify-self: start;
+.home-hero {
+  margin: 0;
+  width: 100%;
 }
 
-@media (min-width: 720px) {
-  .portrait {
-    width: 210px;
+.home-hero__frame {
+  border: var(--frame-outer);
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--accent);
+  background: var(--paper-deep);
+  padding: 0.45rem;
+  position: relative;
+}
+
+.home-hero__frame::before,
+.home-hero__frame::after {
+  content: "";
+  position: absolute;
+  top: 0.7rem;
+  bottom: 0.7rem;
+  width: 3px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+.home-hero__frame::before {
+  left: 0.7rem;
+  box-shadow: 4px 0 0 var(--accent-warm);
+}
+
+.home-hero__frame::after {
+  right: 0.7rem;
+  box-shadow: -4px 0 0 var(--accent-warm);
+}
+
+.home-hero picture,
+.home-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.home-hero img {
+  aspect-ratio: 1050 / 600;
+  object-fit: cover;
+  background: var(--paper-deep);
+}
+
+@media (min-width: 860px) {
+  .home-intro {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: start;
+    gap: 1.5rem 2.5rem;
+  }
+
+  .home-intro__identity {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .home-intro__text {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .home-hero {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 }
 
 .contact-block {
   margin-top: 1.75rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line);
+  padding-top: 1.35rem;
+  border-top: var(--rule);
   font-size: 0.975rem;
   color: var(--muted);
 }
@@ -248,7 +376,11 @@ a:focus:not(:focus-visible) {
 
 .contact-block strong {
   color: var(--ink);
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 .contact-block a {
@@ -267,19 +399,28 @@ a:focus:not(:focus-visible) {
 
 .section-heading {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin: 0 0 1.25rem;
-  letter-spacing: -0.01em;
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.section-heading::after {
+  content: "";
+  display: block;
+  width: min(7rem, 35%);
+  border-top: var(--rule);
+  margin: 0.65rem 0 1.15rem;
 }
 
 .subheading {
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-family: var(--font-kicker);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--accent-warm);
   margin: 0 0 1rem;
 }
 
@@ -293,14 +434,16 @@ a:focus:not(:focus-visible) {
   width: 100%;
   padding-bottom: 56.25%;
   height: 0;
-  background: var(--paper);
+  background: var(--paper-deep);
+  border: var(--frame-outer);
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--accent);
 }
 
 .video iframe {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 4px;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
   border: 0;
 }
 
@@ -330,7 +473,6 @@ a:focus:not(:focus-visible) {
   text-decoration: none;
   color: var(--muted);
   font-size: 0.8rem;
-  border-radius: 2px;
 }
 
 .thumb:focus-visible {
@@ -342,7 +484,7 @@ a:focus:not(:focus-visible) {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: var(--paper);
+  background: var(--paper-deep);
   border: 1px solid var(--line);
 }
 
@@ -375,6 +517,7 @@ a:focus:not(:focus-visible) {
   margin-bottom: 2.25rem;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--line);
+  border-bottom-color: color-mix(in srgb, var(--accent) 35%, var(--line));
 }
 
 .group:last-child {
@@ -383,9 +526,10 @@ a:focus:not(:focus-visible) {
 
 .group-heading {
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 400;
+  font-size: 1.3rem;
+  font-weight: 700;
   margin: 0 0 0.75rem;
+  letter-spacing: 0.01em;
 }
 
 .plain-list,
@@ -449,7 +593,7 @@ ol.song-list li::marker {
   gap: 0.35rem 0.85rem;
   margin: 0 0 2rem;
   padding: 1rem 0;
-  border-top: 1px solid var(--line);
+  border-top: var(--rule);
   border-bottom: 1px solid var(--line);
   font-size: 0.9rem;
 }
@@ -474,11 +618,13 @@ ol.song-list li::marker {
 /* Site footer */
 
 .site-footer {
-  border-top: 1px solid var(--line);
+  border-top: var(--frame-outer);
+  box-shadow: 0 -1px 0 var(--accent);
   padding: 1.75rem 1.5rem;
   text-align: center;
   color: var(--muted);
   font-size: 0.875rem;
+  background: color-mix(in srgb, var(--paper) 88%, white);
 }
 
 .site-footer p {
@@ -500,14 +646,13 @@ ol.song-list li::marker {
 }
 
 .site-footer a:hover {
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .site-footer a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-
 
 /* --- 08-page-not-found.css --- */
 /* 404 page */
@@ -520,8 +665,10 @@ ol.song-list li::marker {
 .not-found h1 {
   font-family: var(--font-display);
   font-size: 3rem;
-  font-weight: 400;
+  font-weight: 700;
   margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 
@@ -585,22 +732,22 @@ ol.song-list li::marker {
   min-width: 0;
   padding: 0.55rem 0.7rem;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--radius);
   font: inherit;
   color: var(--ink);
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
 }
 
 .btn {
   appearance: none;
   border: 1px solid var(--ink);
   background: var(--ink);
-  color: #fff;
+  color: var(--paper);
   font: inherit;
   font-size: 1rem;
   min-height: 2.75rem;
   padding: 0.65rem 1rem;
-  border-radius: 2px;
+  border-radius: var(--radius);
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -609,6 +756,7 @@ ol.song-list li::marker {
 .btn:active {
   background: var(--accent);
   border-color: var(--accent);
+  color: var(--paper);
 }
 
 .btn:disabled {
@@ -617,13 +765,13 @@ ol.song-list li::marker {
 }
 
 .btn--secondary {
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
   color: var(--ink);
 }
 
 .btn--secondary:hover,
 .btn--secondary:active {
-  background: var(--paper);
+  background: var(--accent-soft);
   color: var(--ink);
   border-color: var(--accent);
 }
@@ -701,12 +849,12 @@ ol.song-list li::marker {
 .toolbar-btn {
   appearance: none;
   border: 1px solid var(--line);
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
   color: var(--ink);
   min-width: 2.75rem;
   min-height: 2.75rem;
   padding: 0.35rem 0.55rem;
-  border-radius: 2px;
+  border-radius: var(--radius);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -724,7 +872,7 @@ ol.song-list li::marker {
 .toolbar-btn[aria-pressed="true"] {
   border-color: var(--ink);
   background: var(--ink);
-  color: #fff;
+  color: var(--paper);
 }
 
 .toolbar-btn:hover,
@@ -1234,11 +1382,11 @@ ol.song-list li::marker {
   min-width: 0;
   padding: 0.45rem 0.65rem;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--radius);
   font: inherit;
   font-size: 0.95rem;
   color: var(--ink);
-  background: #fff;
+  background: color-mix(in srgb, var(--paper) 70%, white);
 }
 
 .songs-filter input:focus {
