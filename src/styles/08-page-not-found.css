@@ -8,7 +8,9 @@
 .not-found h1 {
   font-family: var(--font-display);
   font-size: 3rem;
-  font-weight: 400;
+  font-weight: 700;
   margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
