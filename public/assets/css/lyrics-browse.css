@@ -8,10 +8,12 @@
   --lb-accent: var(--accent, #9e3228);
   --lb-border: var(--line, #d6cbb8);
   --lb-border-strong: var(--line-strong, #1a1614);
-  --lb-bg: transparent;
-  --lb-row: color-mix(in srgb, var(--paper, #f3eee4) 45%, white);
-  --lb-hover: color-mix(in srgb, var(--accent, #9e3228) 10%, transparent);
-  --lb-selected: color-mix(in srgb, var(--accent, #9e3228) 16%, transparent);
+  /* Solid surfaces — match site header/input cards (no see-through mixes). */
+  --lb-bg: color-mix(in srgb, var(--paper, #f3eee4) 88%, white);
+  --lb-row: color-mix(in srgb, var(--paper, #f3eee4) 70%, white);
+  --lb-panel: color-mix(in srgb, var(--paper, #f3eee4) 92%, white);
+  --lb-hover: color-mix(in srgb, var(--accent, #9e3228) 12%, var(--lb-row));
+  --lb-selected: color-mix(in srgb, var(--accent, #9e3228) 18%, var(--lb-row));
   --lb-space: 8px;
   --lb-touch: 44px;
   --lb-trans: 140ms ease;
@@ -32,8 +34,10 @@ body.lb-stage {
   --lb-accent: #9ec5ad;
   --lb-border: #333;
   --lb-bg: #0d0d0d;
-  --lb-hover: rgba(158, 197, 173, 0.1);
-  --lb-selected: rgba(158, 197, 173, 0.18);
+  --lb-row: #161616;
+  --lb-panel: #121212;
+  --lb-hover: color-mix(in srgb, var(--lb-accent) 18%, var(--lb-row));
+  --lb-selected: color-mix(in srgb, var(--lb-accent) 28%, var(--lb-row));
   background: #0d0d0d;
   color: var(--lb-text);
 }
@@ -173,7 +177,7 @@ body.lb-layout-desktop.lb-song-open #lyrics-browse-root.lb-has-song {
 
 .lb-pane-song {
   min-width: 0;
-  background: color-mix(in srgb, var(--paper, #f3eee4) 85%, white);
+  background: var(--lb-panel);
 }
 
 .lb-layout-desktop.lb-has-song .lb-pane-song {
@@ -228,7 +232,7 @@ body.lb-layout-desktop.lb-song-open #lyrics-browse-root.lb-has-song {
   padding: calc(var(--lb-space) * 1.25) calc(var(--lb-space) * 1.5);
   border: 1px solid var(--lb-border);
   border-radius: 2px;
-  background: var(--lb-bg);
+  background: var(--lb-row);
   color: var(--lb-text);
   font: inherit;
   font-size: var(--lb-size);
@@ -298,7 +302,7 @@ body.lb-layout-desktop.lb-song-open #lyrics-browse-root.lb-has-song {
 }
 
 .lb-btn--subtle {
-  background: transparent;
+  background: var(--lb-bg);
   color: var(--lb-text);
   border-color: var(--lb-border);
 }
@@ -315,6 +319,7 @@ body.lb-layout-desktop.lb-song-open #lyrics-browse-root.lb-has-song {
 
 .lb-btn--subtle[aria-pressed="true"],
 .lb-btn--subtle[aria-expanded="true"] {
+  background: var(--lb-selected);
   border-color: var(--lb-accent);
   color: var(--lb-accent);
 }
@@ -326,7 +331,7 @@ body.lb-stage .lb-btn {
 }
 
 body.lb-stage .lb-btn--subtle {
-  background: transparent;
+  background: var(--lb-row);
   border-color: var(--lb-border);
   color: var(--lb-text);
 }
@@ -346,7 +351,7 @@ body.lb-stage .lb-btn--subtle {
   width: min(18rem, calc(100vw - 1.5rem));
   padding: var(--lb-space) 0;
   border: 1px solid var(--lb-border);
-  background: var(--lb-bg);
+  background: var(--lb-panel);
 }
 
 .lb-menu__section {
@@ -457,7 +462,7 @@ body.lb-stage .lb-btn--subtle {
   padding: var(--lb-space) calc(var(--lb-space) * 1.5);
   border: 1px solid var(--lb-border);
   border-radius: 2px;
-  background: transparent;
+  background: var(--lb-bg);
   color: var(--lb-text);
   font: inherit;
   font-size: var(--lb-size-sm);
@@ -477,6 +482,7 @@ body.lb-stage .lb-btn--subtle {
 }
 
 .lb-chip[aria-pressed="true"] {
+  background: var(--lb-selected);
   border-color: var(--lb-accent);
   color: var(--lb-accent);
 }
@@ -847,7 +853,7 @@ body.lb-stage .lb-status--error {
   position: sticky;
   top: 0;
   z-index: 5;
-  background: var(--lb-bg);
+  background: var(--lb-panel);
 }
 
 .lb-song-view__actions {
@@ -1004,7 +1010,7 @@ body.lyrics-text--lg .lb-lyrics {
   font-size: var(--lb-size);
   line-height: 1.5;
   color: var(--lb-text);
-  background: var(--lb-bg);
+  background: var(--lb-row);
   resize: vertical;
 }
 
@@ -1038,7 +1044,7 @@ body.lyrics-text--lg .lb-lyrics {
   margin: 0;
   padding: calc(var(--lb-space) * 1.5) calc(var(--lb-space) * 2)
     calc(var(--lb-space) * 1.5 + env(safe-area-inset-bottom, 0px));
-  background: var(--lb-bg);
+  background: var(--lb-panel);
   border-top: 1px solid var(--lb-border);
 }
 
