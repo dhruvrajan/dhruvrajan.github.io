@@ -3,25 +3,27 @@
 /* Lyrics browse — match site front page: white, thin separators, site fonts */
 
 #lyrics-browse-root {
-  --lb-text: var(--ink, #1a1a1a);
-  --lb-muted: var(--muted, #5c5c5c);
-  --lb-accent: var(--accent, #2f4a3c);
-  --lb-border: var(--line, #e6e6e6);
-  --lb-bg: #fff;
-  --lb-hover: rgba(47, 74, 60, 0.06);
-  --lb-selected: rgba(47, 74, 60, 0.1);
+  --lb-text: var(--ink, #1a1614);
+  --lb-muted: var(--muted, #5c5248);
+  --lb-accent: var(--accent, #9e3228);
+  --lb-border: var(--line, #d6cbb8);
+  --lb-border-strong: var(--line-strong, #1a1614);
+  --lb-bg: transparent;
+  --lb-row: color-mix(in srgb, var(--paper, #f3eee4) 45%, white);
+  --lb-hover: color-mix(in srgb, var(--accent, #9e3228) 10%, transparent);
+  --lb-selected: color-mix(in srgb, var(--accent, #9e3228) 16%, transparent);
   --lb-space: 8px;
   --lb-touch: 44px;
   --lb-trans: 140ms ease;
   --lb-font: var(--font-body, "Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif);
-  --lb-display: var(--font-display, "Libre Baskerville", Georgia, serif);
+  --lb-display: var(--font-display, "Zilla Slab", Georgia, serif);
   --lb-size: 1.0625rem;
   --lb-size-sm: 0.925rem;
   --lb-size-h: 1.25rem;
   color: var(--lb-text);
   font-family: var(--lb-font);
   font-size: var(--lb-size);
-  background: var(--lb-bg);
+  background: transparent;
 }
 
 body.lb-stage {
@@ -171,7 +173,7 @@ body.lb-layout-desktop.lb-song-open #lyrics-browse-root.lb-has-song {
 
 .lb-pane-song {
   min-width: 0;
-  background: var(--lb-bg);
+  background: color-mix(in srgb, var(--paper, #f3eee4) 85%, white);
 }
 
 .lb-layout-desktop.lb-has-song .lb-pane-song {
@@ -541,7 +543,47 @@ body.lb-stage .lb-status--error {
   outline-offset: 2px;
 }
 
-/* Accordion list — thin separators like .song-list */
+/* Mode nav — All songs | By artist */
+
+.lb-mode-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--lb-space) * 1.5) calc(var(--lb-space) * 2);
+  margin: 0 0 calc(var(--lb-space) * 1.5);
+  padding: 0 0 calc(var(--lb-space) * 1.5);
+  border-bottom: 1px solid var(--lb-border);
+}
+
+.lb-mode-nav__link {
+  font-size: var(--lb-size-sm);
+  color: var(--lb-muted);
+  text-decoration: none;
+  padding: calc(var(--lb-space) * 0.5) 0;
+  border-bottom: 2px solid transparent;
+}
+
+.lb-mode-nav__link:hover {
+  color: var(--lb-text);
+  text-decoration: underline;
+}
+
+.lb-mode-nav__link.is-active {
+  color: var(--lb-text);
+  font-weight: 600;
+  border-bottom-color: var(--lb-accent);
+  text-decoration: none;
+}
+
+#lyrics-browse-root[data-lb-list-mode="artists"] .lb-bar,
+#lyrics-browse-root[data-lb-list-mode="artist"] .lb-bar,
+#lyrics-browse-root[data-lb-list-mode="artists"] .lb-filters-panel,
+#lyrics-browse-root[data-lb-list-mode="artist"] .lb-filters-panel,
+#lyrics-browse-root[data-lb-list-mode="artists"] .lb-accordion-tools__actions,
+#lyrics-browse-root[data-lb-list-mode="artist"] .lb-accordion-tools__actions {
+  display: none !important;
+}
+
+/* Accordion / artist / song lists — distinct rows like .song-list */
 
 .lb-list {
   margin: 0;
@@ -550,8 +592,14 @@ body.lb-stage .lb-status--error {
 }
 
 .lb-group {
-  margin: 0;
-  border-bottom: 1px solid var(--lb-border);
+  margin: 0 0 calc(var(--lb-space) * 2);
+  padding: 0 0 calc(var(--lb-space) * 0.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--lb-accent) 35%, var(--lb-border));
+}
+
+.lb-group:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
 }
 
 .lb-group__toggle {
@@ -563,13 +611,13 @@ body.lb-stage .lb-status--error {
   gap: var(--lb-space);
   min-height: var(--lb-touch);
   margin: 0;
-  padding: calc(var(--lb-space) * 1.5) 0;
+  padding: calc(var(--lb-space) * 1.5) calc(var(--lb-space) * 0.5);
   border: 0;
   background: transparent;
   color: var(--lb-text);
   font-family: var(--lb-display);
   font-size: var(--lb-size-h);
-  font-weight: 400;
+  font-weight: 700;
   text-align: left;
   cursor: pointer;
   touch-action: manipulation;
@@ -594,20 +642,40 @@ body.lb-stage .lb-status--error {
   flex: 0 0 auto;
   font-family: var(--lb-font);
   font-size: var(--lb-size-sm);
+  font-weight: 400;
   color: var(--lb-muted);
 }
 
-.lb-group__body {
+.lb-group__body,
+.lb-song-list,
+.lb-artist-list {
   margin: 0;
-  padding: 0 0 calc(var(--lb-space) * 1.5);
+  padding: 0;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--lb-space) * 1.5);
+}
+
+.lb-group__body {
+  padding: 0 0 calc(var(--lb-space) * 1.25);
 }
 
 .lb-group__body[hidden] {
   display: none !important;
 }
 
-.lb-song {
+.lb-song-item,
+.lb-artist-item {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--lb-border);
+  border-left: 3px solid color-mix(in srgb, var(--lb-accent) 55%, var(--lb-border));
+  background: var(--lb-row);
+}
+
+.lb-song,
+.lb-artist {
   appearance: none;
   width: 100%;
   display: grid;
@@ -616,29 +684,32 @@ body.lb-stage .lb-status--error {
   align-items: baseline;
   min-height: var(--lb-touch);
   margin: 0;
-  padding: calc(var(--lb-space) * 1.25) 0;
+  padding: calc(var(--lb-space) * 1.35) calc(var(--lb-space) * 1.25);
   border: 0;
-  border-top: 1px solid var(--lb-border);
   background: transparent;
   color: var(--lb-text);
   font: inherit;
   font-size: var(--lb-size);
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
   touch-action: manipulation;
   transition: background-color var(--lb-trans), color var(--lb-trans);
 }
 
-.lb-song:hover {
+.lb-song:hover,
+.lb-artist:hover {
   background: var(--lb-hover);
   color: var(--lb-accent);
 }
 
-.lb-song:active {
+.lb-song:active,
+.lb-artist:active {
   background: var(--lb-selected);
 }
 
-.lb-song:focus-visible {
+.lb-song:focus-visible,
+.lb-artist:focus-visible {
   outline: 2px solid var(--lb-accent);
   outline-offset: 2px;
 }
@@ -647,6 +718,35 @@ body.lb-stage .lb-status--error {
   background: var(--lb-selected);
   color: var(--lb-accent);
   font-weight: 600;
+}
+
+.lb-artist__name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.lb-artist__count {
+  font-size: var(--lb-size-sm);
+  color: var(--lb-muted);
+}
+
+.lb-artist-header {
+  margin: 0 0 calc(var(--lb-space) * 1.5);
+  padding-bottom: calc(var(--lb-space) * 1.25);
+  border-bottom: 1px solid var(--lb-border);
+}
+
+.lb-artist-heading {
+  margin: calc(var(--lb-space) * 0.75) 0 0;
+  font-family: var(--lb-display);
+  font-size: var(--lb-size-h);
+  font-weight: 700;
+}
+
+.lb-artist-back {
+  display: inline-block;
+  margin: 0 0 var(--lb-space);
+  padding-left: 0;
 }
 
 .lb-song__title {

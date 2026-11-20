@@ -54,6 +54,15 @@
     chordsText: null,
     chordsLoading: false,
     currentDetails: null,
+    /** URL view: index | artists | artist | song */
+    routeView: "index",
+    /** List pane mode (unchanged while a song is open): index | artists | artist */
+    listMode: "index",
+    routeArtistSlug: "",
+    /** URL to restore when Back has no in-app history (deep link). */
+    backFallback: "/lyrics",
+    applyingRoute: false,
+    unsubRoute: null,
   };
 
   var els = {};
@@ -639,6 +648,9 @@
   }
 
   function slugsInCurrentGroup() {
+    if (state.listMode === "artist" || state.listMode === "artists") {
+      return state.order.slice();
+    }
     if (!state.currentGroupKey) return state.order.slice();
     var key = state.currentGroupKey;
     return sortedSongs()
@@ -783,12 +795,71 @@
     });
   }
 
+  function artistSlugOf(name) {
+    if (api && typeof api.artistSlug === "function") return api.artistSlug(name);
+    return titleSlug(name || "Other");
+  }
+
+  function findArtistBySlug(slug) {
+    if (!slug) return "";
+    var want = String(slug).toLowerCase();
+    var names = uniqueSorted(
+      songs().map(function (s) {
+        return s.artist || "Other";
+      })
+    );
+    for (var i = 0; i < names.length; i++) {
+      if (artistSlugOf(names[i]) === want) return names[i];
+    }
+    return "";
+  }
+
+  function indexFiltersPayload() {
+    return {
+      view: "index",
+      q: state.query || "",
+      sort: state.sort || "artist",
+      instrument: state.instrumentFilter || "all",
+      tuning: state.tuningFilter || "all",
+      capo: state.capoFilter || "all",
+      artist: state.artistFilter || "all",
+    };
+  }
+
+  function currentListUrl() {
+    if (state.listMode === "artist" && state.routeArtistSlug) {
+      return "/lyrics/artists/" + encodeURIComponent(state.routeArtistSlug);
+    }
+    if (state.listMode === "artists") return "/lyrics/artists";
+    var f = indexFiltersPayload();
+    var params = new URLSearchParams();
+    if ((f.q || "").trim()) params.set("q", f.q.trim());
+    if (f.sort && f.sort !== "artist") params.set("sort", f.sort);
+    if (f.instrument && f.instrument !== "all") params.set("instrument", f.instrument);
+    if (f.tuning && f.tuning !== "all") params.set("tuning", f.tuning);
+    if (f.capo && f.capo !== "all") params.set("capo", f.capo);
+    if (f.artist && f.artist !== "all") params.set("artist", f.artist);
+    var qs = params.toString();
+    return qs ? "/lyrics?" + qs : "/lyrics";
+  }
+
+  function syncIndexUrl() {
+    if (state.applyingRoute) return;
+    if (state.listMode !== "index" || state.routeView === "song") return;
+    if (!api || typeof api.goIndex !== "function") return;
+    api.goIndex(indexFiltersPayload(), { replace: true });
+  }
+
   function shellHtml() {
     return (
       '<div class="lb-shell">' +
       '<div class="lb-pane-list" id="lb-pane-list">' +
       '<div class="lb-chrome">' +
-      '<div class="lb-bar">' +
+      '<nav class="lb-mode-nav" aria-label="Lyrics browse mode">' +
+      '<a class="lb-mode-nav__link" id="lb-mode-all" href="/lyrics">All songs</a>' +
+      '<a class="lb-mode-nav__link" id="lb-mode-artists" href="/lyrics/artists">By artist</a>' +
+      "</nav>" +
+      '<div class="lb-bar" id="lb-bar-search">' +
       '<div class="lb-bar__grow">' +
       '<label class="visually-hidden" for="lb-search">Search songs</label>' +
       '<input id="lb-search" class="lb-search" type="search" placeholder="Search title or artist" enterkeyhint="search" autocomplete="off">' +
@@ -849,7 +920,7 @@
       '<span class="lb-prefetch__dot" aria-hidden="true"></span>' +
       '<span id="lb-prefetch-text"></span>' +
       "</div>" +
-      '<div class="lb-accordion-tools">' +
+      '<div class="lb-accordion-tools" id="lb-accordion-tools">' +
       '<p class="lb-status" id="lb-status" aria-live="polite"></p>' +
       '<div class="lb-accordion-tools__actions">' +
       '<button type="button" class="lb-linkish" id="lb-expand-all">Expand all</button>' +
@@ -862,6 +933,7 @@
       "</div>"
     );
   }
+
 
   function renderFilters() {
     if (!els.filters) return;
@@ -962,8 +1034,168 @@
     els.filters.innerHTML = html;
   }
 
+  function updateModeNav() {
+    var listMode = state.listMode || "index";
+    if (root) root.setAttribute("data-lb-list-mode", listMode);
+    if (els.modeAll) {
+      els.modeAll.classList.toggle("is-active", listMode === "index");
+      if (listMode === "index") els.modeAll.setAttribute("aria-current", "page");
+      else els.modeAll.removeAttribute("aria-current");
+    }
+    if (els.modeArtists) {
+      var artistMode = listMode === "artists" || listMode === "artist";
+      els.modeArtists.classList.toggle("is-active", artistMode);
+      if (listMode === "artists") {
+        els.modeArtists.setAttribute("aria-current", "page");
+      } else {
+        els.modeArtists.removeAttribute("aria-current");
+      }
+    }
+    var showSearch = listMode === "index";
+    if (els.barSearch) els.barSearch.hidden = !showSearch;
+    if (els.filtersPanel && !showSearch) els.filtersPanel.hidden = true;
+    if (els.expandActions) els.expandActions.hidden = !showSearch;
+  }
+
+  function songRowHtml(song, groupKey) {
+    var slug = songSlug(song);
+    var setup = formatSetup(song);
+    var noted = songHasNotes(slug);
+    var selected = state.currentSlug === slug;
+    return (
+      '<li class="lb-song-item" role="none">' +
+      '<button type="button" class="lb-song' +
+      (song.noLyrics ? " lb-song--no-lyrics" : "") +
+      '" data-open-slug="' +
+      escapeHtml(slug) +
+      '"' +
+      (groupKey
+        ? ' data-group-key="' + escapeHtml(groupKey) + '"'
+        : "") +
+      (selected ? ' aria-current="true"' : "") +
+      ">" +
+      '<span class="lb-song__title">' +
+      escapeHtml(song.title) +
+      (noted
+        ? '<span class="lb-note-dot" title="Has notes" aria-label="Has notes"></span>'
+        : "") +
+      "</span>" +
+      (setup
+        ? '<span class="lb-song__setup">' + escapeHtml(setup) + "</span>"
+        : "") +
+      "</button></li>"
+    );
+  }
+
+  function renderArtistIndex() {
+    if (!els.list) return;
+    updateModeNav();
+    var names = uniqueSorted(
+      songs().map(function (s) {
+        return s.artist || "Other";
+      })
+    );
+    if (els.status) {
+      els.status.textContent =
+        names.length + " artist" + (names.length === 1 ? "" : "s");
+    }
+    if (!names.length) {
+      els.list.innerHTML = '<p class="lb-empty">No artists to show.</p>';
+      return;
+    }
+    var html =
+      '<ul class="lb-artist-list" role="list" aria-label="Artists">';
+    names.forEach(function (name) {
+      var slug = artistSlugOf(name);
+      var count = songs().filter(function (s) {
+        return (s.artist || "Other") === name;
+      }).length;
+      html +=
+        '<li class="lb-artist-item">' +
+        '<a class="lb-artist" href="/lyrics/artists/' +
+        encodeURIComponent(slug) +
+        '" data-artist-slug="' +
+        escapeHtml(slug) +
+        '">' +
+        '<span class="lb-artist__name">' +
+        escapeHtml(name) +
+        "</span>" +
+        '<span class="lb-artist__count">' +
+        count +
+        "</span>" +
+        "</a></li>";
+    });
+    html += "</ul>";
+    els.list.innerHTML = html;
+    els.list.setAttribute("role", "list");
+    els.list.setAttribute("aria-label", "Artists");
+  }
+
+  function renderArtistSongs(artistSlug) {
+    if (!els.list) return;
+    updateModeNav();
+    var artistName = findArtistBySlug(artistSlug);
+    var list = songs()
+      .filter(function (s) {
+        return artistSlugOf(s.artist || "Other") === String(artistSlug || "");
+      })
+      .slice()
+      .sort(compareTitle);
+    state.order = list.map(songSlug);
+    state.groupOrder = artistName ? [artistName] : [];
+
+    if (els.status) {
+      els.status.textContent = artistName
+        ? list.length +
+          " song" +
+          (list.length === 1 ? "" : "s") +
+          " · " +
+          artistName
+        : "Artist not found";
+    }
+
+    var html =
+      '<div class="lb-artist-header">' +
+      '<a class="lb-linkish lb-artist-back" href="/lyrics/artists" data-go-artists>All artists</a>' +
+      '<h2 class="lb-artist-heading">' +
+      escapeHtml(artistName || artistSlug || "Artist") +
+      "</h2></div>";
+
+    if (!list.length) {
+      html += '<p class="lb-empty">No songs for this artist.</p>';
+      els.list.innerHTML = html;
+      return;
+    }
+
+    html +=
+      '<ul class="lb-song-list" role="list" aria-label="Songs by ' +
+      escapeHtml(artistName || "artist") +
+      '">';
+    list.forEach(function (song) {
+      html += songRowHtml(song, artistName || "");
+    });
+    html += "</ul>";
+    els.list.innerHTML = html;
+    els.list.setAttribute("role", "list");
+    els.list.setAttribute("aria-label", "Songs by artist");
+  }
+
   function renderBrowse() {
     if (!els.list) return;
+
+    if (state.listMode === "artists") {
+      renderArtistIndex();
+      return;
+    }
+    if (state.listMode === "artist") {
+      renderArtistSongs(state.routeArtistSlug);
+      return;
+    }
+
+    updateModeNav();
+    els.list.setAttribute("role", "tree");
+    els.list.setAttribute("aria-label", "Songs by group");
+
     var list = sortedSongs();
     var groups = groupSongs(list);
 
@@ -1046,30 +1278,7 @@
         (open ? "" : " hidden") +
         ">";
       group.songs.forEach(function (song) {
-        var slug = songSlug(song);
-        var setup = formatSetup(song);
-        var noted = songHasNotes(slug);
-        var selected = state.currentSlug === slug;
-        html +=
-          '<li role="none"><button type="button" class="lb-song' +
-          (song.noLyrics ? " lb-song--no-lyrics" : "") +
-          '" data-open-slug="' +
-          escapeHtml(slug) +
-          '" data-group-key="' +
-          escapeHtml(group.key) +
-          '"' +
-          (selected ? ' aria-current="true"' : "") +
-          ">" +
-          '<span class="lb-song__title">' +
-          escapeHtml(song.title) +
-          (noted
-            ? '<span class="lb-note-dot" title="Has notes" aria-label="Has notes"></span>'
-            : "") +
-          "</span>" +
-          (setup
-            ? '<span class="lb-song__setup">' + escapeHtml(setup) + "</span>"
-            : "") +
-          "</button></li>";
+        html += songRowHtml(song, group.key);
       });
       html += "</ul></div>";
     });
@@ -1343,7 +1552,7 @@
 
     $("#lb-back", els.song).addEventListener("click", function () {
       flushNote(slug, meta, details);
-      closeSongView();
+      requestCloseSong();
     });
     $("#lb-font-down", els.song).addEventListener("click", function () {
       bumpTextSize(-1);
@@ -1361,10 +1570,10 @@
       togglePin(slug);
     });
     $("#lb-prev", els.song).addEventListener("click", function () {
-      if (prev) openSongBySlug(prev, true);
+      if (prev) openSongBySlug(prev, true, { replaceUrl: true });
     });
     $("#lb-next", els.song).addEventListener("click", function () {
-      if (next) openSongBySlug(next, true);
+      if (next) openSongBySlug(next, true, { replaceUrl: true });
     });
     $("#lb-autoscroll", els.song).addEventListener("click", function () {
       if (state.autoScroll) stopAutoScroll();
@@ -1404,11 +1613,20 @@
 
     if (!state.currentSlug) saveListScroll();
 
-    sortedSongs();
+    if (state.routeView !== "song") {
+      state.backFallback = currentListUrl();
+    }
+
+    if (state.listMode === "index") sortedSongs();
     rememberRecent(slug);
     state.currentSlug = slug;
     if (opts.groupKey) state.currentGroupKey = opts.groupKey;
-    else state.currentGroupKey = groupKey(meta);
+    else if (state.listMode === "artist") {
+      state.currentGroupKey =
+        findArtistBySlug(state.routeArtistSlug) || groupKey(meta);
+    } else {
+      state.currentGroupKey = groupKey(meta);
+    }
 
     stopAutoScroll();
     applyLayoutClass();
@@ -1422,7 +1640,7 @@
     requestWakeLock();
 
     if (updateHash && typeof api.setHashForSong === "function") {
-      api.setHashForSong(meta);
+      api.setHashForSong(meta, { replace: !!opts.replaceUrl });
     }
 
     // Do not scroll the page — keep list position; song pane scrolls itself.
@@ -1480,7 +1698,20 @@
       });
   }
 
-  function closeSongView() {
+  /** Close song via history.back when possible; else fall back to list URL. */
+  function requestCloseSong() {
+    var fallback = state.backFallback || "/lyrics";
+    if (api && typeof api.backOr === "function") {
+      api.backOr(fallback);
+      return;
+    }
+    closeSongViewLocal();
+    if (api && typeof api.goIndex === "function") {
+      api.goIndex(indexFiltersPayload(), { replace: true });
+    }
+  }
+
+  function closeSongViewLocal() {
     stopAutoScroll();
     releaseWakeLock();
     state.currentSlug = null;
@@ -1490,16 +1721,70 @@
       els.song.hidden = true;
       els.song.innerHTML = "";
     }
-    if (api && typeof api.clearSongHash === "function") api.clearSongHash();
-    else if (window.location.hash) {
-      history.replaceState(
-        null,
-        "",
-        window.location.pathname + window.location.search
-      );
-    }
-    renderBrowse();
     restoreListScroll();
+  }
+
+  function closeSongView() {
+    requestCloseSong();
+  }
+
+  function applyFiltersFromRoute(route) {
+    if (!route) return;
+    if (route.q != null) state.query = String(route.q || "");
+    if (route.sort) state.sort = route.sort;
+    if (route.instrument) state.instrumentFilter = route.instrument;
+    if (route.tuning) state.tuningFilter = route.tuning;
+    if (route.capo) state.capoFilter = route.capo;
+    if (route.artist) state.artistFilter = route.artist;
+    if (els.search && state.query !== els.search.value) {
+      els.search.value = state.query;
+    }
+  }
+
+  function applyRoute(route) {
+    if (!route || !api) return;
+    state.applyingRoute = true;
+    try {
+      var view = route.view || "index";
+      state.routeView = view;
+
+      if (view === "song" && route.songSlug) {
+        // Deep link with no prior list: fall back to index on Back.
+        if (!state.backFallback || state.backFallback === "/lyrics/song/" + route.songSlug) {
+          state.backFallback = "/lyrics";
+          state.listMode = "index";
+        }
+        if (state.currentSlug !== route.songSlug) {
+          openSongBySlug(route.songSlug, false);
+        } else {
+          applyHasSongClass(true);
+          if (!state.currentDetails) {
+            /* still loading */
+          }
+          renderBrowse();
+        }
+        return;
+      }
+
+      if (view === "artists") {
+        state.listMode = "artists";
+        state.routeArtistSlug = "";
+      } else if (view === "artist") {
+        state.listMode = "artist";
+        state.routeArtistSlug = route.artistSlug || "";
+      } else {
+        state.listMode = "index";
+        state.routeArtistSlug = "";
+        applyFiltersFromRoute(route);
+      }
+
+      if (state.currentSlug) {
+        closeSongViewLocal();
+      }
+      renderBrowse();
+    } finally {
+      state.applyingRoute = false;
+    }
   }
 
   function visibleNavItems() {
@@ -1547,6 +1832,7 @@
         els.search.value = "";
         state.query = "";
         renderBrowse();
+        syncIndexUrl();
         return;
       }
       if (els.settingsMenu && !els.settingsMenu.hidden) {
@@ -1555,7 +1841,7 @@
       }
       if (state.currentSlug) {
         e.preventDefault();
-        closeSongView();
+        requestCloseSong();
       }
       return;
     }
@@ -1564,13 +1850,13 @@
       if (e.key === "j" || e.key === "ArrowDown") {
         e.preventDefault();
         var n1 = neighborInGroup(state.currentSlug, 1);
-        if (n1) openSongBySlug(n1, true);
+        if (n1) openSongBySlug(n1, true, { replaceUrl: true });
         return;
       }
       if (e.key === "k" || e.key === "ArrowUp") {
         e.preventDefault();
         var n2 = neighborInGroup(state.currentSlug, -1);
-        if (n2) openSongBySlug(n2, true);
+        if (n2) openSongBySlug(n2, true, { replaceUrl: true });
         return;
       }
     }
@@ -1632,7 +1918,38 @@
   }
 
   function onRootClick(e) {
-    var t = e.target.closest("[data-layout-mode]");
+    var t = e.target.closest("[data-go-artists]");
+    if (t) {
+      e.preventDefault();
+      if (api && typeof api.goArtists === "function") api.goArtists();
+      return;
+    }
+
+    t = e.target.closest("[data-artist-slug]");
+    if (t) {
+      e.preventDefault();
+      var aSlug = t.getAttribute("data-artist-slug");
+      if (api && typeof api.goArtist === "function") api.goArtist(aSlug);
+      return;
+    }
+
+    t = e.target.closest("#lb-mode-all");
+    if (t) {
+      e.preventDefault();
+      if (api && typeof api.goIndex === "function") {
+        api.goIndex(indexFiltersPayload());
+      }
+      return;
+    }
+
+    t = e.target.closest("#lb-mode-artists");
+    if (t) {
+      e.preventDefault();
+      if (api && typeof api.goArtists === "function") api.goArtists();
+      return;
+    }
+
+    t = e.target.closest("[data-layout-mode]");
     if (t) {
       var mode = t.getAttribute("data-layout-mode");
       if (LAYOUT_MODES.indexOf(mode) !== -1) {
@@ -1670,18 +1987,21 @@
       state.tuningFilter = "all";
       state.capoFilter = "all";
       renderBrowse();
+      syncIndexUrl();
       return;
     }
     t = e.target.closest("[data-tuning]");
     if (t) {
       state.tuningFilter = t.getAttribute("data-tuning");
       renderBrowse();
+      syncIndexUrl();
       return;
     }
     t = e.target.closest("[data-capo]");
     if (t) {
       state.capoFilter = t.getAttribute("data-capo");
       renderBrowse();
+      syncIndexUrl();
       return;
     }
   }
@@ -1705,6 +2025,11 @@
     els.settingsBtn = $("#lb-settings-btn", root);
     els.settingsMenu = $("#lb-settings-menu", root);
     els.fontLabel = $("#lb-font-label", root);
+    els.modeAll = $("#lb-mode-all", root);
+    els.modeArtists = $("#lb-mode-artists", root);
+    els.barSearch = $("#lb-bar-search", root);
+    els.accordionTools = $("#lb-accordion-tools", root);
+    els.expandActions = $("#lb-accordion-tools .lb-accordion-tools__actions", root);
 
     function setNotesMsg(text, kind) {
       if (!els.notesMsg) return;
@@ -1719,6 +2044,7 @@
       els.search.addEventListener("input", function () {
         state.query = els.search.value;
         renderBrowse();
+        syncIndexUrl();
       });
     }
 
@@ -1732,6 +2058,7 @@
         state.sort = els.sortSelect.value || "artist";
         storageSet(SORT_KEY, state.sort);
         renderBrowse();
+        syncIndexUrl();
       });
     }
 
@@ -1775,6 +2102,7 @@
       if (e.target && e.target.id === "lb-artist") {
         state.artistFilter = e.target.value || "all";
         renderBrowse();
+        syncIndexUrl();
       }
       if (e.target && e.target.id === "lb-notes-import") {
         var file = e.target.files && e.target.files[0];
@@ -1899,16 +2227,11 @@
 
     document.addEventListener("keydown", onGlobalKeydown);
 
-    window.addEventListener("hashchange", function () {
-      if (!api) return;
-      var slug =
-        typeof api.parseSongHash === "function" ? api.parseSongHash() : "";
-      if (!slug) {
-        if (state.currentSlug) closeSongView();
-        return;
-      }
-      if (slug !== state.currentSlug) openSongBySlug(slug, false);
-    });
+    if (api && typeof api.onRouteChange === "function") {
+      state.unsubRoute = api.onRouteChange(function (route) {
+        applyRoute(route);
+      });
+    }
 
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "visible" && state.currentSlug) {
@@ -1936,10 +2259,10 @@
           if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
           if (dx < 0) {
             var n = neighborInGroup(state.currentSlug, 1);
-            if (n) openSongBySlug(n, true);
+            if (n) openSongBySlug(n, true, { replaceUrl: true });
           } else {
             var p = neighborInGroup(state.currentSlug, -1);
-            if (p) openSongBySlug(p, true);
+            if (p) openSongBySlug(p, true, { replaceUrl: true });
           }
         },
         { passive: true }
@@ -1972,12 +2295,20 @@
     root.innerHTML = shellHtml();
     bindShell();
     applyLayoutClass();
-    renderBrowse();
     startPrefetch();
 
-    var slug =
-      api && typeof api.parseSongHash === "function" ? api.parseSongHash() : "";
-    if (slug) openSongBySlug(slug, false);
+    var route =
+      api && typeof api.parseRoute === "function" ? api.parseRoute() : null;
+    if (route) {
+      applyRoute(route);
+    } else {
+      var slug =
+        api && typeof api.parseSongHash === "function"
+          ? api.parseSongHash()
+          : "";
+      if (slug) openSongBySlug(slug, false);
+      else renderBrowse();
+    }
   }
 
   function unmount() {
@@ -1988,10 +2319,19 @@
     state.chordsText = null;
     state.chordsLoading = false;
     state.currentDetails = null;
+    if (typeof state.unsubRoute === "function") {
+      try {
+        state.unsubRoute();
+      } catch (e) {
+        /* ignore */
+      }
+      state.unsubRoute = null;
+    }
     document.body.classList.remove(
       "lb-stage",
       "lb-layout-desktop",
-      "lb-layout-touch"
+      "lb-layout-touch",
+      "lb-song-open"
     );
     document.removeEventListener("keydown", onGlobalKeydown);
     var browserEl = document.getElementById("lyrics-browser");

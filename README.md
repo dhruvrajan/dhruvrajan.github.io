@@ -52,3 +52,14 @@ never in `localStorage` / `sessionStorage` / Cache Storage.
 | `LYRICS_ALLOWED_EMAILS` | Comma-separated allowlist |
 
 Nav links to Lyrics use full page loads (`href="/lyrics"`) so Access can run.
+
+Lyrics browse uses real paths (Back/Forward and deep links):
+
+| Path | View |
+|------|------|
+| `/lyrics` | All songs (filters as query params: `q`, `sort`, `instrument`, …) |
+| `/lyrics/artists` | Artist list |
+| `/lyrics/artists/:artist` | Songs for one artist |
+| `/lyrics/song/:slug` | Song lyrics/chords |
+
+Legacy `#song=…` hashes redirect to `/lyrics/song/…`.

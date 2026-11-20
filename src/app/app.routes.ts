@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { lyricsUrlMatcher } from './core/utils/lyrics-routes';
 
 export const routes: Routes = [
   {
@@ -21,8 +22,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/songs/songs').then((m) => m.SongsPage),
     title: 'Songs by Artist · Dhruv Rajan',
   },
+  // One matcher so /lyrics, /lyrics/artists/…, /lyrics/song/… reuse LyricsPage
+  // (keeps the in-memory unlock CryptoKey across in-app navigations).
   {
-    path: 'lyrics',
+    matcher: lyricsUrlMatcher,
     loadComponent: () => import('./pages/lyrics/lyrics').then((m) => m.LyricsPage),
     title: 'Lyrics · Dhruv Rajan',
   },

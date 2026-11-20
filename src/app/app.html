@@ -20,8 +20,8 @@
       >
       <a
         href="/lyrics"
-        [class.is-active]="url() === '/lyrics'"
-        [attr.aria-current]="url() === '/lyrics' ? 'page' : null"
+        [class.is-active]="lyricsActive()"
+        [attr.aria-current]="lyricsActive() ? 'page' : null"
         >Lyrics</a
       >
     </nav>

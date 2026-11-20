@@ -69,8 +69,9 @@ export function lyricsSongSlug(song: Song): string {
 }
 
 export function lyricsDeepLink(song: Song): string {
-  return `/lyrics#song=${lyricsSongSlug(song)}`;
+  return `/lyrics/song/${lyricsSongSlug(song)}`;
 }
+
 
 export function songLink(song: Song | undefined): string | null {
   if (!song) return null;

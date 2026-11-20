@@ -3,7 +3,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map, startWith } from 'rxjs/operators';
 
-const NARROW_PATHS = new Set(['/events', '/setlists', '/songs', '/lyrics']);
+const NARROW_PATHS = new Set(['/events', '/setlists', '/songs']);
+
+function isNarrowPath(path: string): boolean {
+  if (NARROW_PATHS.has(path)) return true;
+  return path === '/lyrics' || path.startsWith('/lyrics/');
+}
 
 @Component({
   selector: 'app-root',
@@ -26,5 +31,11 @@ export class App {
     { initialValue: '/' },
   );
 
-  readonly narrow = computed(() => NARROW_PATHS.has(this.url() || '/'));
+  readonly narrow = computed(() => isNarrowPath(this.url() || '/'));
+
+  readonly lyricsActive = computed(() => {
+    const path = this.url() || '/';
+    return path === '/lyrics' || path.startsWith('/lyrics/');
+  });
 }
+
