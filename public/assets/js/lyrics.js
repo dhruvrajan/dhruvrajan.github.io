@@ -533,11 +533,75 @@
     return payload.map(normalizeIndexEntry);
   }
 
+  /** Localhost-only fixture unlock so routing/layout can be tested without Access. */
+  function isLocalDevHost() {
+    var h = (window.location && window.location.hostname) || "";
+    return h === "localhost" || h === "127.0.0.1";
+  }
+
+  function installLocalDevMockSongs() {
+    var mock = [
+      {
+        title: "Mock River Song",
+        artist: "Ada Example",
+        slug: "mock-river-song-ada-example",
+        source: "mock",
+        tuning: "Standard",
+        capo: 0,
+      },
+      {
+        title: "Mock Mountain Air",
+        artist: "Ada Example",
+        slug: "mock-mountain-air-ada-example",
+        source: "mock",
+        tuning: "DADGAD",
+        capo: 2,
+      },
+      {
+        title: "Mock Harbor Light",
+        artist: "Ben Sample",
+        slug: "mock-harbor-light-ben-sample",
+        source: "mock",
+        tuning: "Standard",
+        capo: 0,
+      },
+      {
+        title: "Mock Evening Waltz",
+        artist: "Other",
+        slug: "mock-evening-waltz-other",
+        source: "mock",
+        tuning: "Standard",
+        capo: 0,
+      },
+    ];
+    state.cryptoKey = null;
+    state.songs = mock.map(normalizeIndexEntry);
+    state.songCache = Object.create(null);
+    state.songs.forEach(function (song) {
+      var slug = songSlug(song);
+      state.songCache[slug] = {
+        slug: slug,
+        title: song.title,
+        artist: song.artist,
+        source: "mock",
+        lyrics:
+          "(Local mock lyrics)\n\nVerse 1\nPlaceholder lines for layout testing.\n\nChorus\nLa la la — not production content.",
+        doc_name: "",
+        noLyrics: false,
+      };
+    });
+    return state.songs;
+  }
+
   /**
    * Derive a non-extractable AES key in memory and unlock.
    * Passphrase is never written to storage; caller should drop string refs.
    */
   async function unlockWithPassphrase(passphrase) {
+    // Dev-only: unlock with fixture catalog on loopback hosts.
+    if (isLocalDevHost() && String(passphrase) === "local-dev-mock") {
+      return installLocalDevMockSongs();
+    }
     var saltInfo = await loadSalt();
     var iterations = Number(saltInfo.iterations) || 310000;
     var salt = b64ToBytes(saltInfo.salt);
@@ -609,9 +673,12 @@
     var btn = root && root.querySelector("[data-access-reload]");
     if (!btn) return;
     btn.addEventListener("click", function () {
-      window.location.href = "/lyrics";
+      var nav = lyricsNav();
+      if (nav && typeof nav.accessReload === "function") nav.accessReload();
+      else window.location.href = "/lyrics";
     });
   }
+
 
   async function loadSongDetails(meta) {
     var slug = songSlug(meta);
@@ -856,27 +923,65 @@
     return null;
   }
 
-  function setHashForSong(song) {
+  function lyricsNav() {
+    return window.LyricsNav || null;
+  }
+
+  /** Open (or replace) the song path via Angular LyricsNav when available. */
+  function setHashForSong(song, opts) {
     var slug = songSlug(song);
-    var next = "#song=" + encodeURIComponent(slug);
-    if (window.location.hash !== next) {
-      history.replaceState(
-        null,
+    if (!slug) return;
+    var nav = lyricsNav();
+    if (nav && typeof nav.goSong === "function") {
+      nav.goSong(slug, { replace: !!(opts && opts.replace) });
+      return;
+    }
+    var next = "/lyrics/song/" + encodeURIComponent(slug);
+    if (window.location.pathname !== next) {
+      history[opts && opts.replace ? "replaceState" : "pushState"](
+        { lyricsNav: true },
         "",
-        window.location.pathname + window.location.search + next
+        next
       );
     }
   }
 
+  /** Current song slug from `/lyrics/song/:slug` or legacy `#song=`. */
   function parseSongHash() {
+    var nav = lyricsNav();
+    if (nav && typeof nav.parse === "function") {
+      var st = nav.parse();
+      if (st && st.view === "song" && st.songSlug) return st.songSlug;
+    }
+    var path = window.location.pathname || "";
+    var mPath = /^\/lyrics\/song\/([^/]+)\/?$/.exec(path);
+    if (mPath) {
+      try {
+        return decodeURIComponent(mPath[1]);
+      } catch (e) {
+        return mPath[1];
+      }
+    }
     var hash = window.location.hash || "";
     if (hash.charAt(0) === "#") hash = hash.slice(1);
     var params = new URLSearchParams(hash);
     var song = params.get("song");
-    if (song) return decodeURIComponent(song);
+    if (song) {
+      try {
+        return decodeURIComponent(song);
+      } catch (e2) {
+        return song;
+      }
+    }
     var m = /(?:^|&)song=([^&]+)/.exec(hash);
-    return m ? decodeURIComponent(m[1]) : "";
+    if (!m) return "";
+    try {
+      return decodeURIComponent(m[1]);
+    } catch (e3) {
+      return m[1];
+    }
   }
+
 
   function attributionHtml(song) {
     if (song.noLyrics) return "";
@@ -1148,18 +1253,61 @@
         return state.textSize || "md";
       },
       setTextSize: setTextSize,
-      setHashForSong: setHashForSong,
+      setHashForSong: function (song, opts) {
+        setHashForSong(song, opts || { replace: false });
+      },
       getOrientation: getOrientation,
       setOrientation: setOrientation,
       parseSongHash: parseSongHash,
       clearSongHash: function () {
-        if (window.location.hash) {
-          history.replaceState(
-            null,
-            "",
-            window.location.pathname + window.location.search
-          );
+        var nav = lyricsNav();
+        if (nav && typeof nav.back === "function") {
+          nav.back("/lyrics");
+          return;
         }
+        if (/^\/lyrics\/song\//.test(window.location.pathname) || window.location.hash) {
+          history.replaceState(null, "", "/lyrics");
+        }
+      },
+      parseRoute: function () {
+        var nav = lyricsNav();
+        if (nav && typeof nav.parse === "function") return nav.parse();
+        return null;
+      },
+      goRoute: function (state, opts) {
+        var nav = lyricsNav();
+        if (nav && typeof nav.go === "function") {
+          nav.go(state || { view: "index" }, opts);
+          return;
+        }
+      },
+      goArtists: function (opts) {
+        var nav = lyricsNav();
+        if (nav && typeof nav.goArtists === "function") nav.goArtists(opts);
+      },
+      goArtist: function (artistSlug, opts) {
+        var nav = lyricsNav();
+        if (nav && typeof nav.goArtist === "function") nav.goArtist(artistSlug, opts);
+      },
+      goIndex: function (filters, opts) {
+        var nav = lyricsNav();
+        if (nav && typeof nav.goIndex === "function") nav.goIndex(filters, opts);
+      },
+      backOr: function (fallback) {
+        var nav = lyricsNav();
+        if (nav && typeof nav.back === "function") {
+          nav.back(fallback || "/lyrics");
+          return;
+        }
+        history.replaceState(null, "", fallback || "/lyrics");
+      },
+      onRouteChange: function (listener) {
+        var nav = lyricsNav();
+        if (nav && typeof nav.subscribe === "function") return nav.subscribe(listener);
+        return function () {};
+      },
+      artistSlug: function (name) {
+        return titleSlug(name || "Other");
       },
       lock: function () {
         lockSession();

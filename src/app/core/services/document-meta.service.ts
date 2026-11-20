@@ -46,7 +46,10 @@ export class DocumentMetaService {
   }
 
   private applyDescription(path: string): void {
-    const description = PAGE_DESCRIPTIONS[path] ?? DEFAULT_DESCRIPTION;
+    const key =
+      path === '/lyrics' || path.startsWith('/lyrics/') ? '/lyrics' : path;
+    const description = PAGE_DESCRIPTIONS[key] ?? DEFAULT_DESCRIPTION;
     this.meta.updateTag({ name: 'description', content: description });
   }
+
 }
