@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var CACHE = "lyrics-shell-v5";
+  var CACHE = "lyrics-shell-v6";
   var SHELL = [
     "/",
     "/lyrics",
