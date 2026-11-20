@@ -24,6 +24,68 @@ jobs:
 
       - run: npm run build
 
+      # Env vars take effect only on new deployments, so set the passphrase
+      # secret before this production upload.
+      - name: Sync lyrics passphrase to Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          LYRICS_PASSPHRASE: ${{ secrets.LYRICS_PASSPHRASE }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys, urllib.request
+          secret = os.environ.get("LYRICS_PASSPHRASE")
+          token = os.environ.get("CLOUDFLARE_API_TOKEN")
+          account = os.environ.get("CLOUDFLARE_ACCOUNT_ID")
+          if not secret:
+              print("LYRICS_PASSPHRASE repo secret is not set; skipping")
+              sys.exit(0)
+          if not token or not account:
+              print("missing Cloudflare credentials")
+              sys.exit(1)
+          body = {
+              "deployment_configs": {
+                  "production": {
+                      "env_vars": {
+                          "LYRICS_PASSPHRASE": {"type": "secret_text", "value": secret}
+                      }
+                  }
+              }
+          }
+          req = urllib.request.Request(
+              f"https://api.cloudflare.com/client/v4/accounts/{account}/pages/projects/dhruv-music",
+              data=json.dumps(body).encode(),
+              method="PATCH",
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+              },
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=60) as resp:
+                  parsed = json.loads(resp.read())
+          except urllib.error.HTTPError as e:
+              raw = e.read().decode("utf-8", "replace")
+              try:
+                  parsed = json.loads(raw)
+              except Exception:
+                  parsed = {}
+              print("pages env update failed", e.code, parsed.get("errors"))
+              sys.exit(1)
+          env = (
+              ((parsed.get("result") or {}).get("deployment_configs") or {})
+              .get("production")
+              or {}
+          ).get("env_vars") or {}
+          names = sorted(env)
+          types = {k: (env[k] or {}).get("type") for k in names}
+          print("updated production env var names:", names)
+          print("types:", types)
+          if "LYRICS_PASSPHRASE" not in env or (env["LYRICS_PASSPHRASE"] or {}).get("type") != "secret_text":
+              print("LYRICS_PASSPHRASE was not stored as secret_text")
+              sys.exit(1)
+          PY
+
       # Deploy from the repo root so wrangler picks up ./functions (Pages Functions),
       # including /lyrics/api/key. Static assets come from the Angular browser build.
       - uses: cloudflare/wrangler-action@v3
