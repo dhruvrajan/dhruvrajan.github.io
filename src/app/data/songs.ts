@@ -5475,5 +5475,64 @@ export const SONGS = [
     ],
     "youtube_link": null,
     "soundcloud_link": null
+  },
+  {
+    "title": "Willie o' Winsbury",
+    "instrument": "guitar",
+    "artist": "Pentangle",
+    "instruments": [
+      {
+        "name": "Guitar",
+        "tuning": "Standard (EADGBE)",
+        "capo": 0,
+        "unverified": true
+      }
+    ],
+    "youtube_link": null,
+    "soundcloud_link": null
+  },
+  {
+    "title": "Let No Man Steal Your Thyme",
+    "instrument": "guitar",
+    "artist": "Pentangle",
+    "instruments": [
+      {
+        "name": "Guitar",
+        "tuning": "?",
+        "unverified": true
+      }
+    ],
+    "youtube_link": null,
+    "soundcloud_link": null
+  },
+  {
+    "title": "Cruel Sister",
+    "instrument": "guitar",
+    "artist": "Pentangle",
+    "instruments": [
+      {
+        "name": "Guitar",
+        "tuning": "Standard (EADGBE)",
+        "capo": 3,
+        "unverified": true
+      }
+    ],
+    "youtube_link": null,
+    "soundcloud_link": null
+  },
+  {
+    "title": "Marrowbones",
+    "instrument": "guitar",
+    "artist": "Steeleye Span",
+    "instruments": [
+      {
+        "name": "Guitar",
+        "tuning": "Standard (EADGBE)",
+        "capo": 0,
+        "unverified": true
+      }
+    ],
+    "youtube_link": null,
+    "soundcloud_link": null
   }
 ];
