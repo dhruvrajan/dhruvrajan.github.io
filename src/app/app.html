@@ -18,7 +18,12 @@
       <a routerLink="/songs" routerLinkActive="is-active" ariaCurrentWhenActive="page"
         >Songs by Artist</a
       >
-      <a routerLink="/lyrics" routerLinkActive="is-active" ariaCurrentWhenActive="page">Lyrics</a>
+      <a
+        href="/lyrics"
+        [class.is-active]="url() === '/lyrics'"
+        [attr.aria-current]="url() === '/lyrics' ? 'page' : null"
+        >Lyrics</a
+      >
     </nav>
   </div>
 </header>

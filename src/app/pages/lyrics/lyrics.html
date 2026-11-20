@@ -1,5 +1,12 @@
 <h1 class="page-title">Lyrics</h1>
 
+<section id="access-gate" class="lyrics-panel lyrics-unlock" hidden>
+  <p class="lyrics-status lyrics-status--error">Sign in to view lyrics</p>
+  <p>
+    <button type="button" class="btn" id="access-reload-btn">Sign in</button>
+  </p>
+</section>
+
 <section id="unlock-gate" class="lyrics-panel lyrics-unlock">
   <form id="unlock-form" class="token-form lyrics-unlock__form" autocomplete="off">
     <label for="passphrase-input" class="visually-hidden">Password</label>
@@ -13,10 +20,6 @@
       placeholder="Password"
     />
     <button type="submit" class="btn lyrics-unlock__submit">Unlock</button>
-    <label class="remember-row" for="remember-check">
-      <input id="remember-check" type="checkbox" />
-      Remember on this device
-    </label>
   </form>
   <p id="unlock-status" class="lyrics-status" hidden aria-live="polite"></p>
 </section>
@@ -65,7 +68,6 @@
         </select>
       </label>
       <button type="button" class="btn btn--secondary" id="lock-btn">Lock</button>
-      <button type="button" class="btn btn--ghost" id="forget-btn">Forget on this device</button>
     </div>
   </div>
 
