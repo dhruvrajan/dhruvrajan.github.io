@@ -1,1 +1,3 @@
-/* /index.html 200
+# Pages Functions handle /lyrics/api/* — do not SPA-fallback those paths.
+/lyrics/api/*  /lyrics/api/:splat  200
+/*    /index.html   200

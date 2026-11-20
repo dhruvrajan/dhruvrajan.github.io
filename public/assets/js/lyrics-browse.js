@@ -14,6 +14,7 @@
   var LAYOUT_KEY = "lyrics_browse_layout_v1";
   var EXPANDED_KEY = "lyrics_browse_expanded_v1";
   var NOTES_OPEN_KEY = "lyrics_browse_notes_open_v1";
+  var CONTENT_VIEW_KEY = "lyrics_song_content_view_v1";
   var PREFETCH_CONCURRENCY = 4;
   var TEXT_SIZES = ["sm", "md", "lg"];
   var LAYOUT_MODES = ["auto", "desktop", "touch"];
@@ -49,6 +50,10 @@
     swipeStartX: 0,
     swipeStartY: 0,
     prefetchAbort: false,
+    contentView: "lyrics",
+    chordsText: null,
+    chordsLoading: false,
+    currentDetails: null,
   };
 
   var els = {};
@@ -114,9 +119,34 @@
     storageSet(key, JSON.stringify(value));
   }
 
+  function chordsApi() {
+    return window.LyricsChords || null;
+  }
+
+  function getContentView() {
+    var c = chordsApi();
+    if (c && typeof c.getSongView === "function") return c.getSongView();
+    return storageGet(CONTENT_VIEW_KEY, "lyrics") === "chords" ? "chords" : "lyrics";
+  }
+
+  function setContentView(mode) {
+    var v = mode === "chords" ? "chords" : "lyrics";
+    state.contentView = v;
+    var c = chordsApi();
+    if (c && typeof c.setSongView === "function") c.setSongView(v);
+    else storageSet(CONTENT_VIEW_KEY, v);
+    return v;
+  }
+
+  function songHasChords(slug) {
+    var c = chordsApi();
+    return !!(c && typeof c.hasChord === "function" && c.hasChord(slug));
+  }
+
   function loadPrefs() {
     state.stage = storageGet(STAGE_KEY, "0") === "1";
     state.sort = storageGet(SORT_KEY, "artist") || "artist";
+    state.contentView = getContentView();
     var inst = storageGet(INSTRUMENT_KEY, "all") || "all";
     state.instrumentFilter =
       INSTRUMENTS.indexOf(inst) !== -1 || inst === "all" ? inst : "all";
@@ -1105,6 +1135,90 @@
     };
   }
 
+  function songBodyHtml(slug, meta, details, hasChords) {
+    if (meta.noLyrics || (details && details.noLyrics)) {
+      return '<p class="lb-lyrics-empty">Lyrics not added yet</p>';
+    }
+    var view = hasChords && state.contentView === "chords" ? "chords" : "lyrics";
+    if (view === "chords") {
+      if (state.chordsLoading) {
+        return '<p class="lb-loading">Loading chords…</p>';
+      }
+      if (state.chordsText) {
+        return (
+          '<pre class="lb-lyrics lb-lyrics--chords">' +
+          escapeHtml(state.chordsText) +
+          "</pre>"
+        );
+      }
+      return '<p class="lb-status lb-status--error">Chord sheet unavailable.</p>';
+    }
+    if (!details) {
+      return '<p class="lb-loading">Loading lyrics…</p>';
+    }
+    var html =
+      '<pre class="lb-lyrics">' +
+      escapeHtml(details.lyrics || details.text || "") +
+      "</pre>";
+    if (details.copyright || details.attribution) {
+      html +=
+        '<p class="lb-attrib">' +
+        escapeHtml(details.copyright || details.attribution) +
+        "</p>";
+    }
+    return html;
+  }
+
+  function renderSongBody(slug, meta, details) {
+    var body = $("#lb-song-body", els.song);
+    if (!body) return;
+    body.innerHTML = songBodyHtml(slug, meta, details, songHasChords(slug));
+  }
+
+  function syncContentToggle() {
+    if (!els.song) return;
+    var view = state.contentView === "chords" ? "chords" : "lyrics";
+    $$("[data-content-view]", els.song).forEach(function (btn) {
+      btn.setAttribute(
+        "aria-pressed",
+        btn.getAttribute("data-content-view") === view ? "true" : "false"
+      );
+    });
+  }
+
+  function loadChordsForSong(slug, meta, details) {
+    var c = chordsApi();
+    if (!c || typeof c.loadSheet !== "function" || !songHasChords(slug)) {
+      state.chordsText = null;
+      state.chordsLoading = false;
+      return Promise.resolve();
+    }
+    state.chordsLoading = true;
+    renderSongBody(slug, meta, details);
+    return c
+      .loadSheet(slug)
+      .then(function (sheet) {
+        if (state.currentSlug !== slug) return;
+        state.chordsText = c.extractChordsText(sheet);
+        state.chordsLoading = false;
+        renderSongBody(slug, meta, details);
+      })
+      .catch(function (err) {
+        if (state.currentSlug !== slug) return;
+        state.chordsLoading = false;
+        if (api && api.isAccessError && api.isAccessError(err)) {
+          var body = $("#lb-song-body", els.song);
+          if (body && api.accessPromptHtml) {
+            body.innerHTML = api.accessPromptHtml();
+            if (api.bindAccessReload) api.bindAccessReload(body);
+          }
+          return;
+        }
+        state.chordsText = null;
+        renderSongBody(slug, meta, details);
+      });
+  }
+
   function renderSongView(slug, opts) {
     opts = opts || {};
     var meta =
@@ -1115,7 +1229,9 @@
           })[0];
     if (!meta || !els.song) return;
 
-    var details = opts.details || null;
+    var details =
+      opts.details !== undefined ? opts.details : state.currentDetails;
+    if (opts.details !== undefined) state.currentDetails = opts.details;
     var prev = neighborInGroup(slug, -1);
     var next = neighborInGroup(slug, 1);
     var setup = formatSetup(meta);
@@ -1185,23 +1301,22 @@
         escapeHtml(printNoteText.replace(/\s+$/, "")) +
         "</p></div>";
     }
-    html += '<div id="lb-song-body">';
-    if (meta.noLyrics || (details && details.noLyrics)) {
-      html += '<p class="lb-lyrics-empty">Lyrics not added yet</p>';
-    } else if (!details) {
-      html += '<p class="lb-loading">Loading lyrics…</p>';
-    } else {
+    var hasChords = songHasChords(slug);
+    if (hasChords) {
+      var view = state.contentView === "chords" ? "chords" : "lyrics";
       html +=
-        '<pre class="lb-lyrics">' +
-        escapeHtml(details.lyrics || details.text || "") +
-        "</pre>";
-      if (details.copyright || details.attribution) {
-        html +=
-          '<p class="lb-attrib">' +
-          escapeHtml(details.copyright || details.attribution) +
-          "</p>";
-      }
+        '<div class="lb-content-toggle" role="group" aria-label="Song content">' +
+        '<button type="button" class="lb-btn lb-btn--subtle" data-content-view="lyrics" aria-pressed="' +
+        (view === "lyrics" ? "true" : "false") +
+        '">Lyrics</button>' +
+        '<button type="button" class="lb-btn lb-btn--subtle" data-content-view="chords" aria-pressed="' +
+        (view === "chords" ? "true" : "false") +
+        '">Chords</button>' +
+        "</div>";
     }
+
+    html += '<div id="lb-song-body">';
+    html += songBodyHtml(slug, meta, details, hasChords);
     html += "</div>";
 
     html += '<div class="lb-dock">';
@@ -1261,6 +1376,19 @@
       if (state.autoScroll) startAutoScroll();
     });
     bindNotesInline(meta, details);
+
+    $$("[data-content-view]", els.song).forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = btn.getAttribute("data-content-view");
+        setContentView(next);
+        syncContentToggle();
+        if (next === "chords" && !state.chordsText && !state.chordsLoading) {
+          loadChordsForSong(slug, meta, details);
+        } else {
+          renderSongBody(slug, meta, details);
+        }
+      });
+    });
   }
 
   function openSongBySlug(slug, updateHash, opts) {
@@ -1285,6 +1413,10 @@
     stopAutoScroll();
     applyLayoutClass();
     applyHasSongClass(true);
+    state.chordsText = null;
+    state.chordsLoading = false;
+    state.currentDetails = null;
+    state.contentView = getContentView();
     renderSongView(slug);
     renderBrowse();
     requestWakeLock();
@@ -1298,21 +1430,53 @@
       els.song.scrollTop = 0;
     }
 
+    var chordsReady = chordsApi()
+      ? chordsApi()
+          .ensureIndex(api)
+          .then(function () {
+            if (state.currentSlug !== slug) return;
+            // Re-render once index knows whether this song has chords.
+            renderSongView(slug);
+          })
+          .catch(function (err) {
+            if (state.currentSlug !== slug) return;
+            if (api && api.isAccessError && api.isAccessError(err)) {
+              var body = $("#lb-song-body", els.song);
+              if (body && api.accessPromptHtml) {
+                body.innerHTML = api.accessPromptHtml();
+                if (api.bindAccessReload) api.bindAccessReload(body);
+              }
+            }
+          })
+      : Promise.resolve();
+
     api
       .loadSongDetails(meta)
       .then(function (details) {
         if (state.currentSlug !== slug) return;
-        renderSongView(slug, { details: details });
+        return chordsReady.then(function () {
+          if (state.currentSlug !== slug) return;
+          renderSongView(slug, { details: details });
+          if (state.contentView === "chords" && songHasChords(slug)) {
+            return loadChordsForSong(slug, meta, details);
+          }
+        });
       })
       .catch(function (err) {
         if (state.currentSlug !== slug) return;
         var body = $("#lb-song-body", els.song);
-        if (body) {
-          body.innerHTML =
-            '<p class="lb-status lb-status--error">' +
-            escapeHtml((err && err.message) || "Could not load lyrics.") +
-            "</p>";
+        if (!body) return;
+        if (api && api.isAccessError && api.isAccessError(err)) {
+          body.innerHTML = api.accessPromptHtml
+            ? api.accessPromptHtml()
+            : '<p class="lb-status lb-status--error">Sign in to view lyrics</p>';
+          if (api.bindAccessReload) api.bindAccessReload(body);
+          return;
         }
+        body.innerHTML =
+          '<p class="lb-status lb-status--error">' +
+          escapeHtml((err && err.message) || "Could not load lyrics.") +
+          "</p>";
       });
   }
 
@@ -1789,6 +1953,10 @@
     loadSongsMetaFallback();
     applyStageClass();
 
+    if (chordsApi() && typeof chordsApi().onUnlock === "function") {
+      chordsApi().onUnlock(api);
+    }
+
     root = document.getElementById("lyrics-browse-root");
     if (!root) {
       root = document.createElement("div");
@@ -1817,6 +1985,9 @@
     stopAutoScroll();
     releaseWakeLock();
     applyHasSongClass(false);
+    state.chordsText = null;
+    state.chordsLoading = false;
+    state.currentDetails = null;
     document.body.classList.remove(
       "lb-stage",
       "lb-layout-desktop",
@@ -1828,6 +1999,9 @@
     if (root) root.innerHTML = "";
     api = null;
     els = {};
+    if (chordsApi() && typeof chordsApi().reset === "function") {
+      chordsApi().reset();
+    }
   }
 
   function registerServiceWorker() {

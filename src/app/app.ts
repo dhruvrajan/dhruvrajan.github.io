@@ -17,7 +17,7 @@ export class App {
 
   readonly year = new Date().getFullYear();
 
-  private readonly url = toSignal(
+  readonly url = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       map((event) => event.urlAfterRedirects.split('?')[0].split('#')[0]),

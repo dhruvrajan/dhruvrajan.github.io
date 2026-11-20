@@ -789,6 +789,24 @@ body.lb-stage .lb-status--error {
   margin: 0 0.5em;
 }
 
+.lb-content-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--lb-space);
+  align-items: center;
+  margin: 0 0 var(--lb-space);
+}
+
+.lb-content-toggle .lb-btn {
+  min-width: 5.5rem;
+}
+
+.lb-content-toggle .lb-btn[aria-pressed="true"] {
+  border-color: var(--lb-accent);
+  color: var(--lb-accent);
+  background: var(--lb-selected);
+}
+
 .lb-lyrics {
   margin: calc(var(--lb-space) * 2) 0 0;
   padding: 0;
@@ -800,6 +818,17 @@ body.lb-stage .lb-status--error {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   color: var(--lb-text);
+}
+
+.lb-lyrics--chords {
+  font-family: var(--lb-font-mono, var(--font-kicker, "IBM Plex Mono", ui-monospace, monospace));
+  font-size: 0.95rem;
+  line-height: 1.45;
+  white-space: pre;
+  overflow-x: auto;
+  overflow-wrap: normal;
+  tab-size: 4;
+  color: var(--lb-accent);
 }
 
 body.lyrics-text--sm .lb-lyrics {

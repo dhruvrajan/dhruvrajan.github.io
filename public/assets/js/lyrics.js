@@ -1,11 +1,20 @@
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "lyrics_cache_key_v2";
-  var STORAGE_REMEMBER = "lyrics_cache_remember_v2";
   var STORAGE_TEXT_SIZE = "lyrics_text_size_v1";
   var STORAGE_ORIENTATION = "lyrics_songbook_orientation_v1";
+  /* Legacy keys that once held extractable key material — scrubbed on load. */
+  var LEGACY_STORAGE_KEYS = [
+    "lyrics_cache_key_v2",
+    "lyrics_cache_remember_v2",
+    "lyrics_cache_key",
+    "lyrics_cache_remember",
+    "lyrics_passphrase",
+    "lyrics_key",
+  ];
   var DECRYPT_CONCURRENCY = 6;
+  var ACCESS_REQUIRED = "ACCESS_REQUIRED";
+  var KEY_API_URL = "/lyrics/api/key";
 
   function baseUrl() {
     var fromDom =
@@ -44,8 +53,9 @@
       unlockGate: document.getElementById("unlock-gate"),
       unlockForm: document.getElementById("unlock-form"),
       passphraseInput: document.getElementById("passphrase-input"),
-      rememberCheck: document.getElementById("remember-check"),
       unlockStatus: document.getElementById("unlock-status"),
+      accessGate: document.getElementById("access-gate"),
+      accessReloadBtn: document.getElementById("access-reload-btn"),
       browser: document.getElementById("lyrics-browser"),
       searchForm: document.getElementById("search-form"),
       searchInput: document.getElementById("search-input"),
@@ -55,13 +65,24 @@
       detail: document.getElementById("song-detail"),
       artistList: document.getElementById("artist-browse"),
       lockBtn: document.getElementById("lock-btn"),
-      forgetBtn: document.getElementById("forget-btn"),
       textSizeSm: document.getElementById("text-size-sm"),
       textSizeMd: document.getElementById("text-size-md"),
       textSizeLg: document.getElementById("text-size-lg"),
       printBtn: document.getElementById("print-lyrics-btn"),
       downloadSongbookBtn: document.getElementById("download-songbook-btn"),
     };
+  }
+
+  /** One-time scrub of any previously persisted passphrase/key material. */
+  function scrubLegacySensitiveStorage() {
+    try {
+      LEGACY_STORAGE_KEYS.forEach(function (k) {
+        localStorage.removeItem(k);
+        sessionStorage.removeItem(k);
+      });
+    } catch (e) {
+      /* ignore */
+    }
   }
 
   function b64ToBytes(b64) {
@@ -139,42 +160,59 @@
     if (els.browser) els.browser.hidden = !unlocked;
   }
 
-  function readRememberedKey() {
-    try {
-      if (localStorage.getItem(STORAGE_REMEMBER) !== "1") return null;
-      return localStorage.getItem(STORAGE_KEY) || null;
-    } catch (e) {
-      return null;
-    }
+  function accessError() {
+    var err = new Error(ACCESS_REQUIRED);
+    err.code = ACCESS_REQUIRED;
+    return err;
   }
 
-  function clearRemembered() {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem(STORAGE_REMEMBER);
-    } catch (e) {
-      /* ignore */
-    }
+  function isAccessError(err) {
+    return !!(err && (err.code === ACCESS_REQUIRED || err.message === ACCESS_REQUIRED));
   }
 
-  async function rememberKey(cryptoKey) {
+  /**
+   * Fetch JSON for encrypted lyrics/chords (and salt). Detects Cloudflare Access
+   * challenges: 401/403, redirects, opaque responses, or HTML instead of JSON.
+   */
+  async function fetchJson(url) {
+    var res;
     try {
-      var raw = await crypto.subtle.exportKey("raw", cryptoKey);
-      localStorage.setItem(STORAGE_KEY, bytesToB64(raw));
-      localStorage.setItem(STORAGE_REMEMBER, "1");
+      res = await fetch(url, {
+        cache: "no-cache",
+        credentials: "same-origin",
+        redirect: "manual",
+      });
     } catch (e) {
-      throw new Error("Could not save the key in this browser (storage blocked).");
+      throw new Error("Could not load " + url + " (network error).");
     }
-  }
 
-  async function importRawKey(b64) {
-    return crypto.subtle.importKey(
-      "raw",
-      b64ToBytes(b64),
-      { name: "AES-GCM" },
-      true,
-      ["decrypt"]
-    );
+    if (res.type === "opaqueredirect" || res.type === "opaque") {
+      throw accessError();
+    }
+    if (res.status === 401 || res.status === 403) {
+      throw accessError();
+    }
+    if (res.status >= 300 && res.status < 400) {
+      throw accessError();
+    }
+    if (!res.ok) {
+      throw new Error("Could not load " + url + " (" + res.status + ").");
+    }
+
+    var ct = (res.headers.get("content-type") || "").toLowerCase();
+    var text = await res.text();
+    if (
+      ct.indexOf("text/html") !== -1 ||
+      (ct.indexOf("application/json") === -1 && /^\s*</.test(text))
+    ) {
+      throw accessError();
+    }
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      if (/^\s*</.test(text)) throw accessError();
+      throw new Error("Could not parse JSON from " + url + ".");
+    }
   }
 
   async function deriveKey(passphrase, salt, iterations) {
@@ -186,6 +224,7 @@
       false,
       ["deriveKey"]
     );
+    // Non-extractable AES key — never export or persist key material.
     return crypto.subtle.deriveKey(
       {
         name: "PBKDF2",
@@ -195,17 +234,9 @@
       },
       baseKey,
       { name: "AES-GCM", length: 256 },
-      true,
+      false,
       ["decrypt"]
     );
-  }
-
-  async function fetchJson(url) {
-    var res = await fetch(url, { cache: "no-cache" });
-    if (!res.ok) {
-      throw new Error("Could not load " + url + " (" + res.status + ").");
-    }
-    return res.json();
   }
 
   async function loadSalt() {
@@ -502,7 +533,11 @@
     return payload.map(normalizeIndexEntry);
   }
 
-  async function unlockWithPassphrase(passphrase, remember) {
+  /**
+   * Derive a non-extractable AES key in memory and unlock.
+   * Passphrase is never written to storage; caller should drop string refs.
+   */
+  async function unlockWithPassphrase(passphrase) {
     var saltInfo = await loadSalt();
     var iterations = Number(saltInfo.iterations) || 310000;
     var salt = b64ToBytes(saltInfo.salt);
@@ -511,28 +546,71 @@
     state.cryptoKey = key;
     state.songs = songs;
     state.songCache = Object.create(null);
-    if (remember) {
-      await rememberKey(key);
-    } else {
-      clearRemembered();
-    }
     return songs;
   }
 
-  async function unlockWithStoredKey() {
-    var b64 = readRememberedKey();
-    if (!b64) return false;
-    await loadSalt();
-    var key = await importRawKey(b64);
+  /** Auto-unlock via Access-protected Pages Function (memory only). */
+  async function tryAutoUnlockFromKeyApi() {
+    var res;
     try {
-      state.songs = withMetaOnlySongs(await decryptIndex(key));
-      state.cryptoKey = key;
-      state.songCache = Object.create(null);
-      return true;
-    } catch (err) {
-      clearRemembered();
+      res = await fetch(KEY_API_URL, {
+        credentials: "same-origin",
+        cache: "no-store",
+        redirect: "manual",
+        headers: { Accept: "application/json" },
+      });
+    } catch (e) {
       return false;
     }
+    if (res.type === "opaqueredirect" || res.type === "opaque") return false;
+    if (res.status === 401 || res.status === 403) return false;
+    if (res.status >= 300 && res.status < 400) return false;
+    if (!res.ok) return false;
+    var ct = (res.headers.get("content-type") || "").toLowerCase();
+    var text = await res.text();
+    if (ct.indexOf("text/html") !== -1 || /^\s*</.test(text)) return false;
+    var data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      return false;
+    }
+    var passphrase = data && data.passphrase != null ? String(data.passphrase) : "";
+    if (!passphrase) return false;
+    try {
+      await unlockWithPassphrase(passphrase);
+      passphrase = "";
+      return true;
+    } catch (e) {
+      passphrase = "";
+      if (isAccessError(e)) throw e;
+      return false;
+    }
+  }
+
+  function showAccessGate(show) {
+    if (els.accessGate) els.accessGate.hidden = !show;
+    if (show) {
+      if (els.unlockGate) els.unlockGate.hidden = true;
+      if (els.browser) els.browser.hidden = true;
+    }
+  }
+
+  function accessPromptHtml() {
+    return (
+      '<p class="lyrics-status lyrics-status--error">Sign in to view lyrics</p>' +
+      '<p class="song-detail__actions">' +
+      '<button type="button" class="btn" data-access-reload>Sign in</button>' +
+      "</p>"
+    );
+  }
+
+  function bindAccessReload(root) {
+    var btn = root && root.querySelector("[data-access-reload]");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      window.location.href = "/lyrics";
+    });
   }
 
   async function loadSongDetails(meta) {
@@ -887,6 +965,11 @@
         renderSongDetail(details);
       })
       .catch(function (err) {
+        if (isAccessError(err)) {
+          els.detail.innerHTML = accessPromptHtml();
+          bindAccessReload(els.detail);
+          return;
+        }
         els.detail.innerHTML =
           '<p class="lyrics-status lyrics-status--error">' +
           escapeHtml(humanError(err)) +
@@ -1079,11 +1162,11 @@
         }
       },
       lock: function () {
-        lockSession(false);
+        lockSession();
       },
-      forget: function () {
-        lockSession(true);
-      },
+      isAccessError: isAccessError,
+      accessPromptHtml: accessPromptHtml,
+      bindAccessReload: bindAccessReload,
     };
   }
 
@@ -1133,17 +1216,22 @@
     }
   }
 
-  function lockSession(forget) {
+  function lockSession() {
     if (
       window.LyricsBrowse &&
       typeof window.LyricsBrowse.onLock === "function"
     ) {
       window.LyricsBrowse.onLock();
     }
+    if (
+      window.LyricsChords &&
+      typeof window.LyricsChords.reset === "function"
+    ) {
+      window.LyricsChords.reset();
+    }
     state.songs = [];
     state.cryptoKey = null;
     state.songCache = Object.create(null);
-    if (forget) clearRemembered();
     if (els.results) els.results.innerHTML = "";
     if (els.artistList) els.artistList.innerHTML = "";
     if (els.detail) {
@@ -1162,6 +1250,7 @@
 
   function humanError(err) {
     if (!err) return "Something went wrong.";
+    if (isAccessError(err)) return "Sign in to view lyrics";
     if (err.message === "WRONG_PASSPHRASE")
       return "Wrong password. Try again.";
     return err.message || "Something went wrong.";
@@ -1186,18 +1275,29 @@
           if (els.passphraseInput) els.passphraseInput.focus();
           return;
         }
-        var remember = !!(els.rememberCheck && els.rememberCheck.checked);
         setUnlockStatus("Unlocking…", "info");
-        unlockWithPassphrase(passphrase, remember)
+        unlockWithPassphrase(passphrase)
           .then(function () {
+            passphrase = "";
             if (els.passphraseInput) els.passphraseInput.value = "";
+            showAccessGate(false);
             afterUnlock();
           })
           .catch(function (err) {
+            passphrase = "";
+            if (els.passphraseInput) els.passphraseInput.value = "";
+            if (isAccessError(err)) {
+              showAccessGate(true);
+              return;
+            }
             setUnlockStatus(humanError(err), "error");
           });
       });
     }
+
+    once(els.accessReloadBtn, "click", function () {
+      window.location.href = "/lyrics";
+    });
 
     once(els.searchForm, "submit", function (e) {
       e.preventDefault();
@@ -1209,17 +1309,7 @@
     });
 
     once(els.lockBtn, "click", function () {
-      lockSession(false);
-    });
-
-    once(els.forgetBtn, "click", function () {
-      if (
-        window.confirm(
-          "Forget the saved unlock on this device? You will need the passphrase next time."
-        )
-      ) {
-        lockSession(true);
-      }
+      lockSession();
     });
 
     once(els.textSizeSm, "click", function () {
@@ -1273,6 +1363,7 @@
 
   async function init() {
     queryEls();
+    scrubLegacySensitiveStorage();
     loadSongsMeta();
     setOrientation(getOrientation());
     try {
@@ -1286,17 +1377,25 @@
     applyTextSize();
     bind();
     showUnlocked(false);
+    showAccessGate(false);
     setUnlockStatus("");
 
     try {
       await loadSalt();
-      setUnlockStatus("");
-      var ok = await unlockWithStoredKey();
-      if (ok) {
+      setUnlockStatus("Signing in…", "info");
+      var auto = await tryAutoUnlockFromKeyApi();
+      if (auto) {
+        setUnlockStatus("");
         afterUnlock();
         return;
       }
+      setUnlockStatus("");
     } catch (err) {
+      if (isAccessError(err)) {
+        showAccessGate(true);
+        setUnlockStatus("");
+        return;
+      }
       setUnlockStatus(humanError(err), "error");
     }
 
