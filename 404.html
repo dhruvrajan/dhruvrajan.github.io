@@ -1,12 +1,21 @@
----
-permalink: /404.html
-layout: default
-title: Page not found
-narrow: true
----
-
-<div class="not-found">
-  <h1>404</h1>
-  <p>Page not found.</p>
-  <p><a href="{{ '/' | relative_url }}">Back to home</a></p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>This site moved to dhruvrajan.com</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://dhruvrajan.com/">
+  <meta http-equiv="refresh" content="0;url=https://dhruvrajan.com/">
+  <script>
+    (function () {
+      var dest = 'https://dhruvrajan.com' + location.pathname + location.search + location.hash;
+      var canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.href = 'https://dhruvrajan.com' + location.pathname;
+      location.replace(dest);
+    })();
+  </script>
+</head>
+<body>
+  <p>This site moved to <a href="https://dhruvrajan.com/">dhruvrajan.com</a>.</p>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Live site is https://dhruvrajan.com/
+# Keep the frozen gh-pages snapshot under /archive/ reachable but not indexed.
+User-agent: *
+Disallow: /archive/
